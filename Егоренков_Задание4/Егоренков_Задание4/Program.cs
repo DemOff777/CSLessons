@@ -10,10 +10,12 @@ namespace Егоренков_Задание4
     {
         static void Main(string[] args)
         {
-            int picRow = 3;
-            int picTotal = 52;
+            int picturesRow = 3;
+            int picturesTotal = 52;
+            int rowsTotal = picturesTotal / picturesRow;
+            int picturesLeft = picturesTotal % picturesRow;
 
-            Console.WriteLine($"Всего рядов {picTotal / picRow}, остаток {picTotal % picRow}");
+            Console.WriteLine($"Всего рядов {rowsTotal}, остаток {picturesLeft}");
         }
     }
 }
