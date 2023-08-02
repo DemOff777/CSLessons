@@ -10,16 +10,16 @@ namespace Егоренков_Задание1
     {
         static void Main(string[] args)
         {
-            byte b = 255;
-            sbyte s = -128;
-            short sh = -32767;
-            ushort us = 65535;
-            int i = -2147483648;
-            uint ui = 4294967295;
-            float fl = 1.1234567f;
-            char ch = '#';
-            string st = "Строка";
-            bool bl = false;
+            byte seconds = 255;
+            sbyte secondsBonus = -128;
+            short healthMonster = -32767;
+            ushort health = 65535;
+            int damageVampire = -2147483648;
+            uint damage = 4294967295;
+            float armor = 1.1234567f;
+            char mark = '#';
+            string status = "Оборотень";
+            bool isMonster = false;
         }
     }
 }
