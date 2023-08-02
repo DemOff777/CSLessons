@@ -1,0 +1,8 @@
+C:\Users\Asus\Documents\Задачи C#\Егоренков_Задание5\Егоренков_Задание5\bin\Debug\Егоренков_Задание5.exe.config
+C:\Users\Asus\Documents\Задачи C#\Егоренков_Задание5\Егоренков_Задание5\bin\Debug\Егоренков_Задание5.exe
+C:\Users\Asus\Documents\Задачи C#\Егоренков_Задание5\Егоренков_Задание5\bin\Debug\Егоренков_Задание5.pdb
+C:\Users\Asus\Documents\Задачи C#\Егоренков_Задание5\Егоренков_Задание5\obj\Debug\Егоренков_Задание5.csproj.AssemblyReference.cache
+C:\Users\Asus\Documents\Задачи C#\Егоренков_Задание5\Егоренков_Задание5\obj\Debug\Егоренков_Задание5.csproj.SuggestedBindingRedirects.cache
+C:\Users\Asus\Documents\Задачи C#\Егоренков_Задание5\Егоренков_Задание5\obj\Debug\Егоренков_Задание5.csproj.CoreCompileInputs.cache
+C:\Users\Asus\Documents\Задачи C#\Егоренков_Задание5\Егоренков_Задание5\obj\Debug\Егоренков_Задание5.exe
+C:\Users\Asus\Documents\Задачи C#\Егоренков_Задание5\Егоренков_Задание5\obj\Debug\Егоренков_Задание5.pdb
