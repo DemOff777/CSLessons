@@ -16,7 +16,7 @@ namespace Егоренков_Задание6
 
             Console.Write("Сколько у вас золота? ");
             gold = Convert.ToInt32(Console.ReadLine());
-            Console.Write("Сколько кристаллов вы хотите преобрести по цене 10 за штуку ");
+            Console.Write($"Сколько кристаллов вы хотите преобрести по цене {crystalPrice} за штуку ");
             crystals = Convert.ToInt32(Console.ReadLine());
             gold -= crystalPrice * crystals;
             Console.WriteLine($"Отлично, теперь в вашей сумке {crystals} кристалов и {gold} золота");

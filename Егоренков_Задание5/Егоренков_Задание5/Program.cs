@@ -10,15 +10,15 @@ namespace Егоренков_Задание5
     {
         static void Main(string[] args)
         {
-            string partBody1 = "Правая";
-            string side1 = "Рука";
+            string name1 = "Костякова";
+            string surname1 = "Ирина";
 
-            Console.WriteLine("Часть тела: " + partBody1 + "; Сторона: " + side1) ;
+            Console.WriteLine("Имя: " + name1 + "; Фамилия: " + surname1) ;
 
-            string partBody2 = side1;
-            string side2 = partBody1;
+            string name2 = surname1;
+            string surname2 = name1;
 
-            Console.WriteLine ("Часть тела: " + partBody2 + "; Сторона: " + side2);
+            Console.WriteLine ("Имя: " + name2 + "; Фамилия: " + surname2);
         }
     }
 }

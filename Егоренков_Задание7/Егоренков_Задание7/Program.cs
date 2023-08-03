@@ -12,14 +12,15 @@ namespace Егоренков_Задание7
         {
             int peoplesInTurn;
             int timeOfAppointment = 10;
-            int timeInTurnHouers;
+            int timeInTurnHours;
             int timeInTurnMinutes;
+            int minutesInHour = 60;
 
             Console.Write("Введите количество старушек в очереди ");
             peoplesInTurn = Convert.ToInt32(Console.ReadLine());
-            timeInTurnHouers = peoplesInTurn * timeOfAppointment / 60;
-            timeInTurnMinutes = peoplesInTurn * timeOfAppointment % 60;
-            Console.WriteLine($"Время ожидания в очереди {timeInTurnHouers} часов и {timeInTurnMinutes} минут");
+            timeInTurnHours = peoplesInTurn * timeOfAppointment / minutesInHour;
+            timeInTurnMinutes = peoplesInTurn * timeOfAppointment % minutesInHour;
+            Console.WriteLine($"Время ожидания в очереди {timeInTurnHours} часов и {timeInTurnMinutes} минут");
 
         }
     }
