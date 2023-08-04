@@ -10,15 +10,17 @@ namespace Егоренков_Задание5
     {
         static void Main(string[] args)
         {
-            string name1 = "Костякова";
-            string surname1 = "Ирина";
+            string name = "Костякова";
+            string surname = "Ирина";
 
-            Console.WriteLine("Имя: " + name1 + "; Фамилия: " + surname1) ;
+            Console.WriteLine("Имя: " + name + "; Фамилия: " + surname);
 
-            string name2 = surname1;
-            string surname2 = name1;
+            string name1 = surname;
+            string surname1 = name;
+            name = name1;
+            surname = surname1;
 
-            Console.WriteLine ("Имя: " + name2 + "; Фамилия: " + surname2);
+            Console.WriteLine ("Имя: " + name + "; Фамилия: " + surname);
         }
     }
 }
