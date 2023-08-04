@@ -12,14 +12,14 @@ namespace Егоренков_Задание5
         {
             string name = "Костякова";
             string surname = "Ирина";
+            string bufferName;
 
             Console.WriteLine("Имя: " + name + "; Фамилия: " + surname);
 
-            string name1 = surname;
-            string surname1 = name;
-            name = name1;
-            surname = surname1;
-
+            bufferName = name;
+            name = surname;
+            surname = bufferName;
+            
             Console.WriteLine ("Имя: " + name + "; Фамилия: " + surname);
         }
     }
