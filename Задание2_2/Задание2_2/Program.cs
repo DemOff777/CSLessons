@@ -11,11 +11,12 @@ namespace Задание2_2
         static void Main(string[] args)
         {
             string userPhrase;
+            string phraseToExit = "exit";
 
             Console.WriteLine("Введите фразу для выхода");
             userPhrase = Console.ReadLine();
 
-            while (userPhrase != "exit")
+            while (userPhrase != phraseToExit)
             {
                 Console.WriteLine("Введите фразу для выхода");
                 userPhrase = Console.ReadLine();
