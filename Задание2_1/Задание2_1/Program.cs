@@ -17,7 +17,7 @@ namespace Задание2_1
             Console.WriteLine("Ввдите количество повторов");
             times = Convert.ToInt32(Console.ReadLine());
 
-            for (int i = 0; i < times; i++)
+            for (int repeat = 0; repeat < times; repeat++)
             {
                 Console.WriteLine(phrase);
             }
