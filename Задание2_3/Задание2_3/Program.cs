@@ -10,13 +10,13 @@ namespace Задание2_3
     {
         static void Main(string[] args)
         {
-            int number = 5;
+            int numberInitial = 5;
             int numberStep = 7;
             int numberLast = 96;
 
-            for(int i = 0; number <= numberLast; number += numberStep)
+            for(int step = numberInitial; step <= numberLast; step += numberStep)
             {
-                Console.WriteLine(number);
+                Console.WriteLine(step);
             }
         }
     }
