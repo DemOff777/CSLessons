@@ -14,10 +14,10 @@ namespace Задание2_1
             int times;
             Console.WriteLine("Ввдите фразу");
             phrase = Console.ReadLine();
-            Console.WriteLine("Ввдите количество попыток");
+            Console.WriteLine("Ввдите количество повторов");
             times = Convert.ToInt32(Console.ReadLine());
 
-            while (times-- > 0) 
+            for (int i = 0; i < times; i++)
             {
                 Console.WriteLine(phrase);
             }

@@ -11,8 +11,10 @@ namespace Задание2_3
         static void Main(string[] args)
         {
             int number = 5;
+            int numberStep = 7;
+            int numberLast = 96;
 
-            for(int i = 0; number <= 96; number +=7)
+            for(int i = 0; number <= numberLast; number += numberStep)
             {
                 Console.WriteLine(number);
             }

@@ -10,26 +10,30 @@ namespace Задание2_5
     {
         static void Main(string[] args)
         {
-            float rub = 100000;
-            float usd = 500;
-            float kzt = 200000;
+            string currencyToConvert = "";
+            string currencyDesired = "";
+            string currencyRub = "rub";
+            string currencyUsd = "usd";
+            string currencyKzt = "kzt";
+            string exit = "exit";
+            float rubAmount = 100000;
+            float usdAmount = 500;
+            float kztAmount = 200000;
             float amountToConvert;
-            string currencyToConvert;
-            string currencyDesired;
             float rubToUsd = 96.5f;
             float rubToKzt = 0.2177f;
             float usdToRub = 0.0107f;
             float usdToKzt = 0.0022f;
             float kztToUsd = 453.9f;
             float kztToRub = 4.7778f;
-            
 
-            while (true)
+            
+            while (currencyToConvert != exit)
             {
                 Console.WriteLine("Ваш баланс:");
-                Console.WriteLine($"{rub} рублей");
-                Console.WriteLine($"{usd} долларов");
-                Console.WriteLine($"{kzt} тенге");
+                Console.WriteLine($"{rubAmount} рублей");
+                Console.WriteLine($"{usdAmount} долларов");
+                Console.WriteLine($"{kztAmount} тенге");
                 Console.WriteLine();
                 Console.WriteLine("Введите валюту для обмена:");
                 Console.WriteLine("rub-рубли");
@@ -37,227 +41,197 @@ namespace Задание2_5
                 Console.WriteLine("kzt-тенге");
                 currencyToConvert = Console.ReadLine();
 
-                    if(currencyToConvert == "rub")
+                while (currencyToConvert == currencyRub)
+                {
+                    Console.WriteLine("Введите валюту на которую вы хотите совершить обмен:");
+                    Console.WriteLine("usd-доллары");
+                    Console.WriteLine("kzt-тенге");
+                    currencyDesired = Console.ReadLine();
+
+                    while (currencyDesired == currencyUsd)
                     {
-                        while (true)
+                        Console.WriteLine("Введите сумму в рублях для обмена:");
+                        amountToConvert = Convert.ToSingle(Console.ReadLine());
+
+                        if (amountToConvert <= rubAmount)
                         {
-                            Console.WriteLine("Введите валюту на которую вы хотите совершить обмен:");
-                            Console.WriteLine("usd-доллары");
-                            Console.WriteLine("kzt-тенге");
-                            currencyDesired = Console.ReadLine();
-
-                            if (currencyDesired == "usd")
-                            {
-                                while (true)
-                                {
-                                    Console.WriteLine("Введите сумму в рублях для обмена:");
-                                    amountToConvert = Convert.ToSingle(Console.ReadLine());
-
-                                    if (amountToConvert <= rub)
-                                    {
-                                        rub -= amountToConvert;
-                                        usd += amountToConvert / rubToUsd;
-                                        Console.WriteLine();
-                                        break;
-                                    }
-
-                                    if (amountToConvert > rub)
-                                    {
-                                        Console.WriteLine("Недоcтаточно средств.");
-                                        Console.WriteLine();
-                                    }
-
-                                }
-                            }
-                            if (currencyDesired == "kzt")
-                            {
-                                while (true)
-                                {
-                                    Console.WriteLine("Введите сумму в рублях для обмена:");
-                                    amountToConvert = Convert.ToSingle(Console.ReadLine());
-
-                                    if (amountToConvert <= rub)
-                                    {
-                                        rub -= amountToConvert;
-                                        kzt += amountToConvert / rubToKzt;
-                                        Console.WriteLine();
-                                        break;
-                                    }
-
-                                    if (amountToConvert > rub)
-                                    {
-                                        Console.WriteLine("Недоcтаточно средств.");
-                                        Console.WriteLine();
-                                    }
-
-                                }
-                            }
-
-                        if (currencyDesired == "exit")
-                        {
+                            rubAmount -= amountToConvert;
+                            usdAmount += amountToConvert / rubToUsd;
+                            Console.WriteLine();
                             break;
                         }
 
-                        if (currencyDesired != "usd" && currencyDesired != "kzt" && currencyDesired != "exit")
+                        if (amountToConvert > rubAmount)
                         {
-                            Console.WriteLine("Недопустимое значение.");
+                            Console.WriteLine("Недоcтаточно средств.");
                             Console.WriteLine();
                         }
-                            break;
-                        }
+
                     }
 
-                    if(currencyToConvert == "usd")
+                    while (currencyDesired == currencyKzt)
                     {
-                        while (true)
+                        Console.WriteLine("Введите сумму в рублях для обмена:");
+                        amountToConvert = Convert.ToSingle(Console.ReadLine());
+
+                        if (amountToConvert <= rubAmount)
                         {
-                            Console.WriteLine("Введите валюту на которую вы хотите совершить обмен:");
-                            Console.WriteLine("rub-рубли");
-                            Console.WriteLine("kzt-тенге");
-                            currencyDesired = Console.ReadLine();
-
-                            if (currencyDesired == "rub")
-                            {
-                                while (true)
-                                {
-                                    Console.WriteLine("Введите сумму в долларах для обмена:");
-                                    amountToConvert = Convert.ToSingle(Console.ReadLine());
-
-                                    if (amountToConvert <= usd)
-                                    {
-                                        usd -= amountToConvert;
-                                        rub += amountToConvert / usdToRub;
-                                        Console.WriteLine();
-                                        break;
-                                    }
-
-                                    if (amountToConvert > usd)
-                                    {
-                                        Console.WriteLine("Недоcтаточно средств.");
-                                        Console.WriteLine();
-                                    }
-
-                                }
-                            }
-                            if (currencyDesired == "kzt")
-                            {
-                                while (true)
-                                {
-                                    Console.WriteLine("Введите сумму в долларах для обмена:");
-                                    amountToConvert = Convert.ToSingle(Console.ReadLine());
-
-                                    if (amountToConvert <= usd)
-                                    {
-                                        usd -= amountToConvert;
-                                        kzt += amountToConvert / usdToKzt;
-                                        Console.WriteLine();
-                                        break;
-                                    }
-
-                                    if (amountToConvert > usd)
-                                    {
-                                        Console.WriteLine("Недоcтаточно средств.");
-                                        Console.WriteLine();
-                                    }
-
-                                }
-                            }
-
-                        if (currencyDesired == "exit")
-                        {
+                            rubAmount -= amountToConvert;
+                            kztAmount += amountToConvert / rubToKzt;
+                            Console.WriteLine();
                             break;
                         }
 
-                        if (currencyDesired != "rub" && currencyDesired != "kzt" && currencyDesired != "exit")
+                        if (amountToConvert > rubAmount)
                         {
-                            Console.WriteLine("Недопустимое значение.");
+                            Console.WriteLine("Недоcтаточно средств.");
                             Console.WriteLine();
                         }
-                            break;
-                        }
+
                     }
 
-                    if(currencyToConvert == "kzt")
-                    {
-                        while (true)
-                        {
-                            Console.WriteLine("Введите валюту на которую вы хотите совершить обмен:");
-                            Console.WriteLine("usd-доллары");
-                            Console.WriteLine("rub-рубли");
-                            currencyDesired = Console.ReadLine();
-
-                            if (currencyDesired == "usd")
-                            {
-                                while (true)
-                                {
-                                    Console.WriteLine("Введите сумму в тенге для обмена:");
-                                    amountToConvert = Convert.ToSingle(Console.ReadLine());
-
-                                    if (amountToConvert <= kzt)
-                                    {
-                                        kzt -= amountToConvert;
-                                        usd += amountToConvert / kztToUsd;
-                                        Console.WriteLine();
-                                        break;
-                                    }
-
-                                    if (amountToConvert > kzt)
-                                    {
-                                        Console.WriteLine("Недоcтаточно средств.");
-                                        Console.WriteLine();
-                                    }
-
-                                }
-                            }
-                            if (currencyDesired == "rub")
-                            {
-                                while (true)
-                                {
-                                    Console.WriteLine("Введите сумму в тенге для обмена:");
-                                    amountToConvert = Convert.ToSingle(Console.ReadLine());
-
-                                    if (amountToConvert <= kzt)
-                                    {
-                                        kzt -= amountToConvert;
-                                        rub += amountToConvert / kztToRub;
-                                        Console.WriteLine();
-                                        break;
-                                    }
-
-                                    if (amountToConvert > kzt)
-                                    {
-                                        Console.WriteLine("Недоcтаточно средств.");
-                                        Console.WriteLine();
-                                    }
-
-                                }
-                            }
-
-                        if (currencyDesired == "exit")
-                        {
-                            break;
-                        }
-
-                        if (currencyDesired != "usd" && currencyDesired != "rub" && currencyDesired != "exit")
-                        {
-                            Console.WriteLine("Недопустимое значение.");
-                            Console.WriteLine();
-                        }
-                            break;
-                        }
-                    }
-                    if (currencyToConvert == "exit")
+                    if (currencyDesired == currencyUsd || currencyDesired == currencyKzt || currencyDesired == exit)
                     {
                         break;
                     }
 
-                    if (currencyToConvert != "rub" && currencyToConvert != "usd" && currencyToConvert != "kzt" && currencyToConvert != "exit")
+                    if (currencyDesired != currencyUsd && currencyDesired != currencyKzt && currencyDesired != exit)
                     {
-                            Console.WriteLine("Недопустимое значение.");
-                            Console.WriteLine();
+                        Console.WriteLine("Недопустимое значение.");
+                        Console.WriteLine();
                     }
-                    
-                
+                }
+
+                while (currencyToConvert == currencyUsd)
+                {
+                    Console.WriteLine("Введите валюту на которую вы хотите совершить обмен:");
+                    Console.WriteLine("rub-рубли");
+                    Console.WriteLine("kzt-тенге");
+                    currencyDesired = Console.ReadLine();
+
+                    while (currencyDesired == currencyRub)
+                    {
+                        Console.WriteLine("Введите сумму в долларах для обмена:");
+                        amountToConvert = Convert.ToSingle(Console.ReadLine());
+
+                        if (amountToConvert <= usdAmount)
+                        {
+                            usdAmount -= amountToConvert;
+                            rubAmount += amountToConvert / usdToRub;
+                            Console.WriteLine();
+                            break;
+                        }
+
+                        if (amountToConvert > usdAmount)
+                        {
+                            Console.WriteLine("Недоcтаточно средств.");
+                            Console.WriteLine();
+                        }
+
+                    }
+
+                    while (currencyDesired == currencyKzt)
+                    {
+                        Console.WriteLine("Введите сумму в долларах для обмена:");
+                        amountToConvert = Convert.ToSingle(Console.ReadLine());
+
+                        if (amountToConvert <= usdAmount)
+                        {
+                            usdAmount -= amountToConvert;
+                            kztAmount += amountToConvert / usdToKzt;
+                            Console.WriteLine();
+                            break;
+                        }
+
+                        if (amountToConvert > usdAmount)
+                        {
+                            Console.WriteLine("Недоcтаточно средств.");
+                            Console.WriteLine();
+                        }
+                    }
+
+                    if (currencyDesired == currencyRub || currencyDesired == currencyKzt || currencyDesired == exit)
+                    {
+                        break;
+                    }
+
+                    if (currencyDesired != currencyRub && currencyDesired != currencyKzt && currencyDesired != exit)
+                    {
+                        Console.WriteLine("Недопустимое значение.");
+                        Console.WriteLine();
+                    }
+                }
+
+                while (currencyToConvert == currencyKzt)
+                {
+                    Console.WriteLine("Введите валюту на которую вы хотите совершить обмен:");
+                    Console.WriteLine("usd-доллары");
+                    Console.WriteLine("rub-рубли");
+                    currencyDesired = Console.ReadLine();
+
+                    while (currencyDesired == currencyUsd)
+                    {
+                        Console.WriteLine("Введите сумму в тенге для обмена:");
+                        amountToConvert = Convert.ToSingle(Console.ReadLine());
+
+                        if (amountToConvert <= kztAmount)
+                        {
+                            kztAmount -= amountToConvert;
+                            usdAmount += amountToConvert / kztToUsd;
+                            Console.WriteLine();
+                            break;
+                        }
+
+                        if (amountToConvert > kztAmount)
+                        {
+                            Console.WriteLine("Недоcтаточно средств.");
+                            Console.WriteLine();
+                        }
+                    }
+
+                    while (currencyDesired == currencyRub)
+                    {
+                        Console.WriteLine("Введите сумму в тенге для обмена:");
+                        amountToConvert = Convert.ToSingle(Console.ReadLine());
+
+                        if (amountToConvert <= kztAmount)
+                        {
+                            kztAmount -= amountToConvert;
+                            rubAmount += amountToConvert / kztToRub;
+                            Console.WriteLine();
+                            break;
+                        }
+
+                        if (amountToConvert > kztAmount)
+                        {
+                            Console.WriteLine("Недоcтаточно средств.");
+                            Console.WriteLine();
+                        }
+                    }
+
+                    if (currencyDesired == currencyUsd || currencyDesired == currencyRub || currencyDesired == exit)
+                    {
+                        break;
+                    }
+
+                    if (currencyDesired != currencyUsd && currencyDesired != currencyRub && currencyDesired != exit)
+                    {
+                        Console.WriteLine("Недопустимое значение.");
+                        Console.WriteLine();
+                    }
+                }
+
+                if (currencyToConvert == exit || currencyDesired == exit)
+                {
+                    break;
+                }
+
+                if (currencyToConvert != currencyRub && currencyToConvert != currencyUsd && currencyToConvert != currencyKzt && currencyToConvert != exit)
+                {
+                    Console.WriteLine("Недопустимое значение.");
+                    Console.WriteLine();
+                }
+
             }
         }
     }

@@ -10,18 +10,15 @@ namespace Задание2_2
     {
         static void Main(string[] args)
         {
-            string phraseToExit = "exit";
             string userPhrase;
 
-            while (true)
+            Console.WriteLine("Введите фразу для выхода");
+            userPhrase = Console.ReadLine();
+
+            while (userPhrase != "exit")
             {
                 Console.WriteLine("Введите фразу для выхода");
                 userPhrase = Console.ReadLine();
-                if (userPhrase == phraseToExit) 
-                {
-                    Console.WriteLine("Поздравляем, вы вышли!");
-                    break;
-                }
             }
         }
     }

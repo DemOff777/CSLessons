@@ -11,23 +11,20 @@ namespace Задание2_4
         static void Main(string[] args)
         {
             int number;
-            int sumOfThree = 0;
-            int sumOfFive = 0;
-            int sumFinish;
+            int sum = 0;
+            int step = 3;
+            int initialNumber = 0;
+            int lastNumber = 101;
 
             Random random = new Random();
-            number = random.Next(0, 101);
+            number = random.Next(initialNumber, lastNumber);
             Console.WriteLine(number);
-            for (int multipleOfThree = 0; multipleOfThree <= number; multipleOfThree += 3)
+
+            for (int positiveNumber = 0; positiveNumber <= number; positiveNumber += step)
             {
-                sumOfThree += multipleOfThree;
+                sum += positiveNumber;
             }
-            for (int multipleOfFive = 0; multipleOfFive <= number; multipleOfFive += 5)
-            {
-                sumOfFive += multipleOfFive;
-            }
-            sumFinish = sumOfThree + sumOfFive;
-            Console.WriteLine(sumFinish);
+            Console.WriteLine(sum);
         }
     }
 }

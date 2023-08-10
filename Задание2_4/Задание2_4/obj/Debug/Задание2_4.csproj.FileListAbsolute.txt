@@ -6,3 +6,11 @@ C:\Users\Asus\Documents\Задачи C#\Задание2_4\Задание2_4\obj\
 C:\Users\Asus\Documents\Задачи C#\Задание2_4\Задание2_4\obj\Debug\Задание2_4.csproj.CoreCompileInputs.cache
 C:\Users\Asus\Documents\Задачи C#\Задание2_4\Задание2_4\obj\Debug\Задание2_4.exe
 C:\Users\Asus\Documents\Задачи C#\Задание2_4\Задание2_4\obj\Debug\Задание2_4.pdb
+C:\Users\Asus\Documents\GitHub\CSLessons\Задание2_4\Задание2_4\bin\Debug\Задание2_4.exe.config
+C:\Users\Asus\Documents\GitHub\CSLessons\Задание2_4\Задание2_4\bin\Debug\Задание2_4.exe
+C:\Users\Asus\Documents\GitHub\CSLessons\Задание2_4\Задание2_4\bin\Debug\Задание2_4.pdb
+C:\Users\Asus\Documents\GitHub\CSLessons\Задание2_4\Задание2_4\obj\Debug\Задание2_4.csproj.AssemblyReference.cache
+C:\Users\Asus\Documents\GitHub\CSLessons\Задание2_4\Задание2_4\obj\Debug\Задание2_4.csproj.SuggestedBindingRedirects.cache
+C:\Users\Asus\Documents\GitHub\CSLessons\Задание2_4\Задание2_4\obj\Debug\Задание2_4.csproj.CoreCompileInputs.cache
+C:\Users\Asus\Documents\GitHub\CSLessons\Задание2_4\Задание2_4\obj\Debug\Задание2_4.exe
+C:\Users\Asus\Documents\GitHub\CSLessons\Задание2_4\Задание2_4\obj\Debug\Задание2_4.pdb
