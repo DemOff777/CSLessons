@@ -20,7 +20,7 @@ namespace Задание2_4
             number = random.Next(initialNumber, lastNumber);
             Console.WriteLine(number);
 
-            for (int positiveNumber = 0; positiveNumber <= number; positiveNumber += step)
+            for (int positiveNumber = initialNumber; positiveNumber <= number; positiveNumber += step)
             {
                 sum += positiveNumber;
             }
