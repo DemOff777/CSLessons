@@ -11,13 +11,13 @@ namespace Задание2_1
         static void Main(string[] args)
         {
             string phrase;
-            int times;
+            int repetitions;
             Console.WriteLine("Ввдите фразу");
             phrase = Console.ReadLine();
             Console.WriteLine("Ввдите количество повторов");
-            times = Convert.ToInt32(Console.ReadLine());
+            repetitions = Convert.ToInt32(Console.ReadLine());
 
-            for (int repeat = 0; repeat < times; repeat++)
+            for (int repeat = 0; repeat < repetitions; repeat++)
             {
                 Console.WriteLine(phrase);
             }

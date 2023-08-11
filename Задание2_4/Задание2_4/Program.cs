@@ -11,20 +11,36 @@ namespace Задание2_4
         static void Main(string[] args)
         {
             int number;
-            int sum = 0;
-            int step = 3;
+            int sumTotal;
+            int sumPositiveNumber1 = 0;
+            int sumPositiveNumber2 = 0;
+            int step1 = 3;
+            int step2 = 5;
             int initialNumber = 0;
             int lastNumber = 101;
 
             Random random = new Random();
-            number = random.Next(initialNumber, lastNumber);
+            number = random.Next(initialNumber,lastNumber);
             Console.WriteLine(number);
 
-            for (int positiveNumber = initialNumber; positiveNumber <= number; positiveNumber += step)
+            for (int positiveNumber1 = 0, positiveNumber2 = 0; positiveNumber1 <= number || positiveNumber2 <= number; positiveNumber1 += step1,positiveNumber2 += step2)
             {
-                sum += positiveNumber;
+                Console.WriteLine(positiveNumber1);
+                Console.WriteLine(positiveNumber2);
+                Console.WriteLine();
+                Console.WriteLine("Summa");
+                sumPositiveNumber1 += positiveNumber1;
+                Console.WriteLine(sumPositiveNumber1);
+
+                if (positiveNumber2 <= number) 
+                {
+                    sumPositiveNumber2 += positiveNumber2;
+                }
+                Console.WriteLine(sumPositiveNumber2);
+                Console.WriteLine();
             }
-            Console.WriteLine(sum);
+            sumTotal = sumPositiveNumber1 + sumPositiveNumber2;
+            Console.WriteLine(sumTotal);
         }
     }
 }
