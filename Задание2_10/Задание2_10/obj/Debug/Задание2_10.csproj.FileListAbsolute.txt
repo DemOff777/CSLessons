@@ -1,0 +1,8 @@
+C:\Users\Asus\Documents\Задачи C#\Задание2_10\Задание2_10\bin\Debug\Задание2_10.exe.config
+C:\Users\Asus\Documents\Задачи C#\Задание2_10\Задание2_10\bin\Debug\Задание2_10.exe
+C:\Users\Asus\Documents\Задачи C#\Задание2_10\Задание2_10\bin\Debug\Задание2_10.pdb
+C:\Users\Asus\Documents\Задачи C#\Задание2_10\Задание2_10\obj\Debug\Задание2_10.csproj.AssemblyReference.cache
+C:\Users\Asus\Documents\Задачи C#\Задание2_10\Задание2_10\obj\Debug\Задание2_10.csproj.SuggestedBindingRedirects.cache
+C:\Users\Asus\Documents\Задачи C#\Задание2_10\Задание2_10\obj\Debug\Задание2_10.csproj.CoreCompileInputs.cache
+C:\Users\Asus\Documents\Задачи C#\Задание2_10\Задание2_10\obj\Debug\Задание2_10.exe
+C:\Users\Asus\Documents\Задачи C#\Задание2_10\Задание2_10\obj\Debug\Задание2_10.pdb
