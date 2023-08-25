@@ -10,95 +10,112 @@ namespace Задание2_6
     {
         static void Main(string[] args)
         {
-            string userMenuChoice = "start";
-            string exit = "exit";
-            string password;
+            const string MenuExit = "6";
+
+            string userMenuChoice = "";
+            string password = "";
             string userPassword;
             string nameSecret = "";
-            string menuItem1 = "1";
-            string menuItem2 = "2";
-            string menuItem3 = "3";
-            string menuItem4 = "4";
-            string menuItem5 = "5";
 
-            while (userMenuChoice != exit && userMenuChoice != menuItem1 && userMenuChoice != menuItem2 && userMenuChoice != menuItem3 && userMenuChoice != menuItem4 && userMenuChoice != menuItem5)
+            while (userMenuChoice != MenuExit)
             {
-                string consoleColor = "";
-                string textColor = "";
+                const string MenuSetName = "1";
+                const string MenuSetPassword = "2";
+                const string MenuEnterPassword = "3";
+                const string MenuSetTextColor = "4";
+                const string MenuSetBackgroungColor = "5";
+
+                string Color = "";
+
                 Console.WriteLine("Основное меню");
                 Console.WriteLine("1-Ввести имя");
                 Console.WriteLine("2-Установить пароль");
                 Console.WriteLine("3-Ввести пароль");
                 Console.WriteLine("4-Установить цвет текста");
                 Console.WriteLine("5-Установить цвет консоли");
-                Console.WriteLine("exit-выход из программы");
+                Console.WriteLine("6-Выход из программы");
                 Console.WriteLine();
                 userMenuChoice = Console.ReadLine();
                 Console.Clear();
 
                 switch (userMenuChoice)
                 {
-                    case "1":
+                    case MenuSetName:
                         Console.Write("Введите имя:");
                         nameSecret = Console.ReadLine();
                         Console.Clear();
                         Console.WriteLine("Имя установлено");
                         Console.WriteLine();
-                        userMenuChoice = "start";
                         break;
-                    case "2":
+
+                    case MenuSetPassword:
                         Console.Write("Установите пароль:");
                         password = Console.ReadLine();
                         Console.Clear();
                         Console.WriteLine("Пароль установлен");
                         Console.WriteLine();
-                        userMenuChoice = "start";
                         break;
-                    case "3":
+
+                    case MenuEnterPassword:
                         Console.Write("Введите пароль:");
                         userPassword = Console.ReadLine();
                         Console.Clear();
-                        Console.WriteLine("Секретное послание: " + nameSecret);
-                        Console.WriteLine();
-                        userMenuChoice = "start";
-                        break;
-                    case "4":
-                        while (consoleColor != menuItem1 && consoleColor != menuItem2 && consoleColor != menuItem3 && consoleColor != menuItem4)
+
+                        if (userPassword == password)
+                        {
+                            Console.WriteLine("Секретное послание: " + nameSecret);
+                            Console.WriteLine();
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Пароль неверен");
+                            Console.WriteLine();
+                            break;
+                        }
+                    case MenuSetTextColor:
+
+                        const string MenuTextColorGreen = "1";
+                        const string MenuTextColorBlue = "2";
+                        const string MenuTextColorYellow = "3";
+                        const string MenuTextColorWhite = "4";
+
+                        while (Color != MenuTextColorGreen && Color != MenuTextColorBlue && Color != MenuTextColorYellow && Color != MenuTextColorWhite)
                         {
                             Console.WriteLine("Выберите цвет текста:");
                             Console.WriteLine("1-Зеленый");
                             Console.WriteLine("2-Синий");
                             Console.WriteLine("3-Желтый");
                             Console.WriteLine("4-Белый"); 
-                            consoleColor = Console.ReadLine();
+                            Color = Console.ReadLine();
                             Console.Clear();
 
-                            switch (consoleColor)
+                            switch (Color)
                             {
-                                case "1":
+                                case MenuTextColorGreen:
                                     Console.ForegroundColor = ConsoleColor.Green;
                                     Console.WriteLine("Цвет консоли установлен");
                                     Console.WriteLine();
-                                    userMenuChoice = "start";
                                     break;
-                                case "2":
+
+                                case MenuTextColorBlue:
                                     Console.ForegroundColor = ConsoleColor.Blue;
                                     Console.WriteLine("Цвет консоли установлен");
                                     Console.WriteLine();
-                                    userMenuChoice = "start";
                                     break;
-                                case "3":
+
+                                case MenuTextColorYellow:
                                     Console.ForegroundColor = ConsoleColor.Yellow;
                                     Console.WriteLine("Цвет консоли установлен");
                                     Console.WriteLine();
-                                    userMenuChoice = "start";
                                     break;
-                                case "4":
+
+                                case MenuTextColorWhite:
                                     Console.ForegroundColor = ConsoleColor.White;
                                     Console.WriteLine("Цвет консоли установлен");
                                     Console.WriteLine();
-                                    userMenuChoice = "start";
                                     break;
+
                                 default:
                                     Console.WriteLine("Недопустимое значение");
                                     Console.WriteLine();
@@ -106,48 +123,54 @@ namespace Задание2_6
                             }
                         }
                         break;
-                    case "5":
 
-                        while (consoleColor != menuItem1 && consoleColor != menuItem2 && consoleColor != menuItem3 && consoleColor != menuItem4)
+                    case MenuSetBackgroungColor:
+
+                        while (Color != MenuSetName && Color != MenuSetPassword && Color != MenuEnterPassword && Color != MenuSetTextColor)
                         {
+                            const string MenuBackgroundDarkGray = "1";
+                            const string MenuBackgroundDarkBlue = "2";
+                            const string MenuBackgroundDarkCyan = "3";
+                            const string MenuBackgroundBlack = "4";
+
                             Console.WriteLine("Выберите цвет фона:");
                             Console.WriteLine("1-Темно-Серый");
                             Console.WriteLine("2-Темно-Синий");
                             Console.WriteLine("3-Голубой");
                             Console.WriteLine("4-Черный");
-                            consoleColor = Console.ReadLine();
+                            Color = Console.ReadLine();
                             Console.Clear();
 
-                            switch (consoleColor)
+                            switch (Color)
                             {
-                                case "1":
+                                case MenuBackgroundDarkGray:
                                     Console.BackgroundColor = ConsoleColor.DarkGray;
                                     Console.Clear();
                                     Console.WriteLine("Цвет фона установлен");
                                     Console.WriteLine();
-                                    userMenuChoice = "start";
                                     break;
-                                case "2":
+
+                                case MenuBackgroundDarkBlue:
                                     Console.BackgroundColor = ConsoleColor.DarkBlue;
                                     Console.Clear();
                                     Console.WriteLine("Цвет фона установлен");
                                     Console.WriteLine();
-                                    userMenuChoice = "start";
                                     break;
-                                case "3":
+
+                                case MenuBackgroundDarkCyan:
                                     Console.BackgroundColor = ConsoleColor.DarkCyan;
                                     Console.Clear();
                                     Console.WriteLine("Цвет фона установлен");
                                     Console.WriteLine();
-                                    userMenuChoice = "start";
                                     break;
-                                case "4":
+
+                                case MenuBackgroundBlack:
                                     Console.BackgroundColor = ConsoleColor.Black;
                                     Console.Clear();
                                     Console.WriteLine("Цвет фона установлен");
                                     Console.WriteLine();
-                                    userMenuChoice = "start";
                                     break;
+
                                 default:
                                     Console.WriteLine("Недопустимое значение");
                                     Console.WriteLine();
@@ -155,10 +178,12 @@ namespace Задание2_6
                             }
                         }
                         break;
-                    case "exit":
+
+                    case MenuExit:
                         Console.WriteLine("Вы вышли");
                         Console.WriteLine();
                         break;
+
                     default:
                         Console.WriteLine("Недопустимое значение");
                         Console.WriteLine();
