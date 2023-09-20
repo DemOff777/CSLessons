@@ -11,22 +11,25 @@ namespace Задание2_9
         static void Main(string[] args)
         {
             int numberInitial;
-            int rangeMax = 1000;
-            int rangeMin = 99;
-            int amountOfNumbers = 1;
+            int searchCorridorMax = 1000;
+            int searchCorridorMin = 99;
+            int amountOfNumbers = 0;
+            int initialNumberMin = 1;
+            int initialNumberMax = 27;
 
             Random random = new Random();
-            numberInitial = random.Next(1,28);
+            numberInitial = random.Next(initialNumberMin,initialNumberMax) + 1  ;
 
             Console.WriteLine(numberInitial);
 
-            for (int i = 0; i < rangeMax; i += numberInitial)
+            for (int i = 0; i < searchCorridorMax; i += numberInitial)
             {
-                if (i > rangeMin)
+                if (i > searchCorridorMin)
                 {
                     amountOfNumbers++;
                 }
             }
+
             Console.WriteLine(amountOfNumbers);
         }
     }

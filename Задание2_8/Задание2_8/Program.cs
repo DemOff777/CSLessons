@@ -24,10 +24,12 @@ namespace Задание2_8
                     Console.WriteLine("Очень секретное сообщение");
                     break;
                 }
+
                     if (i == passwordRepetitions)
                     {
                         Console.WriteLine("Количество попыток закончилось");
                     }
+
                 else
                 {
                     Console.WriteLine("Пароль неверен");

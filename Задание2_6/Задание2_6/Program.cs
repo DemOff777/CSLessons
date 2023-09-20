@@ -67,11 +67,13 @@ namespace Задание2_6
                             Console.WriteLine("Секретное послание: " + nameSecret);
                             Console.WriteLine();
                         }
+
                         else
                         {
                             Console.WriteLine("Пароль неверен");
                             Console.WriteLine();
                         }
+
                         break;
 
                     case MenuSetTextColor:
@@ -127,6 +129,7 @@ namespace Задание2_6
                                     break;
                             }
                         }
+
                         break;
 
                     case MenuSetBackgroungColor:
@@ -186,6 +189,7 @@ namespace Задание2_6
                                     break;
                             }
                         }
+
                         break;
 
                     case MenuExit:
