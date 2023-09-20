@@ -11,33 +11,28 @@ namespace Задание2_7
         static void Main(string[] args)
         {
             string name;
-            int nameLength = 0;
-            int frameThickness = 1;
-            char frameChar;
+            string frameChar;
+            string frameLine = "";
+            int frameLength;
 
             Console.Write("Введите имя: ");
             name = Console.ReadLine();
             Console.WriteLine();
             Console.Write("Введите символ: ");
-            frameChar = Convert.ToChar(Console.ReadLine());
+            frameChar = Convert.ToString(Console.Read());
             Console.WriteLine();
-            nameLength = name.Length + frameThickness;
+            frameLength = name.Length + 2;
 
-            for (int i = 0; i <= nameLength; i++)
+            for (int i = 0; i < frameLength; i++)
             {
-                Console.Write(frameChar);
+                frameLine += $"{frameChar}";
             }
             Console.WriteLine();
+            Console.WriteLine(frameLine);
             Console.Write(frameChar);
             Console.Write(name);
-            Console.Write(frameChar);
-            Console.WriteLine();
-
-            for (int i = 0; i <= nameLength; i++)
-            {
-                Console.Write(frameChar);
-            }
-            Console.WriteLine();
+            Console.WriteLine(frameChar);
+            Console.WriteLine(frameLine);
         }
     }
 }

@@ -25,15 +25,15 @@ namespace Задание2_6
                 const string MenuSetTextColor = "4";
                 const string MenuSetBackgroungColor = "5";
 
-                string Color = "";
+                string menuColor = "";
 
                 Console.WriteLine("Основное меню");
-                Console.WriteLine("1-Ввести имя");
-                Console.WriteLine("2-Установить пароль");
-                Console.WriteLine("3-Ввести пароль");
-                Console.WriteLine("4-Установить цвет текста");
-                Console.WriteLine("5-Установить цвет консоли");
-                Console.WriteLine("6-Выход из программы");
+                Console.WriteLine($"{MenuSetName}-Ввести имя");
+                Console.WriteLine($"{MenuSetPassword}-Установить пароль");
+                Console.WriteLine($"{MenuEnterPassword}-Ввести пароль");
+                Console.WriteLine($"{MenuSetTextColor}-Установить цвет текста");
+                Console.WriteLine($"{MenuSetBackgroungColor}-Установить цвет консоли");
+                Console.WriteLine($"{MenuExit}-Выход из программы");
                 Console.WriteLine();
                 userMenuChoice = Console.ReadLine();
                 Console.Clear();
@@ -65,14 +65,14 @@ namespace Задание2_6
                         {
                             Console.WriteLine("Секретное послание: " + nameSecret);
                             Console.WriteLine();
-                            break;
                         }
                         else
                         {
                             Console.WriteLine("Пароль неверен");
                             Console.WriteLine();
-                            break;
                         }
+                        break;
+
                     case MenuSetTextColor:
 
                         const string MenuTextColorGreen = "1";
@@ -80,17 +80,17 @@ namespace Задание2_6
                         const string MenuTextColorYellow = "3";
                         const string MenuTextColorWhite = "4";
 
-                        while (Color != MenuTextColorGreen && Color != MenuTextColorBlue && Color != MenuTextColorYellow && Color != MenuTextColorWhite)
+                        while (menuColor != MenuTextColorGreen && menuColor != MenuTextColorBlue && menuColor != MenuTextColorYellow && menuColor != MenuTextColorWhite)
                         {
                             Console.WriteLine("Выберите цвет текста:");
-                            Console.WriteLine("1-Зеленый");
-                            Console.WriteLine("2-Синий");
-                            Console.WriteLine("3-Желтый");
-                            Console.WriteLine("4-Белый"); 
-                            Color = Console.ReadLine();
+                            Console.WriteLine($"{MenuTextColorGreen}-Зеленый");
+                            Console.WriteLine($"{MenuTextColorBlue}-Синий");
+                            Console.WriteLine($"{MenuTextColorYellow}-Желтый");
+                            Console.WriteLine($"{MenuTextColorWhite}-Белый"); 
+                            menuColor = Console.ReadLine();
                             Console.Clear();
 
-                            switch (Color)
+                            switch (menuColor)
                             {
                                 case MenuTextColorGreen:
                                     Console.ForegroundColor = ConsoleColor.Green;
@@ -126,22 +126,22 @@ namespace Задание2_6
 
                     case MenuSetBackgroungColor:
 
-                        while (Color != MenuSetName && Color != MenuSetPassword && Color != MenuEnterPassword && Color != MenuSetTextColor)
-                        {
-                            const string MenuBackgroundDarkGray = "1";
-                            const string MenuBackgroundDarkBlue = "2";
-                            const string MenuBackgroundDarkCyan = "3";
-                            const string MenuBackgroundBlack = "4";
+                        const string MenuBackgroundDarkGray = "1";
+                        const string MenuBackgroundDarkBlue = "2";
+                        const string MenuBackgroundDarkCyan = "3";
+                        const string MenuBackgroundBlack = "4";
 
+                        while (menuColor != MenuBackgroundDarkGray && menuColor != MenuBackgroundDarkBlue && menuColor != MenuBackgroundDarkCyan && menuColor != MenuBackgroundBlack)
+                        {
                             Console.WriteLine("Выберите цвет фона:");
-                            Console.WriteLine("1-Темно-Серый");
-                            Console.WriteLine("2-Темно-Синий");
-                            Console.WriteLine("3-Голубой");
-                            Console.WriteLine("4-Черный");
-                            Color = Console.ReadLine();
+                            Console.WriteLine($"{MenuBackgroundDarkGray}-Темно-Серый");
+                            Console.WriteLine($"{MenuBackgroundDarkBlue}-Темно-Синий");
+                            Console.WriteLine($"{MenuBackgroundDarkCyan}-Голубой");
+                            Console.WriteLine($"{MenuBackgroundBlack}-Черный");
+                            menuColor = Console.ReadLine();
                             Console.Clear();
 
-                            switch (Color)
+                            switch (menuColor)
                             {
                                 case MenuBackgroundDarkGray:
                                     Console.BackgroundColor = ConsoleColor.DarkGray;

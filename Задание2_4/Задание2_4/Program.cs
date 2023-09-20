@@ -14,6 +14,8 @@ namespace Задание2_4
             int sum = 0;
             int initialNumber = 0;
             int lastNumber = 101;
+            int firstMultipleOf = 3;
+            int secondMultipleOf = 5;
 
             Random random = new Random();
             number = random.Next(initialNumber,lastNumber);
@@ -21,7 +23,7 @@ namespace Задание2_4
 
             for (int i = 0; i <= number ; i++)
             {
-                if (i % 3 == 0 || i % 5 == 0) 
+                if (i % firstMultipleOf == 0 || i % secondMultipleOf == 0) 
                 {
                     sum += i;
                 }
