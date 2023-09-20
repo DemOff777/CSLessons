@@ -12,9 +12,9 @@ namespace Задание2_8
         {
             string password = "рыбамеч";
             string userPassword;
-            int repetition = 3;
+            int passwordRepetitions = 3;
 
-            for (int i = 1; i <= repetition; i++)
+            for (int i = 0; i < passwordRepetitions; i++)
             {
                 Console.Write("Введите пароль: ");
                 userPassword = Console.ReadLine();
@@ -24,7 +24,7 @@ namespace Задание2_8
                     Console.WriteLine("Очень секретное сообщение");
                     break;
                 }
-                    if (i == 3)
+                    if (i == passwordRepetitions)
                     {
                         Console.WriteLine("Количество попыток закончилось");
                     }

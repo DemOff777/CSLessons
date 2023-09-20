@@ -11,7 +11,7 @@ namespace Задание2_7
         static void Main(string[] args)
         {
             string name;
-            string middleLine = ""; 
+            string middleLine ; 
             string frame = "";
             char frameChar;
 
@@ -20,7 +20,7 @@ namespace Задание2_7
             Console.WriteLine();
 
             Console.Write("Введите символ: ");
-            frameChar = Convert.ToChar(Console.ReadLine());
+            frameChar = Convert.ToChar(Console.Read());
             Console.WriteLine();
 
             middleLine = $"{frameChar} {name} {frameChar}";
