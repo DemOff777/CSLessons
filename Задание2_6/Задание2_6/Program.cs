@@ -26,6 +26,7 @@ namespace Задание2_6
                 const string MenuSetBackgroungColor = "5";
 
                 string menuColor = "";
+                bool menuColorIsWork = true;
 
                 Console.WriteLine("Основное меню");
                 Console.WriteLine($"{MenuSetName}-Ввести имя");
@@ -80,7 +81,7 @@ namespace Задание2_6
                         const string MenuTextColorYellow = "3";
                         const string MenuTextColorWhite = "4";
 
-                        while (menuColor != MenuTextColorGreen && menuColor != MenuTextColorBlue && menuColor != MenuTextColorYellow && menuColor != MenuTextColorWhite)
+                        while (menuColorIsWork == true)
                         {
                             Console.WriteLine("Выберите цвет текста:");
                             Console.WriteLine($"{MenuTextColorGreen}-Зеленый");
@@ -96,24 +97,28 @@ namespace Задание2_6
                                     Console.ForegroundColor = ConsoleColor.Green;
                                     Console.WriteLine("Цвет консоли установлен");
                                     Console.WriteLine();
+                                    menuColorIsWork = false;
                                     break;
 
                                 case MenuTextColorBlue:
                                     Console.ForegroundColor = ConsoleColor.Blue;
                                     Console.WriteLine("Цвет консоли установлен");
                                     Console.WriteLine();
+                                    menuColorIsWork = false;
                                     break;
 
                                 case MenuTextColorYellow:
                                     Console.ForegroundColor = ConsoleColor.Yellow;
                                     Console.WriteLine("Цвет консоли установлен");
                                     Console.WriteLine();
+                                    menuColorIsWork = false;
                                     break;
 
                                 case MenuTextColorWhite:
                                     Console.ForegroundColor = ConsoleColor.White;
                                     Console.WriteLine("Цвет консоли установлен");
                                     Console.WriteLine();
+                                    menuColorIsWork = false;
                                     break;
 
                                 default:
@@ -131,7 +136,7 @@ namespace Задание2_6
                         const string MenuBackgroundDarkCyan = "3";
                         const string MenuBackgroundBlack = "4";
 
-                        while (menuColor != MenuBackgroundDarkGray && menuColor != MenuBackgroundDarkBlue && menuColor != MenuBackgroundDarkCyan && menuColor != MenuBackgroundBlack)
+                        while (menuColorIsWork == true)
                         {
                             Console.WriteLine("Выберите цвет фона:");
                             Console.WriteLine($"{MenuBackgroundDarkGray}-Темно-Серый");
@@ -148,6 +153,7 @@ namespace Задание2_6
                                     Console.Clear();
                                     Console.WriteLine("Цвет фона установлен");
                                     Console.WriteLine();
+                                    menuColorIsWork = false;
                                     break;
 
                                 case MenuBackgroundDarkBlue:
@@ -155,6 +161,7 @@ namespace Задание2_6
                                     Console.Clear();
                                     Console.WriteLine("Цвет фона установлен");
                                     Console.WriteLine();
+                                    menuColorIsWork = false;
                                     break;
 
                                 case MenuBackgroundDarkCyan:
@@ -162,6 +169,7 @@ namespace Задание2_6
                                     Console.Clear();
                                     Console.WriteLine("Цвет фона установлен");
                                     Console.WriteLine();
+                                    menuColorIsWork = false;
                                     break;
 
                                 case MenuBackgroundBlack:
@@ -169,6 +177,7 @@ namespace Задание2_6
                                     Console.Clear();
                                     Console.WriteLine("Цвет фона установлен");
                                     Console.WriteLine();
+                                    menuColorIsWork = false;
                                     break;
 
                                 default:
