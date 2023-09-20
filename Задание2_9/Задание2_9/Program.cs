@@ -15,10 +15,10 @@ namespace Задание2_9
             int searchCorridorMin = 99;
             int amountOfNumbers = 0;
             int initialNumberMin = 1;
-            int initialNumberMax = 27;
+            int initialNumberMax = 27 + 1;
 
             Random random = new Random();
-            numberInitial = random.Next(initialNumberMin,initialNumberMax) + 1  ;
+            numberInitial = random.Next(initialNumberMin,initialNumberMax);
 
             Console.WriteLine(numberInitial);
 

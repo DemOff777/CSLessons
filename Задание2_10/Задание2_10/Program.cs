@@ -14,21 +14,18 @@ namespace Задание2_10
             int number = 1;
             int numberLimit;
             int numberToPower = 2;
+            int initialNumberMin = 0;
+            int initialNumberMax = 100 + 1;
 
             Random randomNumber = new Random();
-            numberLimit = randomNumber.Next(0,101);
+            numberLimit = randomNumber.Next(initialNumberMin, initialNumberMax);
             Console.WriteLine(numberLimit);
 
-            while (number < numberLimit || number > numberLimit)
+            while (number < numberLimit)
             {
                 number *= numberToPower;
                 Console.WriteLine(number);
                 powerOfNumber++;
-
-                if (number > numberLimit)
-                {
-                    break;
-                }
             }
             Console.WriteLine(powerOfNumber);
         }
