@@ -16,8 +16,9 @@ namespace Задание2_6
             string password = "";
             string userPassword;
             string nameSecret = "";
+            bool isWorking = true;
 
-            while (userMenuChoice != MenuExit)
+            while (isWorking == true)
             {
                 const string MenuSetName = "1";
                 const string MenuSetPassword = "2";
@@ -190,11 +191,12 @@ namespace Задание2_6
                             }
                         }
 
-                        break;
+                    break;
 
                     case MenuExit:
                         Console.WriteLine("Вы вышли");
                         Console.WriteLine();
+                        isWorking = false;
                         break;
 
                     default:

@@ -12,7 +12,7 @@ namespace Задание2_7
         {
             string name;
             string middleLine ; 
-            string frame = "";
+            string frame = string.Empty;
             char frameChar;
 
             Console.Write("Введите имя: ");

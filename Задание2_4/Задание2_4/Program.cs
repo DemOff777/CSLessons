@@ -12,18 +12,17 @@ namespace Задание2_4
         {
             int number;
             int sum = 0;
-            int initialNumber = 0;
-            int lastNumber = 101;
-            int firstMultipleOf = 3;
-            int secondMultipleOf = 5;
+            int lastNumber = 100;
+            int divider1 = 3;
+            int divider2 = 5;
 
             Random random = new Random();
-            number = random.Next(initialNumber,lastNumber);
+            number = random.Next(lastNumber + 1);
             Console.WriteLine(number);
 
             for (int i = 0; i <= number ; i++)
             {
-                if (i % firstMultipleOf == 0 || i % secondMultipleOf == 0) 
+                if (i % divider1 == 0 || i % divider2 == 0) 
                 {
                     sum += i;
                 }
