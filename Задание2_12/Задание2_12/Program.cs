@@ -19,9 +19,10 @@ namespace Задание2_12
             const string DantesShoot2 = "2";
             const string DantesDodge = "3";
             const string DantesUltraShoot = "4";
+            const string DantesUltraShoot2 = "5";
 
-            float pushkinUltraDamage = 50;
-            float dantesUltraDamage = 30;
+            float pushkinUltraDamage = 35;
+            float dantesUltraDamage = 20;
             float pushkinUltraArmor = 0.5f;
             float dantesUltraArmor = 0.5f;
             float pushkinDamageDafault = 10;
@@ -35,24 +36,24 @@ namespace Задание2_12
             float pushkinArmor = pushkinArmorDefault;
             float dantesArmor = dantesArmorDefault;
 
-            string dantesAction = DantesShoot1;
+            string dantesAction = DantesUltraShoot;
             string userChoise = string.Empty;
 
-            bool duelIsWorking = true;
-            bool dantesMoveSet = true;
-            bool bulletReloaded = true;
-            bool pushkinsTurnIsWork = true;
+            bool isDuelWorking = true;
+            bool haveDantesMoveset = true;
+            bool isBulletReloaded = true;
+            bool isPushkinsTurn = true;
 
             Console.WriteLine("Добро пожаловать на последнюю дуэль мистер Пушкин!");
             Console.WriteLine("Я расскажу вам о вариантах ваших действий от которых зависит итог вашего поединка с д'Антесом:\n");
 
-            while (duelIsWorking == true)
+            while (isDuelWorking == true)
             {
-                pushkinsTurnIsWork = true;
+                isPushkinsTurn = true;
 
-                while (pushkinsTurnIsWork == true)
+                while (isPushkinsTurn == true)
                 {
-                    if (bulletReloaded == true)
+                    if (isBulletReloaded == true)
                     {
                         Console.WriteLine("Пистолет заряжен");
                     }
@@ -76,10 +77,10 @@ namespace Задание2_12
                     {
                         case ComandShoot:
 
-                            if (bulletReloaded == true)
+                            if (isBulletReloaded == true)
                             {
                                 dantesHealth -= pushkinDamage * dantesArmor;
-                                bulletReloaded = false;
+                                isBulletReloaded = false;
                                 Console.WriteLine($"Вы стреляете нанося д'Антесу {pushkinDamage * dantesArmor}урона");
                             }
                             else
@@ -88,20 +89,22 @@ namespace Задание2_12
                             }
                             dantesArmor = dantesArmorDefault;
                             pushkinDamage = pushkinDamageDafault;
-                            pushkinsTurnIsWork = false;
+                            isPushkinsTurn = false;
                             break;
+
                         case CommandCover:
                             pushkinArmor = pushkinUltraArmor;
                             dantesArmor = dantesArmorDefault;
                             pushkinDamage = pushkinDamageDafault;
-                            pushkinsTurnIsWork = false;
+                            isPushkinsTurn = false;
                             Console.WriteLine($"Вы прикрываетесь рукой");
                             break;
+
                         case CommandReload:
 
-                            if (bulletReloaded == false)
+                            if (isBulletReloaded == false)
                             {
-                                bulletReloaded = true;
+                                isBulletReloaded = true;
                                 Console.WriteLine("Вы перезарядили пистолет");
                             }
                             else
@@ -110,50 +113,48 @@ namespace Задание2_12
                             }
                             dantesArmor = dantesArmorDefault;
                             pushkinDamage = pushkinDamageDafault;
-                            pushkinsTurnIsWork = false;
+                            isPushkinsTurn = false;
                             break;
+
                         case CommandTakeAim:
                             pushkinDamage = pushkinUltraDamage;
                             dantesArmor = dantesArmorDefault;
-                            pushkinsTurnIsWork = false;
+                            isPushkinsTurn = false;
                             Console.WriteLine("Вы прицелились");
                             break;
+
                         default:
                             Console.WriteLine("Не верное значение\n");
                             break;
                     }
                 }
 
-                if (dantesMoveSet == true)
+                if (haveDantesMoveset)
                 {
                     switch (dantesAction)
                     {
-                        case DantesShoot1:
+                        case DantesUltraShoot:
+                            dantesDamage = dantesUltraDamage;
                             pushkinHealth -= dantesDamage * pushkinArmor;
-                            dantesAction = DantesShoot2;
-                            Console.WriteLine($"д'Антес делает выстрел и наносит вам {dantesDamage * pushkinArmor} урона.\n");
+                            dantesAction = DantesShoot1;
+                            Console.WriteLine($"д'Антес делает прицельный выстрел и наносит вам {dantesDamage * pushkinArmor} урона.\n");
                             pushkinArmor = pushkinArmorDefault;
+                            dantesDamage = dantesDamaeDefault;
                             break;
-                        case DantesShoot2:
+
+                        case DantesShoot1:
                             pushkinHealth -= dantesDamage * pushkinArmor;
                             dantesAction = DantesDodge;
                             Console.WriteLine($"д'Аантес делает выстрел и наносит вам {dantesDamage * pushkinArmor} урона.\n");
                             pushkinArmor = pushkinArmorDefault;
                             break;
+
                         case DantesDodge:
                             dantesArmor = dantesUltraArmor;
-                            dantesAction = DantesUltraShoot;
+                            dantesAction = DantesDodge;
+                            haveDantesMoveset = false;
                             Console.WriteLine("д'Антес заслонился рукой\n");
                             pushkinArmor = pushkinArmorDefault;
-                            break;
-                        case DantesUltraShoot:
-                            dantesDamage = dantesUltraDamage;
-                            pushkinHealth -= dantesDamage * pushkinArmor;
-                            dantesAction = DantesShoot1;
-                            dantesMoveSet = false;
-                            Console.WriteLine($"д'Антес делает прицельный выстрел и наносит вам {dantesDamage * pushkinArmor} урона.\n");
-                            pushkinArmor = pushkinArmorDefault;
-                            dantesDamage = dantesDamaeDefault;
                             break;
                     }
                 }
@@ -167,17 +168,19 @@ namespace Задание2_12
                             Console.WriteLine("д'Антес заслонился рукой\n");
                             pushkinArmor = pushkinArmorDefault;
                             break;
+
                         case DantesShoot1:
                             pushkinHealth -= dantesDamage * pushkinArmor;
                             dantesAction = DantesUltraShoot;
                             Console.WriteLine($"д'Антес делает выстрел и наносит вам {dantesDamage * pushkinArmor} урона.\n");
                             pushkinArmor = pushkinArmorDefault;
                             break;
+
                         case DantesUltraShoot:
                             dantesDamage = dantesUltraDamage;
                             pushkinHealth -= dantesDamage * pushkinArmor;
-                            dantesAction = DantesShoot1;
-                            dantesMoveSet = true;
+                            dantesAction = DantesUltraShoot;
+                            haveDantesMoveset = true;
                             Console.WriteLine($"д'Антес делает прицельный выстрел и наносит вам {dantesDamage * pushkinArmor} урона.\n");
                             pushkinArmor = pushkinArmorDefault;
                             dantesDamage = dantesDamaeDefault;
@@ -188,22 +191,23 @@ namespace Задание2_12
 
                 if (dantesHealth <= 0 || pushkinHealth <= 0)
                 {
-                    duelIsWorking = false;
+                    isDuelWorking = false;
                 }
             }
 
-            if (pushkinHealth > 0)
-            {
-                Console.WriteLine("Вы победили на дуэли");
-            }
-
-            if (dantesHealth > 0)
-            {
-                Console.WriteLine("Вы проиграли дуэль");
-            }
-            else
+            if (pushkinHealth <= 0 && dantesHealth <= 0)
             {
                 Console.WriteLine("Кровавая ничья");
+            }
+
+            if (dantesHealth < 0 && pushkinHealth > 0)
+            {
+                Console.WriteLine("Вы выиграли дуэль");
+            }
+
+            else
+            {
+                Console.WriteLine("Вы проиграли дуэль");
             }
         }
     }
