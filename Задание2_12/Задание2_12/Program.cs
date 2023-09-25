@@ -198,12 +198,12 @@ namespace Задание2_12
                 Console.WriteLine("Кровавая ничья");
             }
 
-            if (dantesHealth < 0 && pushkinHealth > 0)
+            if (dantesHealth <= 0 && pushkinHealth > 0)
             {
                 Console.WriteLine("Вы выиграли дуэль");
             }
 
-            else
+            if (dantesHealth > 0 && pushkinHealth <= 0)
             {
                 Console.WriteLine("Вы проиграли дуэль");
             }
