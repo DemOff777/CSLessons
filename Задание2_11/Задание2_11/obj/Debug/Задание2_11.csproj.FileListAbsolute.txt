@@ -1,0 +1,16 @@
+C:\Users\Asus\Documents\Задачи C#\Задание2_11\Задание2_11\bin\Debug\Задание2_11.exe.config
+C:\Users\Asus\Documents\Задачи C#\Задание2_11\Задание2_11\bin\Debug\Задание2_11.exe
+C:\Users\Asus\Documents\Задачи C#\Задание2_11\Задание2_11\bin\Debug\Задание2_11.pdb
+C:\Users\Asus\Documents\Задачи C#\Задание2_11\Задание2_11\obj\Debug\Задание2_11.csproj.AssemblyReference.cache
+C:\Users\Asus\Documents\Задачи C#\Задание2_11\Задание2_11\obj\Debug\Задание2_11.csproj.SuggestedBindingRedirects.cache
+C:\Users\Asus\Documents\Задачи C#\Задание2_11\Задание2_11\obj\Debug\Задание2_11.csproj.CoreCompileInputs.cache
+C:\Users\Asus\Documents\Задачи C#\Задание2_11\Задание2_11\obj\Debug\Задание2_11.exe
+C:\Users\Asus\Documents\Задачи C#\Задание2_11\Задание2_11\obj\Debug\Задание2_11.pdb
+C:\Users\Asus\Documents\Задачи C#\Задание2_11 — копия\Задание2_11\bin\Debug\Задание2_11.exe.config
+C:\Users\Asus\Documents\Задачи C#\Задание2_11 — копия\Задание2_11\bin\Debug\Задание2_11.exe
+C:\Users\Asus\Documents\Задачи C#\Задание2_11 — копия\Задание2_11\bin\Debug\Задание2_11.pdb
+C:\Users\Asus\Documents\Задачи C#\Задание2_11 — копия\Задание2_11\obj\Debug\Задание2_11.csproj.AssemblyReference.cache
+C:\Users\Asus\Documents\Задачи C#\Задание2_11 — копия\Задание2_11\obj\Debug\Задание2_11.csproj.SuggestedBindingRedirects.cache
+C:\Users\Asus\Documents\Задачи C#\Задание2_11 — копия\Задание2_11\obj\Debug\Задание2_11.csproj.CoreCompileInputs.cache
+C:\Users\Asus\Documents\Задачи C#\Задание2_11 — копия\Задание2_11\obj\Debug\Задание2_11.exe
+C:\Users\Asus\Documents\Задачи C#\Задание2_11 — копия\Задание2_11\obj\Debug\Задание2_11.pdb

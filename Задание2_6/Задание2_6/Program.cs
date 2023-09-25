@@ -10,6 +10,11 @@ namespace Задание2_6
     {
         static void Main(string[] args)
         {
+            const string MenuSetName = "1";
+            const string MenuSetPassword = "2";
+            const string MenuEnterPassword = "3";
+            const string MenuSetTextColor = "4";
+            const string MenuSetBackgroungColor = "5";
             const string MenuExit = "6";
 
             string userMenuChoice = "";
@@ -20,14 +25,9 @@ namespace Задание2_6
 
             while (isWorking == true)
             {
-                const string MenuSetName = "1";
-                const string MenuSetPassword = "2";
-                const string MenuEnterPassword = "3";
-                const string MenuSetTextColor = "4";
-                const string MenuSetBackgroungColor = "5";
 
                 string menuColor = "";
-                bool menuColorIsWork = true;
+                bool isMenuColorWork = true;
 
                 Console.WriteLine("Основное меню");
                 Console.WriteLine($"{MenuSetName}-Ввести имя");
@@ -49,7 +49,6 @@ namespace Задание2_6
                         Console.WriteLine("Имя установлено");
                         Console.WriteLine();
                         break;
-
                     case MenuSetPassword:
                         Console.Write("Установите пароль:");
                         password = Console.ReadLine();
@@ -57,7 +56,6 @@ namespace Задание2_6
                         Console.WriteLine("Пароль установлен");
                         Console.WriteLine();
                         break;
-
                     case MenuEnterPassword:
                         Console.Write("Введите пароль:");
                         userPassword = Console.ReadLine();
@@ -68,15 +66,12 @@ namespace Задание2_6
                             Console.WriteLine("Секретное послание: " + nameSecret);
                             Console.WriteLine();
                         }
-
                         else
                         {
                             Console.WriteLine("Пароль неверен");
                             Console.WriteLine();
                         }
-
                         break;
-
                     case MenuSetTextColor:
 
                         const string MenuTextColorGreen = "1";
@@ -84,7 +79,7 @@ namespace Задание2_6
                         const string MenuTextColorYellow = "3";
                         const string MenuTextColorWhite = "4";
 
-                        while (menuColorIsWork == true)
+                        while (isMenuColorWork == true)
                         {
                             Console.WriteLine("Выберите цвет текста:");
                             Console.WriteLine($"{MenuTextColorGreen}-Зеленый");
@@ -100,39 +95,33 @@ namespace Задание2_6
                                     Console.ForegroundColor = ConsoleColor.Green;
                                     Console.WriteLine("Цвет консоли установлен");
                                     Console.WriteLine();
-                                    menuColorIsWork = false;
+                                    isMenuColorWork = false;
                                     break;
-
                                 case MenuTextColorBlue:
                                     Console.ForegroundColor = ConsoleColor.Blue;
                                     Console.WriteLine("Цвет консоли установлен");
                                     Console.WriteLine();
-                                    menuColorIsWork = false;
+                                    isMenuColorWork = false;
                                     break;
-
                                 case MenuTextColorYellow:
                                     Console.ForegroundColor = ConsoleColor.Yellow;
                                     Console.WriteLine("Цвет консоли установлен");
                                     Console.WriteLine();
-                                    menuColorIsWork = false;
+                                    isMenuColorWork = false;
                                     break;
-
                                 case MenuTextColorWhite:
                                     Console.ForegroundColor = ConsoleColor.White;
                                     Console.WriteLine("Цвет консоли установлен");
                                     Console.WriteLine();
-                                    menuColorIsWork = false;
+                                    isMenuColorWork = false;
                                     break;
-
                                 default:
                                     Console.WriteLine("Недопустимое значение");
                                     Console.WriteLine();
                                     break;
                             }
                         }
-
                         break;
-
                     case MenuSetBackgroungColor:
 
                         const string MenuBackgroundDarkGray = "1";
@@ -140,7 +129,7 @@ namespace Задание2_6
                         const string MenuBackgroundDarkCyan = "3";
                         const string MenuBackgroundBlack = "4";
 
-                        while (menuColorIsWork == true)
+                        while (isMenuColorWork == true)
                         {
                             Console.WriteLine("Выберите цвет фона:");
                             Console.WriteLine($"{MenuBackgroundDarkGray}-Темно-Серый");
@@ -157,48 +146,41 @@ namespace Задание2_6
                                     Console.Clear();
                                     Console.WriteLine("Цвет фона установлен");
                                     Console.WriteLine();
-                                    menuColorIsWork = false;
+                                    isMenuColorWork = false;
                                     break;
-
                                 case MenuBackgroundDarkBlue:
                                     Console.BackgroundColor = ConsoleColor.DarkBlue;
                                     Console.Clear();
                                     Console.WriteLine("Цвет фона установлен");
                                     Console.WriteLine();
-                                    menuColorIsWork = false;
+                                    isMenuColorWork = false;
                                     break;
-
                                 case MenuBackgroundDarkCyan:
                                     Console.BackgroundColor = ConsoleColor.DarkCyan;
                                     Console.Clear();
                                     Console.WriteLine("Цвет фона установлен");
                                     Console.WriteLine();
-                                    menuColorIsWork = false;
+                                    isMenuColorWork = false;
                                     break;
-
                                 case MenuBackgroundBlack:
                                     Console.BackgroundColor = ConsoleColor.Black;
                                     Console.Clear();
                                     Console.WriteLine("Цвет фона установлен");
                                     Console.WriteLine();
-                                    menuColorIsWork = false;
+                                    isMenuColorWork = false;
                                     break;
-
                                 default:
                                     Console.WriteLine("Недопустимое значение");
                                     Console.WriteLine();
                                     break;
                             }
                         }
-
                     break;
-
                     case MenuExit:
                         Console.WriteLine("Вы вышли");
                         Console.WriteLine();
                         isWorking = false;
                         break;
-
                     default:
                         Console.WriteLine("Недопустимое значение");
                         Console.WriteLine();
