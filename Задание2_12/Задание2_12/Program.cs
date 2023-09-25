@@ -15,11 +15,9 @@ namespace Задание2_12
             const string CommandCover = "2";
             const string CommandReload = "3";
             const string CommandTakeAim = "4";
-            const string DantesShoot1 = "1";
-            const string DantesShoot2 = "2";
-            const string DantesDodge = "3";
-            const string DantesUltraShoot = "4";
-            const string DantesUltraShoot2 = "5";
+            const string DantesShoot = "1";
+            const string DantesDodge = "2";
+            const string DantesUltraShoot = "3";
 
             float pushkinUltraDamage = 35;
             float dantesUltraDamage = 20;
@@ -136,13 +134,13 @@ namespace Задание2_12
                         case DantesUltraShoot:
                             dantesDamage = dantesUltraDamage;
                             pushkinHealth -= dantesDamage * pushkinArmor;
-                            dantesAction = DantesShoot1;
+                            dantesAction = DantesShoot;
                             Console.WriteLine($"д'Антес делает прицельный выстрел и наносит вам {dantesDamage * pushkinArmor} урона.\n");
                             pushkinArmor = pushkinArmorDefault;
                             dantesDamage = dantesDamaeDefault;
                             break;
 
-                        case DantesShoot1:
+                        case DantesShoot:
                             pushkinHealth -= dantesDamage * pushkinArmor;
                             dantesAction = DantesDodge;
                             Console.WriteLine($"д'Аантес делает выстрел и наносит вам {dantesDamage * pushkinArmor} урона.\n");
@@ -164,12 +162,12 @@ namespace Задание2_12
                     {
                         case DantesDodge:
                             dantesArmor = dantesUltraArmor;
-                            dantesAction = DantesShoot1;
+                            dantesAction = DantesShoot;
                             Console.WriteLine("д'Антес заслонился рукой\n");
                             pushkinArmor = pushkinArmorDefault;
                             break;
 
-                        case DantesShoot1:
+                        case DantesShoot:
                             pushkinHealth -= dantesDamage * pushkinArmor;
                             dantesAction = DantesUltraShoot;
                             Console.WriteLine($"д'Антес делает выстрел и наносит вам {dantesDamage * pushkinArmor} урона.\n");
