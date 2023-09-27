@@ -17,20 +17,14 @@ namespace Задание3_1
 
             int[,] array = new int[,] { { 4, 5, 12, 3 }, { 6, 1, 14, 9 } };
 
-            for (int i = 0; i < array.GetLength(0); i++)
+            for (int i = 0; i < array.GetLength(1); i++)
             {
-                for (int j = 0; j < array.GetLength(1); j++)
-                {
-                    if (i == numberOfLine - 1)
-                    {
-                        productOfSecondLine *= array[numberOfLine - 1, j];
-                    }
+                    productOfSecondLine *= array[numberOfLine - 1, i];
+            }
 
-                    if (j == numberOfColumn - 1)
-                    {
-                        sumOfColumn += array[i, numberOfColumn - 1];
-                    }
-                }
+            for (int j = 0; j < array.GetLength(0); j++)
+            {
+                    sumOfColumn += array[j, numberOfColumn - 1];
             }
 
             Console.WriteLine($"сумма {numberOfColumn} столбца равна - {sumOfColumn}");

@@ -85,6 +85,7 @@ namespace Задание2_12
                             {
                                 Console.WriteLine($"Пистолет разряжен - выстрел невозможен");
                             }
+
                             dantesArmor = dantesArmorDefault;
                             pushkinDamage = pushkinDamageDafault;
                             isPushkinsTurn = false;
@@ -109,6 +110,7 @@ namespace Задание2_12
                             {
                                 Console.WriteLine("Пистолет уже заряжен");
                             }
+
                             dantesArmor = dantesArmorDefault;
                             pushkinDamage = pushkinDamageDafault;
                             isPushkinsTurn = false;

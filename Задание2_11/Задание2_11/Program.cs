@@ -12,31 +12,35 @@ namespace Задание2_11
         {
             int rightBrackets = 0;
             int leftBrackets = 0;
-            int bracketsLength;
             int bracketsDepth = 0;
 
             string brackets;
+            string closedBrackets = "()";
+
+            char leftBracketAmount = '(';
+            char rightBracketAmount = ')';
 
             bool isExpressionCorrect = true;
 
             Console.Write("Введите массив скобок:");
             brackets = Console.ReadLine();
-            bracketsLength = brackets.Length;
 
-            for (int i = 0; i < bracketsLength; i++)
+            int halfBracketsLengh = brackets.Length / 2;
+
+            for (int i = 0; i < brackets.Length; i++)
             {
-                if (brackets[i] == '(')
+                if (brackets[i] == leftBracketAmount)
                 {
                     leftBrackets++;
                 }
 
-                if (brackets[i] == ')')
+                if (brackets[i] == rightBracketAmount)
                 {
                     rightBrackets++;
                 }
             }
 
-            if (leftBrackets != rightBrackets || brackets[0] == ')' || brackets[bracketsLength - 1] == '(')
+            if (leftBrackets != rightBrackets || brackets[0] == leftBracketAmount || brackets[brackets.Length - 1] == rightBracketAmount)
             {
                 Console.WriteLine("Некорректное скобочное выражение");
                 isExpressionCorrect = false;
@@ -44,14 +48,14 @@ namespace Задание2_11
 
             leftBrackets = 0; rightBrackets = 0;
 
-            for (int j = 0; j < (bracketsLength) / 2; j++)
+            for (int j = 0; j < halfBracketsLengh; j++)
             {
-                if (brackets[j] == '(')
+                if (brackets[j] == leftBracketAmount)
                 {
                     leftBrackets++;
                 }
 
-                if (brackets[j] == ')')
+                if (brackets[j] == rightBracketAmount)
                 {
                     rightBrackets++;
                 }
@@ -63,9 +67,9 @@ namespace Задание2_11
                 isExpressionCorrect = false;
             }
 
-            while (brackets.Contains("()"))
+            while (brackets.Contains(closedBrackets))
             {
-                brackets = brackets.Replace("()", "");
+                brackets = brackets.Replace(closedBrackets, "");
                 bracketsDepth++;
             }
 
