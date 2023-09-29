@@ -10,15 +10,15 @@ namespace Задание2_11
     {
         static void Main(string[] args)
         {
-            int rightBrackets = 0;
-            int leftBrackets = 0;
+            int rightBracketsAmount = 0;
+            int leftBracketsAmount = 0;
             int bracketsDepth = 0;
 
             string brackets;
             string closedBrackets = "()";
 
-            char leftBracketAmount = '(';
-            char rightBracketAmount = ')';
+            char leftBracket = '(';
+            char rightBracket = ')';
 
             bool isExpressionCorrect = true;
 
@@ -29,39 +29,35 @@ namespace Задание2_11
 
             for (int i = 0; i < brackets.Length; i++)
             {
-                if (brackets[i] == leftBracketAmount)
+                if (brackets[i] == leftBracket || brackets[i] == rightBracket)
                 {
-                    leftBrackets++;
-                }
-
-                if (brackets[i] == rightBracketAmount)
-                {
-                    rightBrackets++;
+                    leftBracketsAmount++;
+                    rightBracketsAmount++;
                 }
             }
 
-            if (leftBrackets != rightBrackets || brackets[0] == leftBracketAmount || brackets[brackets.Length - 1] == rightBracketAmount)
+            if (leftBracketsAmount != rightBracketsAmount || brackets[0] != leftBracket || brackets[brackets.Length - 1] != rightBracket)
             {
                 Console.WriteLine("Некорректное скобочное выражение");
                 isExpressionCorrect = false;
             }
 
-            leftBrackets = 0; rightBrackets = 0;
+            leftBracketsAmount = 0; rightBracketsAmount = 0;
 
             for (int j = 0; j < halfBracketsLengh; j++)
             {
-                if (brackets[j] == leftBracketAmount)
+                if (brackets[j] == leftBracket)
                 {
-                    leftBrackets++;
+                    leftBracketsAmount++;
                 }
 
-                if (brackets[j] == rightBracketAmount)
+                if (brackets[j] == rightBracket)
                 {
-                    rightBrackets++;
+                    rightBracketsAmount++;
                 }
             }
 
-            if (leftBrackets < rightBrackets && isExpressionCorrect)
+            if (leftBracketsAmount < rightBracketsAmount && isExpressionCorrect)
             {
                 Console.WriteLine("Некорректное скобочное выражение");
                 isExpressionCorrect = false;
