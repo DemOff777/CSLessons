@@ -10,7 +10,6 @@ namespace Задание3_4
     {
         static void Main(string[] args)
         {
-            int arrayLength = 1;
             int userNumber;
             int sumOfNumbers = 0;
 
@@ -19,7 +18,7 @@ namespace Задание3_4
 
             string userCommand = string.Empty;
 
-            int[] numbers = new int[arrayLength];
+            int[] numbers = new int[0];
 
             bool isUserEnterNumbers = true;
 
@@ -39,9 +38,8 @@ namespace Задание3_4
                         break;
 
                     case CommandSum:
-
                         Console.Clear();
-                        for (int i = 0; i < arrayLength; i++)
+                        for (int i = 0; i < numbers.Length; i++)
                         {
                             sumOfNumbers += numbers[i];
                         }
@@ -51,25 +49,20 @@ namespace Задание3_4
                         break;
 
                     default:
-                        userNumber = Convert.ToInt32(userCommand);
                         Console.Clear();
-                        numbers[arrayLength - 1] = userNumber;
 
-                        arrayLength++;
+                        int[] newNumbers = new int[numbers.Length + 1];
 
-                        int[] newNumbers = new int[arrayLength];
-
-                        for (int i = 0; i < arrayLength; i++)
+                        for (int i = 0; i < numbers.Length; i++)
                         {
-                            if (i < arrayLength - 1)
-                            {
-                                newNumbers[i] = numbers[i];
-                                Console.Write(newNumbers[i] + " ");
-                            }
+                            newNumbers[i] = numbers[i];
+                            Console.Write(newNumbers[i] + " ");
                         }
 
                         numbers = newNumbers;
-
+                        userNumber = Convert.ToInt32(userCommand);
+                        numbers[numbers.Length - 1] = userNumber;
+                        Console.Write(userNumber);
                         break;
                 }
             }

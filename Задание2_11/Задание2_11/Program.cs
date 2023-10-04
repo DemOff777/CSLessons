@@ -10,68 +10,45 @@ namespace Задание2_11
     {
         static void Main(string[] args)
         {
-            int rightBracketsAmount = 0;
-            int leftBracketsAmount = 0;
             int bracketsDepth = 0;
+            int bracketsAmount = 0; 
 
             string brackets;
-            string closedBrackets = "()";
 
             char leftBracket = '(';
             char rightBracket = ')';
 
-            bool isExpressionCorrect = true;
-
             Console.Write("Введите массив скобок:");
             brackets = Console.ReadLine();
 
-            int halfBracketsLengh = brackets.Length / 2;
-
             for (int i = 0; i < brackets.Length; i++)
             {
-                if (brackets[i] == leftBracket || brackets[i] == rightBracket)
+                if (brackets[i] == leftBracket)
                 {
-                    leftBracketsAmount++;
-                    rightBracketsAmount++;
+                    bracketsAmount++;
+
+                    if (bracketsAmount > bracketsDepth)
+                    {
+                        bracketsDepth = bracketsAmount;
+                    }
+                }
+
+                if (brackets[i] == rightBracket)
+                {
+                    bracketsAmount--;
+                }
+
+                if (bracketsAmount < 0)
+                {
+                    Console.WriteLine("Некорректное скобочное выражение");
+                    break;
                 }
             }
 
-            if (leftBracketsAmount != rightBracketsAmount || brackets[0] != leftBracket || brackets[brackets.Length - 1] != rightBracket)
+            if (bracketsAmount >= 0)
             {
-                Console.WriteLine("Некорректное скобочное выражение");
-                isExpressionCorrect = false;
-            }
-
-            leftBracketsAmount = 0; rightBracketsAmount = 0;
-
-            for (int j = 0; j < halfBracketsLengh; j++)
-            {
-                if (brackets[j] == leftBracket)
-                {
-                    leftBracketsAmount++;
-                }
-
-                if (brackets[j] == rightBracket)
-                {
-                    rightBracketsAmount++;
-                }
-            }
-
-            if (leftBracketsAmount < rightBracketsAmount && isExpressionCorrect)
-            {
-                Console.WriteLine("Некорректное скобочное выражение");
-                isExpressionCorrect = false;
-            }
-
-            while (brackets.Contains(closedBrackets))
-            {
-                brackets = brackets.Replace(closedBrackets, "");
-                bracketsDepth++;
-            }
-
-            if (isExpressionCorrect)
-            {
-                Console.WriteLine($"глубина вложения скобок: {bracketsDepth}");
+                Console.WriteLine("Корректное скобочное выражение");
+                Console.WriteLine("Глубина вложения скобок: " + bracketsDepth);
             }
         }
     }
