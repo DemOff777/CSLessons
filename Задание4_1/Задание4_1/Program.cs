@@ -82,6 +82,7 @@ namespace Задание4_1
                 }
             }
         }
+
         static void EnterPersonData(ref string[] personData)
         {
             string userEnterPersonData;
@@ -98,6 +99,7 @@ namespace Задание4_1
             newPersonData[newPersonData.Length - 1] = userEnterPersonData;
             personData = newPersonData;
         }
+
         static void ShowAllData(ref string[] name, ref string[] position)
         {
             for (int i = 0; i < name.Length; i++)
@@ -109,6 +111,7 @@ namespace Задание4_1
             Console.ReadKey();
             Console.Clear();
         }
+
         static void DeleteData(ref string[] personData, int userEnterPersonData)
         {
             string[] newPersonData = new string[personData.Length - 1];
@@ -129,6 +132,7 @@ namespace Задание4_1
             Console.Clear();
             personData = newPersonData;
         }
+
         static void SearchDataByName(string[] name, string userSearch)
         {
             for (int i = 0; i < name.Length; i++)
