@@ -15,25 +15,22 @@ namespace Задание3_3
             int numberOfArrayMaxVolue = 100;
             int localMaximumNumber;
 
-            Random randomArray = new Random();
+            Random random = new Random();
 
             for (int i = 0; i < arrayLength; i++)
             {
-                array[i] = randomArray.Next(numberOfArrayMaxVolue) + 1;
+                array[i] = random.Next(numberOfArrayMaxVolue) + 1;
                 Console.Write(array[i] + " ");
             }
 
             Console.Write("\nЛокальные максимумы: ");
 
-            for (int j = 0; j < arrayLength; j++)
+            for (int j = 1; j < arrayLength - 2; j++)
             {
-                if (j > 0 && j < arrayLength - 2)
+                if (array[j - 1] < array[j] && array[j + 1] < array[j])
                 {
-                    if (array[j - 1] < array[j] && array[j + 1] < array[j])
-                    {
-                        localMaximumNumber = array[j];
-                        Console.Write(localMaximumNumber + " ");
-                    }
+                    localMaximumNumber = array[j];
+                    Console.Write(localMaximumNumber + " ");
                 }
             }
 

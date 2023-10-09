@@ -30,45 +30,28 @@ namespace Задание3_5
 
             Console.WriteLine();
 
-            for (int j = 0; j < arraySize; j++)
+            for (int j = 0; j <= arraySize - 2; j++)
             {
-                if ( j <= arraySize - 2)
+                if (array[j] == array[j + 1])
                 {
-                    if (array[j] == array[j + 1])
-                    {
-                        repeatsAmount++;
-                        Console.Write(array[j] + " ");
+                    repeatsAmount++;
+                    Console.WriteLine(repeatsAmount);
+                }
 
-                        for (int k = j + 1; k < arraySize; k++)
-                        {
-                            if (k <= arraySize - 2)
-                            {
-                                while (array[j] == array[k + 1])
-                                {
-                                    repeatsAmount++;
-                                    k++;
-                                    Console.Write(array[j] + " ");
-                                }
-                            }
+                if (repeatsAmount >= maxRepeatAmount)
+                {
+                    maxRepeatedNumber = array[j];
+                    maxRepeatAmount = repeatsAmount;
+                }
 
-                            j = k;
-                            break;
-                        }
-
-                        if (repeatsAmount > maxRepeatAmount)
-                        {
-                            maxRepeatAmount = repeatsAmount;
-                            maxRepeatedNumber = array[j];
-                        }
-
-                        repeatsAmount = 0;
-                        Console.Write(array[j] + "   ");
-                    }
+                if (array[j] != array[j + 1])
+                {
+                    repeatsAmount = 0;
                 }
             }
 
             Console.WriteLine();
-            Console.WriteLine($"Число {maxRepeatedNumber} повторилось больше всего раз, а именно {maxRepeatAmount + 1}");
+            Console.WriteLine($"Число {maxRepeatedNumber} повторилось больше всего раз подряд, а именно {maxRepeatAmount + 1}");
         }
     }
 }

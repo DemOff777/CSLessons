@@ -45,10 +45,14 @@ namespace Задание2_11
                 }
             }
 
-            if (bracketsAmount >= 0)
+            if (bracketsAmount == 0)
             {
                 Console.WriteLine("Корректное скобочное выражение");
                 Console.WriteLine("Глубина вложения скобок: " + bracketsDepth);
+            }
+            else if (bracketsAmount > 0)
+            {
+                Console.WriteLine("Некорректное скобочное выражение");
             }
         }
     }

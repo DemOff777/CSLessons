@@ -10,11 +10,10 @@ namespace Задание3_4
     {
         static void Main(string[] args)
         {
-            int userNumber;
-            int sumOfNumbers = 0;
-
             const string CommandSum = "sum";
             const string CommandExit = "exit";
+
+            int userNumber;
 
             string userCommand = string.Empty;
 
@@ -38,6 +37,8 @@ namespace Задание3_4
                         break;
 
                     case CommandSum:
+                        int sumOfNumbers = 0;
+
                         Console.Clear();
                         for (int i = 0; i < numbers.Length; i++)
                         {
@@ -51,15 +52,15 @@ namespace Задание3_4
                     default:
                         Console.Clear();
 
-                        int[] newNumbers = new int[numbers.Length + 1];
+                        int[] temporaryNumbers = new int[numbers.Length + 1];
 
                         for (int i = 0; i < numbers.Length; i++)
                         {
-                            newNumbers[i] = numbers[i];
-                            Console.Write(newNumbers[i] + " ");
+                            temporaryNumbers[i] = numbers[i];
+                            Console.Write(temporaryNumbers[i] + " ");
                         }
 
-                        numbers = newNumbers;
+                        numbers = temporaryNumbers;
                         userNumber = Convert.ToInt32(userCommand);
                         numbers[numbers.Length - 1] = userNumber;
                         Console.Write(userNumber);

@@ -17,18 +17,18 @@ namespace Задание3_8
 
             bool isProgrammRunning = true;
 
-            int[] array = new int[arraySize];
+            int[] numbers = new int[arraySize];
 
             Random arrayRandom = new Random();
 
             for (int i = 0; i < arraySize; i++)
             {
-                array[i] = arrayRandom.Next(maxNumber + 1);
+                numbers[i] = arrayRandom.Next(maxNumber + 1);
             }
 
             while (isProgrammRunning)
             {
-                foreach (int item in array)
+                foreach (int item in numbers)
                 {
                     Console.Write(item + " ");
                 }
@@ -38,14 +38,14 @@ namespace Задание3_8
 
                 for (int i = 0; i < stepLeft; i++)
                 {
-                    temporaryStorageOfNumber = array[0];
+                    temporaryStorageOfNumber = numbers[0];
 
-                    for (int j = 0; j < array.Length - 1; j++)
+                    for (int j = 0; j < numbers.Length - 1; j++)
                     {
-                        array[j] = array[j + 1];
+                        numbers[j] = numbers[j + 1];
                     }
 
-                    array[array.Length - 1] = temporaryStorageOfNumber;
+                    numbers[numbers.Length - 1] = temporaryStorageOfNumber;
                 }
             }
         }

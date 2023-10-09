@@ -12,54 +12,66 @@ namespace Задание3_6
         {
             int arraySize = 10;
             int maxNumberVolue = 100;
-            int minVolueNumber = maxNumberVolue;
+            int temporaryMinVolue = 0;
+            int temporaryMinNumber = 0;
+            int borderNumber = -1;
+            int minVolue = borderNumber + 1;
 
-            int[] array = new int[arraySize];
+            bool isProgrammWork = true;
+
+            int[] numbers = new int[arraySize];
 
             Random arrayRandom = new Random();
 
-            for (int i = 0; i < array.Length; i++)
+            for (int i = 0; i < numbers.Length; i++)
             {
-                array[i] = arrayRandom.Next(maxNumberVolue + 1);
-                Console.Write(array[i] + " ");
+                numbers[i] = arrayRandom.Next(borderNumber +1, maxNumberVolue + 1);
+                Console.Write(numbers[i] + " ");
             }
 
             Console.WriteLine();
 
-            for (int i = 0; i < array.Length; i++)
+            while (isProgrammWork)
             {
-                for (int j = 0; j < array.Length; j++)
+                for (int i = 0; i < numbers.Length; i++)
                 {
-                    if (j < array.Length - 1)
+                    foreach (int number in numbers)
                     {
-                        if (array[j] <= array[j + 1] && array[j] < minVolueNumber)
+                        if (numbers[i] <= number && numbers[i] > borderNumber)
                         {
-                            minVolueNumber = array[j];
+                            temporaryMinVolue++;
                         }
                     }
-                }
 
-                if (minVolueNumber > array[array.Length - 1])
-                {
-                    minVolueNumber = array[array.Length - 1];
-                }
-
-                Console.Write(minVolueNumber + " ");
-
-                for (int k = 0; k < array.Length; k++)
-                {
-                    if (array[k] == minVolueNumber)
+                    if (temporaryMinVolue >= minVolue)
                     {
-                        array[k] = maxNumberVolue + 1;
-                        break;
+                        minVolue = temporaryMinVolue;
+                        temporaryMinNumber = numbers[i];
                     }
 
+                    temporaryMinVolue = 0;
                 }
 
-                minVolueNumber = maxNumberVolue;
-            }    
+                if (temporaryMinNumber == borderNumber)
+                {
+                    isProgrammWork = false;
+                }
 
-            Console.WriteLine();
+                if (temporaryMinNumber > borderNumber)
+                {
+                    Console.Write(temporaryMinNumber + " ");
+                    minVolue = borderNumber + 1;
+                }
+
+                for (int j = 0; j < numbers.Length; j++)
+                {
+                    if (temporaryMinNumber == numbers[j])
+                    {
+                        numbers[j] = borderNumber;
+                        break;
+                    }
+                }
+            }
         }
     }
 }
