@@ -45,8 +45,7 @@ namespace Задание3_4
                             sumOfNumbers += numbers[i];
                         }
 
-                        Console.Write(sumOfNumbers);
-                        sumOfNumbers = 0;   
+                        Console.Write(sumOfNumbers); 
                         break;
 
                     default:

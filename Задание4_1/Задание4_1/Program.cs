@@ -23,9 +23,9 @@ namespace Задание4_1
 
             bool isDossierMenuWork = true;
 
-            string[] name = new string[0];
+            string[] names = new string[0];
 
-            string[] position = new string[0];
+            string[] positions = new string[0];
 
             while (isDossierMenuWork)
             {
@@ -36,34 +36,36 @@ namespace Задание4_1
                 Console.WriteLine($"{CommandExit} Выход");
                 Console.Write("Введите нужный пункт меню: ");
 
-                switch (Convert.ToString(Console.ReadKey().KeyChar))
+                userMenuChoise = Console.ReadLine();
+
+                switch (userMenuChoise)
                 {
                     case CommandEnterDossier:
                         Console.Clear();
                         Console.Write("Введите имя: ");
-                        EnterPersonData(ref name);
+                        EnterPersonData(names);
                         Console.Write("Введите должность: ");
-                        EnterPersonData(ref position);
+                        EnterPersonData(positions);
                         break;
 
                     case CommandShowAllDossiers:
                         Console.Clear();
-                        ShowAllData(ref name, ref position);
+                        ShowAllData(ref names, ref positions);
                         break;
 
                     case CommandDeleteDossier:
                         Console.Clear();
                         Console.Write("Введите номер досье: ");
                         userEnterPersonData = Convert.ToInt32(Console.ReadLine());
-                        DeleteData(ref name, userEnterPersonData);
-                        DeleteData(ref position, userEnterPersonData);
+                        DeleteData(ref names, userEnterPersonData);
+                        DeleteData(ref positions, userEnterPersonData);
                         break;
 
                     case CommandSearchDossiers:
                         Console.Clear();
                         Console.Write("Введите фамилию: ");
                         userNameSearch = Console.ReadLine();
-                        SearchDataByName(name, userNameSearch);
+                        SearchDataByName(names, userNameSearch);
                         break;
 
                     case CommandExit:
@@ -83,7 +85,7 @@ namespace Задание4_1
             }
         }
 
-        static void EnterPersonData(ref string[] personData)
+        static string[] EnterPersonData(string[] personData)
         {
             string userEnterPersonData;
 
@@ -98,6 +100,7 @@ namespace Задание4_1
             Console.Clear();
             newPersonData[newPersonData.Length - 1] = userEnterPersonData;
             personData = newPersonData;
+            return personData;
         }
 
         static void ShowAllData(ref string[] name, ref string[] position)
@@ -114,33 +117,35 @@ namespace Задание4_1
 
         static void DeleteData(ref string[] personData, int userEnterPersonData)
         {
-            string[] newPersonData = new string[personData.Length - 1];
+            string[] temporaryPersonData = new string[personData.Length - 1];
 
-            for (int i = 0; i < personData.Length; i++)
+            for (int i = 0; i < userEnterPersonData - 1; i++)
             {
-                if (i < userEnterPersonData - 1)
-                {
-                    newPersonData[i] = personData[i];                  
-                }
+                temporaryPersonData[i] = personData[i];
+            }
 
-                if (i > userEnterPersonData - 1)
-                {
-                    newPersonData[i-1] = personData[i];
-                }
+            for (int i = userEnterPersonData; i < personData.Length; i++)
+            {
+                temporaryPersonData[i-1] = personData[i];
             }
 
             Console.Clear();
-            personData = newPersonData;
+            personData = temporaryPersonData;
         }
 
         static void SearchDataByName(string[] name, string userSearch)
         {
             for (int i = 0; i < name.Length; i++)
             {
-                if (name[i].ToLower() == userSearch.ToLower())
+                string[] splitedName = name[i].Split();
+
+                foreach (string partOfTheName in splitedName)
                 {
-                    Console.Clear();   
-                    Console.WriteLine($"Досье на имя: {name[i]} находится под номером {i}\n");
+                    if (partOfTheName.ToLower() == userSearch.ToLower())
+                    {
+                        Console.Clear();
+                        Console.WriteLine($"Досье на имя: {name[i]} находится под номером {i}\n");
+                    }
                 }
             }
         }

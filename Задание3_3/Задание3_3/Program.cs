@@ -10,10 +10,11 @@ namespace Задание3_3
     {
         static void Main(string[] args)
         {
-            int arrayLength = 30;
+            int arrayLength = 10;
             int[] array = new int[arrayLength];
             int numberOfArrayMaxVolue = 100;
             int localMaximumNumber;
+            int lastIndex = arrayLength - 1;
 
             Random random = new Random();
 
@@ -25,7 +26,12 @@ namespace Задание3_3
 
             Console.Write("\nЛокальные максимумы: ");
 
-            for (int j = 1; j < arrayLength - 2; j++)
+            if (array[0] > array[1])
+            {
+                Console.Write(array[0] + " ");
+            }
+
+            for (int j = 1; j < arrayLength - 1; j++)
             {
                 if (array[j - 1] < array[j] && array[j + 1] < array[j])
                 {
@@ -34,12 +40,7 @@ namespace Задание3_3
                 }
             }
 
-            if (array[0] > array[1])
-            {
-                Console.Write(array[0] + " ");
-            }
-
-            if (array[arrayLength - 1] > array[arrayLength - 2])
+            if (array[arrayLength - 1] > array[lastIndex - 1])
             {
                 Console.Write(array[arrayLength - 1] + " ");
             }
