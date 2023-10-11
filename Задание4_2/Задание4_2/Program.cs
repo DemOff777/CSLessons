@@ -19,14 +19,14 @@ namespace Задание4_2
   
             while (isMagicWork)
             {
-                ManaBarView(mana, manaMaxValue, manaColor);
-                ChangeBar(ref isMagicWork, ref mana, manaMaxValue);
-            }
+                ViewBar(mana, manaMaxValue, manaColor);
+                ChangeBarVolue(ref isMagicWork, ref mana, manaMaxValue);
 
-            Console.WriteLine("Мана закончилась(");
+                Console.WriteLine("Мана закончилась(");
+            }
         }
 
-        static void ManaBarView(int value, int maxValue, ConsoleColor color)
+        static void ViewBar(int value, int maxValue, ConsoleColor color)
         {
             ConsoleColor defaultColor = Console.BackgroundColor;
 
@@ -56,7 +56,7 @@ namespace Задание4_2
             Console.Write(']');
         }
 
-        static void ChangeBar(ref bool isBarWork, ref int value, int maxValue)
+        static void ChangeBarVolue(ref bool isBarWork, ref int value, int maxValue)
         {
             int temporaryValue;
 
@@ -73,6 +73,7 @@ namespace Задание4_2
             {
                 Console.WriteLine("Недопустимое значение");
             }
+
             if (value == 0)
             {
                 isBarWork = false;

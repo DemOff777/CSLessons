@@ -15,8 +15,8 @@ namespace Задание4_4
 
             int playerX = 0;
             int playerY = 0;
-            int playerDX = 0;
-            int playerDY = 1;
+            int playerDirectionX = 0;
+            int playerDirectionY = 1;
 
             bool isPlaying = true;
 
@@ -28,54 +28,58 @@ namespace Задание4_4
             {
                 if (Console.KeyAvailable)
                 {
-                    ConsoleKeyInfo key = Console.ReadKey(true);
+                    ConsoleKey key = Console.ReadKey(true).Key;
 
-                    switch (key.Key)
+                    const ConsoleKey MoveUp = ConsoleKey.UpArrow;
+                    const ConsoleKey MoveDown = ConsoleKey.DownArrow;
+                    const ConsoleKey MoveLeft = ConsoleKey.LeftArrow;
+                    const ConsoleKey MoveRight = ConsoleKey.RightArrow;
+
+                    playerDirectionX = 0;
+                    playerDirectionY = 0;
+
+                    switch (key)
                     {
-                        case ConsoleKey.UpArrow:
-                            playerDX = -1;
-                            playerDY = 0;
+                        case MoveUp:
+                            playerDirectionX = -1;                           
                             break;
 
-                        case ConsoleKey.DownArrow:
-                            playerDX = 1;
-                            playerDY = 0;
+                        case MoveDown:
+                            playerDirectionX = 1;
                             break;
 
-                        case ConsoleKey.LeftArrow:
-                            playerDX = 0;
-                            playerDY = -1;
+                        case MoveLeft:
+                            playerDirectionY = -1;
                             break;
 
-                        case ConsoleKey.RightArrow:
-                            playerDX = 0;
-                            playerDY = 1;
+                        case MoveRight:
+                            playerDirectionY = 1;
                             break;
                     }
                 }
 
-                if (map[playerX + playerDX, playerY + playerDY] != '%')
+                if (map[playerX + playerDirectionX, playerY + playerDirectionY] != '%')
                 {
-                    Move(ref playerX, ref playerY, ref playerDX, ref playerDY);
+                    Move(ref playerX, ref playerY, ref playerDirectionX, ref playerDirectionY);
                 }
 
                 System.Threading.Thread.Sleep(100);
             }
         }
 
-        static void Move(ref int X, ref int Y, ref int DX, ref int DY)
+        static void Move(ref int positionX, ref int positionY, ref int directionX, ref int directionY)
         {
-            Console.SetCursorPosition(Y, X);
+            Console.SetCursorPosition(positionY, positionX);
             Console.WriteLine(' ');
 
-            X += DX;
-            Y += DY;
+            positionX += directionX;
+            positionY += directionY;
 
-            Console.SetCursorPosition(Y, X);
+            Console.SetCursorPosition(positionY, positionX);
             Console.Write('#');
         }
 
-        static char[,] ReadMap(string mapName, ref int x, ref int y)
+        static char[,] ReadMap(string mapName, ref int positionX, ref int positionY)
         {
             string[] newFile = File.ReadAllLines($"maps/{mapName}.txt");
             char[,] map = new char[newFile.Length, newFile[0].Length];
@@ -88,8 +92,8 @@ namespace Задание4_4
 
                     if (map[i, j] == '#')
                     {
-                        x = i;
-                        y = j;
+                        positionX = i;
+                        positionY = j;
                     }
                 }
             }

@@ -10,13 +10,14 @@ namespace Задание4_3
     {
         static void Main(string[] args)
         {
-            int number;
+            int number = 0;
 
-            Convertation(out number);
+            number = EnterNumber();
 
             Console.WriteLine("Введенное число: " + number);
         }
-        static int Convertation(out int number)
+
+        static int EnterNumber()
         {
             int userNumber = 0;
             bool isValueCorrect = false;
@@ -27,8 +28,7 @@ namespace Задание4_3
                 isValueCorrect = int.TryParse(Console.ReadLine(), out userNumber);
             }
 
-            number = userNumber;
-            return number;
+            return userNumber;
         }
     }
 }

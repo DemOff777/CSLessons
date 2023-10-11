@@ -11,9 +11,6 @@ namespace Задание4_1
         static void Main(string[] args)
         {
             string userMenuChoise;
-            string userNameSearch;
-
-            int userEnterPersonData;
 
             const string CommandEnterDossier = "1";
             const string CommandShowAllDossiers = "2";
@@ -37,45 +34,31 @@ namespace Задание4_1
                 Console.Write("Введите нужный пункт меню: ");
 
                 userMenuChoise = Console.ReadLine();
+                Console.Clear();
 
                 switch (userMenuChoise)
                 {
                     case CommandEnterDossier:
-                        Console.Clear();
-                        Console.Write("Введите имя: ");
-                        EnterPersonData(names);
-                        Console.Write("Введите должность: ");
-                        EnterPersonData(positions);
+                        AddDossier(ref names, ref positions);
                         break;
 
                     case CommandShowAllDossiers:
-                        Console.Clear();
-                        ShowAllData(ref names, ref positions);
+                        ShowAllDossiers(ref names, ref positions);
                         break;
 
                     case CommandDeleteDossier:
-                        Console.Clear();
-                        Console.Write("Введите номер досье: ");
-                        userEnterPersonData = Convert.ToInt32(Console.ReadLine());
-                        DeleteData(ref names, userEnterPersonData);
-                        DeleteData(ref positions, userEnterPersonData);
+                        DeleteDossier(ref names, ref positions);
                         break;
 
                     case CommandSearchDossiers:
-                        Console.Clear();
-                        Console.Write("Введите фамилию: ");
-                        userNameSearch = Console.ReadLine();
-                        SearchDataByName(names, userNameSearch);
+                        SearchDossier(names);
                         break;
 
                     case CommandExit:
                         isDossierMenuWork = false;
-                        Console.Clear();
-                        Console.WriteLine("Вы вышли");
                         break;
 
                     default:
-                        Console.Clear();
                         Console.WriteLine("\nНе допустимое значение");
                         Console.Write("\nНажмите любую клавишу");
                         Console.ReadKey();
@@ -83,6 +66,8 @@ namespace Задание4_1
                         break;
                 }
             }
+
+            Console.WriteLine("Вы вышли");
         }
 
         static string[] EnterPersonData(string[] personData)
@@ -103,7 +88,7 @@ namespace Задание4_1
             return personData;
         }
 
-        static void ShowAllData(ref string[] name, ref string[] position)
+        static void ShowAllDossiers(ref string[] name, ref string[] position)
         {
             for (int i = 0; i < name.Length; i++)
             {
@@ -148,6 +133,33 @@ namespace Задание4_1
                     }
                 }
             }
+        }
+
+        static void AddDossier(ref string[] names, ref string[] positions)
+        {
+            Console.Write("Введите имя: ");
+            names = EnterPersonData(names);
+            Console.Write("Введите должность: ");
+            positions = EnterPersonData(positions);
+        }
+
+        static void DeleteDossier(ref string[] names, ref string[] positions)
+        {
+            int userEnterPersonData;
+
+            Console.Write("Введите номер досье: ");
+            userEnterPersonData = Convert.ToInt32(Console.ReadLine());
+            DeleteData(ref names, userEnterPersonData);
+            DeleteData(ref positions, userEnterPersonData);
+        }
+
+        static void SearchDossier(string[] names)
+        {
+            string userNameSearch;
+
+            Console.Write("Введите фамилию: ");
+            userNameSearch = Console.ReadLine();
+            SearchDataByName(names, userNameSearch);
         }
     }
 }

@@ -11,42 +11,44 @@ namespace Задание3_8
         static void Main(string[] args)
         {
             int stepLeft;
-            int maxNumber = 10;
+            int maxRandomValue = 10;
             int arraySize = 5;
-            int temporaryStorageOfNumber;
-
-            bool isProgrammRunning = true;
+            int temporaryNumber;
 
             int[] numbers = new int[arraySize];
 
-            Random arrayRandom = new Random();
+            Random random = new Random();
 
             for (int i = 0; i < arraySize; i++)
             {
-                numbers[i] = arrayRandom.Next(maxNumber + 1);
+                numbers[i] = random.Next(maxRandomValue + 1);
             }
 
-            while (isProgrammRunning)
+            foreach (int number in numbers)
             {
-                foreach (int item in numbers)
+                Console.Write(number + " ");
+            }
+
+            Console.Write("\n\nВведите шаг для сдвига влево: ");
+            stepLeft = Convert.ToInt32(Console.ReadLine());
+            stepLeft = stepLeft % arraySize;
+
+            for (int i = 0; i < stepLeft; i++)
+            {
+                temporaryNumber = numbers[0];
+
+                for (int j = 0; j < numbers.Length - 1; j++)
                 {
-                    Console.Write(item + " ");
+                    numbers[j] = numbers[j + 1];
+
                 }
 
-                Console.Write("\nВведите шаг для сдвига влево: ");
-                stepLeft = Convert.ToInt32(Console.ReadLine());
+                numbers[numbers.Length - 1] = temporaryNumber;
+            }
 
-                for (int i = 0; i < stepLeft; i++)
-                {
-                    temporaryStorageOfNumber = numbers[0];
-
-                    for (int j = 0; j < numbers.Length - 1; j++)
-                    {
-                        numbers[j] = numbers[j + 1];
-                    }
-
-                    numbers[numbers.Length - 1] = temporaryStorageOfNumber;
-                }
+            foreach (int number in numbers)
+            {
+                Console.Write(number + " ");
             }
         }
     }

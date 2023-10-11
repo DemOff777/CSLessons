@@ -15,27 +15,26 @@ namespace Задание3_5
             int arraySize = 30;
             int maxValue = 10;
             int maxRepeatedNumber = 0;
-            int maxRepeatAmount = 0;
+            int maxRepeatAmount = 1;
 
             int[] array = new int[arraySize];
 
-            Random arrayRandon = new Random();
+            Random random = new Random();
             ;
 
             for (int i = 0; i < arraySize; i++)
             {
-                array[i] = arrayRandon.Next(maxValue + 1);
+                array[i] = random.Next(maxValue + 1);
                 Console.Write(array[i] + " ");
             }
 
             Console.WriteLine();
 
-            for (int j = 0; j <= arraySize - 2; j++)
+            for (int j = 0; j < arraySize - 1; j++)
             {
                 if (array[j] == array[j + 1])
                 {
                     repeatsAmount++;
-                    Console.WriteLine(repeatsAmount);
                 }
 
                 if (repeatsAmount >= maxRepeatAmount)
@@ -51,7 +50,7 @@ namespace Задание3_5
             }
 
             Console.WriteLine();
-            Console.WriteLine($"Число {maxRepeatedNumber} повторилось больше всего раз подряд, а именно {maxRepeatAmount + 1}");
+            Console.WriteLine($"Число {maxRepeatedNumber} повторилось больше всего раз подряд, а именно {maxRepeatAmount}");
         }
     }
 }
