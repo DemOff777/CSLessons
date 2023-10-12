@@ -34,7 +34,7 @@ namespace Задание4_2
 
             string bar = "";
 
-            for (int i = 0; i < value/ percentStep; i++)
+            for (int i = 0; i < value / percentStep; i++)
             {
                 bar += "_";
             }

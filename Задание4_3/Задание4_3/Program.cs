@@ -14,20 +14,17 @@ namespace Задание4_3
 
             number = EnterNumber();
 
-            Console.WriteLine("Введенное число: " + number);
+            Console.WriteLine($"Введенное число: {number}");
         }
 
         static int EnterNumber()
         {
             int userNumber = 0;
-            bool isValueCorrect = false;
+            Console.Write("Введите число: ");
 
-            while (isValueCorrect == false)
+            while (int.TryParse(Console.ReadLine(), out userNumber) == false)
             {
-                Console.Write("Введите число: ");
-                isValueCorrect = int.TryParse(Console.ReadLine(), out userNumber);
             }
-
             return userNumber;
         }
     }

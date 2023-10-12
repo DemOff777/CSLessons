@@ -20,7 +20,7 @@ namespace Задание3_5
             int[] array = new int[arraySize];
 
             Random random = new Random();
-            ;
+           
 
             for (int i = 0; i < arraySize; i++)
             {
@@ -36,16 +36,15 @@ namespace Задание3_5
                 {
                     repeatsAmount++;
                 }
+                else
+                {
+                    repeatsAmount = 0;
+                }
 
                 if (repeatsAmount >= maxRepeatAmount)
                 {
                     maxRepeatedNumber = array[j];
                     maxRepeatAmount = repeatsAmount;
-                }
-
-                if (array[j] != array[j + 1])
-                {
-                    repeatsAmount = 0;
                 }
             }
 

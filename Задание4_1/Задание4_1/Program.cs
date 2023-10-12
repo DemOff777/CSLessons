@@ -43,7 +43,7 @@ namespace Задание4_1
                         break;
 
                     case CommandShowAllDossiers:
-                        ShowAllDossiers(ref names, ref positions);
+                        ShowAllDossiers(names, positions);
                         break;
 
                     case CommandDeleteDossier:
@@ -84,11 +84,10 @@ namespace Задание4_1
             userEnterPersonData = Console.ReadLine();
             Console.Clear();
             newPersonData[newPersonData.Length - 1] = userEnterPersonData;
-            personData = newPersonData;
-            return personData;
+            return newPersonData;
         }
 
-        static void ShowAllDossiers(ref string[] name, ref string[] position)
+        static void ShowAllDossiers(string[] name, string[] position)
         {
             for (int i = 0; i < name.Length; i++)
             {
@@ -100,7 +99,7 @@ namespace Задание4_1
             Console.Clear();
         }
 
-        static void DeleteData(ref string[] personData, int userEnterPersonData)
+        static string[] DeleteData(string[] personData, int userEnterPersonData)
         {
             string[] temporaryPersonData = new string[personData.Length - 1];
 
@@ -115,7 +114,7 @@ namespace Задание4_1
             }
 
             Console.Clear();
-            personData = temporaryPersonData;
+            return temporaryPersonData;
         }
 
         static void SearchDataByName(string[] name, string userSearch)
@@ -149,8 +148,8 @@ namespace Задание4_1
 
             Console.Write("Введите номер досье: ");
             userEnterPersonData = Convert.ToInt32(Console.ReadLine());
-            DeleteData(ref names, userEnterPersonData);
-            DeleteData(ref positions, userEnterPersonData);
+            names = DeleteData(names, userEnterPersonData);
+            positions = DeleteData(positions, userEnterPersonData);
         }
 
         static void SearchDossier(string[] names)
