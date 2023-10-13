@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace Задание4_4
 {
@@ -12,6 +13,8 @@ namespace Задание4_4
         static void Main(string[] args)
         {
             Console.CursorVisible = false;
+
+            char wallChar = '%';
 
             int playerX = 0;
             int playerY = 0;
@@ -26,39 +29,9 @@ namespace Задание4_4
 
             while (isPlaying)
             {
-                if (Console.KeyAvailable)
-                {
-                    ConsoleKey key = Console.ReadKey(true).Key;
+                TakeInput(playerDirectionX, playerDirectionY);
 
-                    const ConsoleKey MoveUp = ConsoleKey.UpArrow;
-                    const ConsoleKey MoveDown = ConsoleKey.DownArrow;
-                    const ConsoleKey MoveLeft = ConsoleKey.LeftArrow;
-                    const ConsoleKey MoveRight = ConsoleKey.RightArrow;
-
-                    playerDirectionX = 0;
-                    playerDirectionY = 0;
-
-                    switch (key)
-                    {
-                        case MoveUp:
-                            playerDirectionX = -1;                           
-                            break;
-
-                        case MoveDown:
-                            playerDirectionX = 1;
-                            break;
-
-                        case MoveLeft:
-                            playerDirectionY = -1;
-                            break;
-
-                        case MoveRight:
-                            playerDirectionY = 1;
-                            break;
-                    }
-                }
-
-                if (map[playerX + playerDirectionX, playerY + playerDirectionY] != '%')
+                if (map[playerX + playerDirectionX, playerY + playerDirectionY] != wallChar)
                 {
                     Move(ref playerX, ref playerY, ref playerDirectionX, ref playerDirectionY);
                 }
@@ -69,18 +42,23 @@ namespace Задание4_4
 
         static void Move(ref int positionX, ref int positionY, ref int directionX, ref int directionY)
         {
+            char playerChar = '#';
+            char emptySpaceChar = ' ';
+
             Console.SetCursorPosition(positionY, positionX);
-            Console.WriteLine(' ');
+            Console.WriteLine(emptySpaceChar);
 
             positionX += directionX;
             positionY += directionY;
 
             Console.SetCursorPosition(positionY, positionX);
-            Console.Write('#');
+            Console.Write(playerChar);
         }
 
         static char[,] ReadMap(string mapName, ref int positionX, ref int positionY)
         {
+            char playerChar = '#';
+
             string[] newFile = File.ReadAllLines($"maps/{mapName}.txt");
             char[,] map = new char[newFile.Length, newFile[0].Length];
 
@@ -90,7 +68,7 @@ namespace Задание4_4
                 {
                     map[i, j] = newFile[i][j];
 
-                    if (map[i, j] == '#')
+                    if (map[i, j] == playerChar)
                     {
                         positionX = i;
                         positionY = j;
@@ -111,6 +89,41 @@ namespace Задание4_4
                 }
 
                 Console.WriteLine();
+            }
+        }
+
+        static void TakeInput(int directionX, int directionY)
+        {
+            if (Console.KeyAvailable)
+            {
+                ConsoleKey key = Console.ReadKey(true).Key;
+
+                const ConsoleKey MoveUp = ConsoleKey.UpArrow;
+                const ConsoleKey MoveDown = ConsoleKey.DownArrow;
+                const ConsoleKey MoveLeft = ConsoleKey.LeftArrow;
+                const ConsoleKey MoveRight = ConsoleKey.RightArrow;
+
+                directionX = 0;
+                directionY = 0;
+
+                switch (key)
+                {
+                    case MoveUp:
+                        directionX = -1;
+                        break;
+
+                    case MoveDown:
+                        directionX = 1;
+                        break;
+
+                    case MoveLeft:
+                        directionY = -1;
+                        break;
+
+                    case MoveRight:
+                        directionY = 1;
+                        break;
+                }
             }
         }
     }

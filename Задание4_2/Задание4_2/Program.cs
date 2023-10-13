@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,9 +22,9 @@ namespace Задание4_2
             {
                 ViewBar(mana, manaMaxValue, manaColor);
                 ChangeBarVolue(ref isMagicWork, ref mana, manaMaxValue);
-
-                Console.WriteLine("Мана закончилась(");
             }
+
+            Console.WriteLine("Мана закончилась(");
         }
 
         static void ViewBar(int value, int maxValue, ConsoleColor color)
@@ -34,10 +35,7 @@ namespace Задание4_2
 
             string bar = "";
 
-            for (int i = 0; i < value / percentStep; i++)
-            {
-                bar += "_";
-            }
+            bar = DrawBar(bar, 0, value/percentStep);
 
             Console.SetCursorPosition(2, 2);
             Console.Write('[');
@@ -47,13 +45,20 @@ namespace Задание4_2
 
             bar = "";
 
-            for (int i = value/ percentStep; i < maxValue/percentStep; i++)
+            bar = DrawBar(bar, value / percentStep, maxValue / percentStep);
+
+            Console.Write(bar);
+            Console.Write(']');
+        }
+
+        static string DrawBar(string bar, int startValue, int maxValue)
+        {
+            for (int i = startValue; i < maxValue; i++)
             {
                 bar += "_";
             }
 
-            Console.Write(bar);
-            Console.Write(']');
+            return bar;
         }
 
         static void ChangeBarVolue(ref bool isBarWork, ref int value, int maxValue)
@@ -65,16 +70,14 @@ namespace Задание4_2
             temporaryValue = Convert.ToInt32(Console.ReadLine());
             Console.Clear();
 
-            if (temporaryValue <= maxValue - value && value - Math.Abs(temporaryValue) >= 0)
+            value += temporaryValue;
+
+            if (temporaryValue >= maxValue - value)
             {
-                value += temporaryValue;
-            }
-            else
-            {
-                Console.WriteLine("Недопустимое значение");
+                value = maxValue;
             }
 
-            if (value == 0)
+            if (value <= 0)
             {
                 isBarWork = false;
             }

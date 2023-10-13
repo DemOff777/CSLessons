@@ -12,19 +12,29 @@ namespace Задание4_3
         {
             int number = 0;
 
-            number = EnterNumber();
+            number = ReadInt();
 
             Console.WriteLine($"Введенное число: {number}");
         }
 
-        static int EnterNumber()
+        static int ReadInt()
         {
             int userNumber = 0;
-            Console.Write("Введите число: ");
 
-            while (int.TryParse(Console.ReadLine(), out userNumber) == false)
-            {
+            bool isConvertationCorrect = false;
+
+            while (isConvertationCorrect == false)
+            {             
+                Console.Write("Введите число: ");
+
+                isConvertationCorrect = int.TryParse(Console.ReadLine(), out userNumber);
+
+                if (isConvertationCorrect == false)
+                {
+                    Console.WriteLine("Неверный формат");
+                }
             }
+
             return userNumber;
         }
     }

@@ -12,66 +12,48 @@ namespace Задание4_5
         {
             int arraySize = 10;
 
-            char firstSymbol = '!';
-            char lastSymbol = '?';
+            int firstNumber = 0;
+            int lastNumber = 20;
 
-            string[] symbols = new string[arraySize];
+            int[] numbers = new int[arraySize];
 
             Random random = new Random();
 
-            for (int i = 0; i < symbols.Length; i++)
+            for (int i = 0; i < numbers.Length; i++)
             {
-                symbols[i] = Convert.ToString(Convert.ToChar(random.Next(firstSymbol, lastSymbol)));
+                numbers[i] = random.Next(firstNumber, lastNumber);
             }
 
-            foreach(string symbol in symbols) 
+            foreach(int symbol in numbers) 
             {
                 Console.Write(symbol + " ");
             }
 
-            symbols = SortingArrayRandom(symbols);
+            numbers = SortArrayRandom(numbers);
             Console.WriteLine();
 
-            foreach (string symbol in symbols)
+            foreach (int symbol in numbers)
             {
                 Console.Write(symbol + " ");
             }
         }
 
-        static string[] SortingArrayRandom(string[] symbols)
+        static int[] SortArrayRandom(int[] symbols)
         {
             int temporaryArrayMember;
-
-            string temporaryChar;
-
-            string[] newSymbols = new string[symbols.Length];
+            int temporaryNumber;
 
             Random random = new Random();
 
-            for (int i = 0; i < newSymbols.Length; i++)
+            for (int i = 0; i < symbols.Length; i++)
             {
-                string[] temporarySymbols = new string[symbols.Length - 1];
-
                 temporaryArrayMember = random.Next(symbols.Length);
-                temporaryChar = symbols[temporaryArrayMember];
-                newSymbols[i] = temporaryChar;
-
-                for (int j = 0; j < temporaryArrayMember; j++)
-                {
-                    temporarySymbols[j] = symbols[j];
-                }
-
-                for (int k = temporaryArrayMember + 1; k < symbols.Length; k++)
-                {
-                    temporarySymbols[k - 1] = symbols[k];
-                }
-
-                symbols = temporarySymbols;
+                temporaryNumber = symbols[temporaryArrayMember];
+                symbols[temporaryArrayMember] = symbols[i];
+                symbols[i] = temporaryNumber;
             }
-
-            symbols = newSymbols;
-
-            return newSymbols;
+           
+            return symbols;
         }
     }
 }
