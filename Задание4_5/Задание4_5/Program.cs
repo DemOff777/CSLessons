@@ -24,36 +24,38 @@ namespace Задание4_5
                 numbers[i] = random.Next(firstNumber, lastNumber);
             }
 
-            foreach(int symbol in numbers) 
-            {
-                Console.Write(symbol + " ");
-            }
+            ShowArray(numbers);
 
             numbers = SortArrayRandom(numbers);
             Console.WriteLine();
 
-            foreach (int symbol in numbers)
-            {
-                Console.Write(symbol + " ");
-            }
+            ShowArray(numbers);
         }
 
-        static int[] SortArrayRandom(int[] symbols)
+        static int[] SortArrayRandom(int[] numbers)
         {
-            int temporaryArrayMember;
+            int randomArrayIndex;
             int temporaryNumber;
 
             Random random = new Random();
 
-            for (int i = 0; i < symbols.Length; i++)
+            for (int i = 0; i < numbers.Length; i++)
             {
-                temporaryArrayMember = random.Next(symbols.Length);
-                temporaryNumber = symbols[temporaryArrayMember];
-                symbols[temporaryArrayMember] = symbols[i];
-                symbols[i] = temporaryNumber;
+                randomArrayIndex = random.Next(numbers.Length);
+                temporaryNumber = numbers[randomArrayIndex];
+                numbers[randomArrayIndex] = numbers[i];
+                numbers[i] = temporaryNumber;
             }
            
-            return symbols;
+            return numbers;
+        }
+
+        static void ShowArray(int[] array)
+        {
+            foreach (int number in array)
+            {
+                Console.Write(number + " ");
+            }
         }
     }
 }

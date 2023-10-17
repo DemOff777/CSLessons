@@ -21,7 +21,7 @@ namespace Задание4_2
             while (isMagicWork)
             {
                 ViewBar(mana, manaMaxValue, manaColor);
-                ChangeBarVolue(ref isMagicWork, ref mana, manaMaxValue);
+                isMagicWork = ChangeBarVolue(isMagicWork, ref mana, manaMaxValue);
             }
 
             Console.WriteLine("Мана закончилась(");
@@ -61,7 +61,7 @@ namespace Задание4_2
             return bar;
         }
 
-        static void ChangeBarVolue(ref bool isBarWork, ref int value, int maxValue)
+        static bool ChangeBarVolue(bool isBarWork, ref int value, int maxValue)
         {
             int temporaryValue;
 
@@ -81,6 +81,8 @@ namespace Задание4_2
             {
                 isBarWork = false;
             }
+
+            return isBarWork;
         }
     }
 }

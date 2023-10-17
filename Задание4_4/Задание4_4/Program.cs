@@ -16,31 +16,31 @@ namespace Задание4_4
 
             char wallChar = '%';
 
-            int playerX = 0;
-            int playerY = 0;
+            int playerX;
+            int playerY;
             int playerDirectionX = 0;
             int playerDirectionY = 1;
 
             bool isPlaying = true;
 
-            char[,] map = ReadMap("map1", ref playerX, ref playerY);
+            char[,] map = ReadMap("map1", out playerX, out playerY);
 
             DrawMap(map);
 
             while (isPlaying)
             {
-                TakeInput(playerDirectionX, playerDirectionY);
+                TakeInput(ref playerDirectionX, ref playerDirectionY);
 
                 if (map[playerX + playerDirectionX, playerY + playerDirectionY] != wallChar)
                 {
-                    Move(ref playerX, ref playerY, ref playerDirectionX, ref playerDirectionY);
+                    Move(ref playerX, ref playerY, playerDirectionX, playerDirectionY);
                 }
 
                 System.Threading.Thread.Sleep(100);
             }
         }
 
-        static void Move(ref int positionX, ref int positionY, ref int directionX, ref int directionY)
+        static void Move(ref int positionX, ref int positionY, int directionX, int directionY)
         {
             char playerChar = '#';
             char emptySpaceChar = ' ';
@@ -55,8 +55,11 @@ namespace Задание4_4
             Console.Write(playerChar);
         }
 
-        static char[,] ReadMap(string mapName, ref int positionX, ref int positionY)
+        static char[,] ReadMap(string mapName, out int positionX, out int positionY)
         {
+            positionX = 0;
+            positionY = 0;
+            
             char playerChar = '#';
 
             string[] newFile = File.ReadAllLines($"maps/{mapName}.txt");
@@ -92,11 +95,11 @@ namespace Задание4_4
             }
         }
 
-        static void TakeInput(int directionX, int directionY)
+        static void TakeInput(ref int directionX, ref int directionY)
         {
             if (Console.KeyAvailable)
             {
-                ConsoleKey key = Console.ReadKey(true).Key;
+                ConsoleKeyInfo key = Console.ReadKey(true);
 
                 const ConsoleKey MoveUp = ConsoleKey.UpArrow;
                 const ConsoleKey MoveDown = ConsoleKey.DownArrow;
@@ -106,7 +109,7 @@ namespace Задание4_4
                 directionX = 0;
                 directionY = 0;
 
-                switch (key)
+                switch (key.Key)
                 {
                     case MoveUp:
                         directionX = -1;
