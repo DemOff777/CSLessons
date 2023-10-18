@@ -10,11 +10,8 @@ namespace Задание5_3
     {
         static void Main(string[] args)
         {
-            const string Sum = "sum";
-            const string Exit = "exit";
-
-            int sum = 0;
-            int numberValue = 0;
+            const string CommandSum = "sum";
+            const string CommandExit = "exit";
 
             bool isProgramWork = true;
 
@@ -35,27 +32,34 @@ namespace Задание5_3
 
                 switch (userInput)
                 {
-                    case Sum:
-                        Console.WriteLine(sum);
+                    case CommandSum:
+                        Console.WriteLine(numbers.Sum());
                         break;
 
-                    case Exit:
+                    case CommandExit:
                         isProgramWork = false;
                         break;
 
                     default:
-                        if (int.TryParse(userInput, out numberValue))
-                        {
-                            sum += numberValue;
-                            numbers.Add(numberValue);
-                        }
-                        else
-                        {
-                            Console.WriteLine("Недопустимое значение");
-                        }
+                        TryAddNumberValue(numbers, userInput);
                         break;
                 }
             }
         }
+
+        static void TryAddNumberValue (List<int> numbers, string userInput)
+        {
+            int numberValue = 0;
+
+            if (int.TryParse(userInput, out numberValue))
+            {
+                numbers.Add(numberValue);
+            }
+            else
+            {
+                Console.WriteLine("Недопустимое значение");
+            }
+        }
+
     }
 }

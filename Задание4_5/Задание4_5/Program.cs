@@ -26,13 +26,13 @@ namespace Задание4_5
 
             ShowArray(numbers);
 
-            numbers = SortArrayRandom(numbers);
+            SortArrayRandom(numbers);
             Console.WriteLine();
 
             ShowArray(numbers);
         }
 
-        static int[] SortArrayRandom(int[] numbers)
+        static void SortArrayRandom(int[] numbers)
         {
             int randomArrayIndex;
             int temporaryNumber;
@@ -46,8 +46,6 @@ namespace Задание4_5
                 numbers[randomArrayIndex] = numbers[i];
                 numbers[i] = temporaryNumber;
             }
-           
-            return numbers;
         }
 
         static void ShowArray(int[] array)
