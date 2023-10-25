@@ -17,8 +17,6 @@ namespace Задание5_4
 
             bool isProgrammWork = true;
 
-            string userInput;
-
             Dictionary<string, string> dossiers = new Dictionary<string, string> ();
 
             while (isProgrammWork)
@@ -28,7 +26,7 @@ namespace Задание5_4
                 Console.WriteLine($"Показать все досье - {CommandShowAllDossiers}");
                 Console.WriteLine($"Удалить досье - {CommandDeleteDossier}");
                 Console.WriteLine($"Выход - {CommandExit}");
-                userInput = Console.ReadLine();
+                string userInput = Console.ReadLine();
                 Console.Clear();
 
                 switch (userInput)
@@ -58,17 +56,21 @@ namespace Задание5_4
 
         static void AddDossier(Dictionary<string, string> dossiers)
         {
-            string name;
-            string position;
-
             Console.WriteLine("Введите имя и фамилию");
-            name = Console.ReadLine();
+            string name = Console.ReadLine();
             Console.Clear();
             Console.WriteLine("Введите должность");
-            position = Console.ReadLine();
+            string position = Console.ReadLine();
             Console.Clear();
 
-            dossiers.Add(name, position);   
+            if (dossiers.ContainsKey(name))
+            {
+                Console.WriteLine("Такое имя уже существует, введите другое имя");
+            }
+            else
+            {
+                dossiers.Add(name, position);
+            }
         }
 
         static void ShowAllDossiers(Dictionary<string, string> dossiers)
@@ -85,9 +87,8 @@ namespace Задание5_4
 
         static void DeleteDossier(Dictionary<string, string> dossiers)
         {
-            string userInput;
             Console.WriteLine("Введите имя удаляемого сотрудника");
-            userInput = Console.ReadLine();
+            string userInput = Console.ReadLine();
 
             if (dossiers.ContainsKey(userInput))
             {
