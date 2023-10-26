@@ -44,7 +44,7 @@ namespace Задание5_5
         {
             for (int i = 0; i < numbers.Length; i++)
             {
-                if (!finalNumbers.Contains(numbers[i]))
+                if (finalNumbers.Contains(numbers[i]) == false)
                 {
                     finalNumbers.Add(numbers[i]);
                 }
