@@ -18,19 +18,19 @@ namespace Задание5_5
 
             Random random = new Random();
 
-            SetRandomNumbers(numbers1, random);
-            SetRandomNumbers(numbers2, random);
+            FillNumberArray(numbers1, random);
+            FillNumberArray(numbers2, random);
 
             ShowNumberArray(numbers1);
             ShowNumberArray(numbers2);
 
-            AddDifferentNumbers(finalNumbers, numbers1);
-            AddDifferentNumbers(finalNumbers, numbers2);
+            AddUniqeValue(finalNumbers, numbers1);
+            AddUniqeValue(finalNumbers, numbers2);
 
-            ShowFinalArray(finalNumbers);
+            ShowNumberArray(finalNumbers.ToArray());
         }
 
-        static void SetRandomNumbers(int[] numbers, Random random)
+        static void FillNumberArray(int[] numbers, Random random)
         {
             int numbersMaxVolue = 30;
 
@@ -40,7 +40,7 @@ namespace Задание5_5
             }
         }
 
-        static void AddDifferentNumbers(List<int> finalNumbers, int[] numbers)
+        static void AddUniqeValue(List<int> finalNumbers, int[] numbers)
         {
             for (int i = 0; i < numbers.Length; i++)
             {
@@ -59,14 +59,6 @@ namespace Задание5_5
             }
 
             Console.WriteLine();
-        }
-
-        static void ShowFinalArray(List<int> finalNumbers)
-        {
-            foreach (var number in finalNumbers)
-            {
-                Console.Write(number + " ");
-            }
         }
     }
 }
