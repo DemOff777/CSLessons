@@ -10,9 +10,9 @@ namespace Задание6_1
     {
         static void Main(string[] args)
         {
-            Player player1 = new Player("Rex", "Killer", 100, 10);
+            Player player = new Player("Rex", "Killer", 100, 10);
 
-            player1.ShowPlayerInfo();
+            player.ShowPlayerInfo();
         }
     }
 

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Задание6_2
 {
@@ -27,9 +24,7 @@ namespace Задание6_2
         }
 
         public int PositionX { get; private set; }
-
         public int PositionY { get; private set; }
-
         public char PlayerChar { get; private set; }
     }
 
