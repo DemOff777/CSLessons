@@ -18,22 +18,22 @@ namespace Задание6_1
 
     class Player
     {
-        public string Name;
-        public string Class;
-        public int Health;
-        public int Mana;
+        private string _name;
+        private string _character;
+        private int _health;
+        private int _mana;
 
-        public Player(string name, string @class, int health, int mana)
+        public Player(string name, string character, int health, int mana)
         {
-            Name = name;
-            Class = @class;
-            Health = health;
-            Mana = mana;
+            _name = name;
+            _character = character;
+            _health = health;
+            _mana = mana;
         }
 
         public void ShowPlayerInfo()
         {
-            Console.WriteLine($"{Name} - {Class}: HP - {Health} MANA - {Mana}");
+            Console.WriteLine($"{_name} - {_character}: HP - {_health} MANA - {_mana}");
         }
     }
 }

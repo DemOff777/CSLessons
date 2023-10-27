@@ -10,32 +10,34 @@ namespace Задание6_2
     {
         static void Main(string[] args)
         {
-            Redrerer renderer1 = new Redrerer();
-            Player player1 = new Player(10, 10);
+            Redrerer renderer = new Redrerer();
+            Player player = new Player(10, 10, '#');
 
-            renderer1.DrawPlayer(player1.X, player1.Y);
+            renderer.DrawPlayer(player.PositionX, player.PositionY, player.PlayerChar);
         }
     }
 
     class Player
     {
-        public int X { get; private set; }
-        public int Y { get; private set; }
-
-        public Player(int x, int y)
+        public Player(int positionX, int positionY, char playerChar)
         {
-            X = x;
-            Y = y;
+            PositionX = positionX;
+            PositionY = positionY;
+            PlayerChar = playerChar;
         }
+
+        public int PositionX { get; private set; }
+
+        public int PositionY { get; private set; }
+
+        public char PlayerChar { get; private set; }
     }
 
     class Redrerer
     {
-        public void DrawPlayer(int x, int y)
+        public void DrawPlayer(int positionX, int positionY, char playerChar)
         {
-            char playerChar = '#';
-
-            Console.SetCursorPosition(x, y);
+            Console.SetCursorPosition(positionX, positionY);
             Console.Write(playerChar);
         }
     }
