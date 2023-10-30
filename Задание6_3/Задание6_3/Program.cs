@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace Задание6_3
 {
@@ -94,6 +90,7 @@ namespace Задание6_3
         public void ShowStats()
         {
             Console.Write($"ID:{UniqueNumber} Имя - {Name} Уровень - {Level}");
+
             if (IsBanned)
             {
                 Console.WriteLine(" Состояние - забанен"); 
@@ -139,19 +136,23 @@ namespace Задание6_3
 
         public void RemovePlayerByNumber()
         {
-            Console.WriteLine("Введите номер игрока");
-            int userUniqueNumber = CheckInput();
-
-            for (int i = 0; i < _players.Count; i++)
-            {
-                if (_players[i].UniqueNumber == userUniqueNumber)
-                {
-                    _players.Remove(_players[i]);
-                }
-            }
+            Player player = TryGetPlayer(out player);
+            _players.Remove(player);
         }
 
-        public int CheckInput()
+        public void BanPlayerByNumber()
+        {
+            Player player = TryGetPlayer(out player);
+            player.Ban();
+        }
+
+        public void UnbanPlayerByNumber()
+        {
+            Player player = TryGetPlayer(out player);
+            player.Unban();
+        }
+
+        private int CheckInput()
         {
             int userInput = 0;
 
@@ -170,10 +171,14 @@ namespace Задание6_3
             isConvertationCorrect = false;
 
             return userInput;
-        }
+        }       
 
-        public void BanPlayerByNumber()
+        private Player TryGetPlayer(out Player player)
         {
+            player = null;
+
+            bool isSearchCorrect = false;
+
             Console.WriteLine("Введите номер игрока");
             int userUniqueNumber = CheckInput();
 
@@ -181,23 +186,17 @@ namespace Задание6_3
             {
                 if (_players[i].UniqueNumber == userUniqueNumber)
                 {
-                    _players[i].Ban();
+                    isSearchCorrect = true;
+                    player = _players[i];
                 }
             }
-        }
 
-        public void UnbanPlayerByNumber()
-        {
-            Console.WriteLine("Введите номер игрока");
-            int userUniqueNumber = CheckInput();
-
-            for (int i = 0; i < _players.Count; i++)
+            if (isSearchCorrect == false)
             {
-                if (_players[i].UniqueNumber == userUniqueNumber)
-                {
-                    _players[i].Unban();
-                }
+                Console.WriteLine("Игрока с таким номером найти не удалось");
             }
+
+            return player;
         }
     }
 }
