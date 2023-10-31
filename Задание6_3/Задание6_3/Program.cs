@@ -70,7 +70,7 @@ namespace Задание6_3
             Name = name;
             Level = level;          
             IsBanned = isBanned;       
-        }
+        }       
 
         public int UniqueNumber { get; private set; }
         public string Name { get; private set; }
@@ -106,6 +106,8 @@ namespace Задание6_3
     {
         private List<Player> _players = new List<Player>();
 
+        private int _numerator = 1;
+
         public void ShowAllPlayers()
         {
             foreach (Player player in _players)
@@ -115,17 +117,17 @@ namespace Задание6_3
         }
 
         public void AddPlayer()
-        {
-            Console.WriteLine("Введите номер игрока");
-            int userUniqueNumber = CheckInput();
-            
+        {          
             Console.WriteLine("Введите имя игрока");
             string userName = Console.ReadLine();
 
             Console.WriteLine("Введите уровень игрока");
-            int userLevel = CheckInput();
+            int userLevel = TryInput();
 
             bool isBanned = false ;
+
+            int userUniqueNumber = _numerator;
+            _numerator++;
 
             Player player = new Player(userUniqueNumber, userName, userLevel, isBanned);
 
@@ -136,51 +138,60 @@ namespace Задание6_3
 
         public void RemovePlayerByNumber()
         {
-            Player player = TryGetPlayer(out player);
-            _players.Remove(player);
+            Player player;
+
+            bool isSearchCorrect = TryGetPlayer(out player);
+
+            if (isSearchCorrect)
+            {
+                _players.Remove(player);
+            }         
         }
 
         public void BanPlayerByNumber()
         {
-            Player player = TryGetPlayer(out player);
-            player.Ban();
+            Player player;
+
+            bool isSearchCorrect = TryGetPlayer(out player);
+
+            if (isSearchCorrect)
+            {
+                player.Ban();
+            }
         }
 
         public void UnbanPlayerByNumber()
         {
-            Player player = TryGetPlayer(out player);
-            player.Unban();
+            Player player;
+
+            bool isSearchCorrect = TryGetPlayer(out player);
+
+            if (isSearchCorrect)
+            {
+                player.Unban();
+            }
         }
 
-        private int CheckInput()
+        private int TryInput()
         {
             int userInput = 0;
 
-            bool isConvertationCorrect = false;
-
-            while (isConvertationCorrect == false)
-            {
-                isConvertationCorrect = int.TryParse(Console.ReadLine(), out userInput);
-
-                if (isConvertationCorrect == false)
-                {
-                    Console.WriteLine("Неверный формат");
-                }
+            while (int.TryParse(Console.ReadLine(), out userInput) == false)
+            {            
+                Console.WriteLine("Неверный формат");
             }
-
-            isConvertationCorrect = false;
 
             return userInput;
         }       
 
-        private Player TryGetPlayer(out Player player)
+        private bool TryGetPlayer(out Player player)
         {
             player = null;
 
             bool isSearchCorrect = false;
 
             Console.WriteLine("Введите номер игрока");
-            int userUniqueNumber = CheckInput();
+            int userUniqueNumber = TryInput();
 
             for (int i = 0; i < _players.Count; i++)
             {
@@ -196,7 +207,7 @@ namespace Задание6_3
                 Console.WriteLine("Игрока с таким номером найти не удалось");
             }
 
-            return player;
+            return isSearchCorrect;
         }
     }
 }
