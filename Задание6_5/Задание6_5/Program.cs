@@ -29,19 +29,19 @@ namespace Задание6_5
 
                 switch(userInput )
                 {
-                    case (CommandAddBook):
+                    case CommandAddBook:
                         workLibrary.AddBook();
                         break;
-                    case (CommandRemoveBook):
+                    case CommandRemoveBook:
                         workLibrary.RemoveBook();
                         break;
-                    case (CommandShowAllBooks):
+                    case CommandShowAllBooks:
                         workLibrary.ShowAllBooks();
                         break;
-                    case (CommandShowBookByArgument):
+                    case CommandShowBookByArgument:
                         workLibrary.ShowFindBook();
                         break;
-                    case (CommandExit):
+                    case CommandExit:
                         isWork = false;
                         break;
                     default:
@@ -56,20 +56,20 @@ namespace Задание6_5
     {
         public Book(int index, string name, string autor, int releaseYear)
         {
-            Index = index;
+            Id = index;
             Name = name;
             Autor = autor;
             ReleaseYear = releaseYear;
         }
 
-        public int Index { get; private set; }
+        public int Id { get; private set; }
         public string Name { get; private set; }
         public string Autor { get; private set; }
         public int ReleaseYear { get; private set; }
 
         public void ShowBook()
         {
-            Console.WriteLine($"ID - {Index}, Название книги - {Name}, имя автора - {Autor}, год выпуска - {ReleaseYear}");
+            Console.WriteLine($"ID - {Id}, Название книги - {Name}, имя автора - {Autor}, год выпуска - {ReleaseYear}");
         }
     }
 
@@ -136,7 +136,7 @@ namespace Задание6_5
             {
                 for (int i = 0; i < _books.Count; i++)
                 {
-                    if (_books[i].Index == userInput)
+                    if (_books[i].Id == userInput)
                     {
                         _books.Remove(_books[i]);
                     }

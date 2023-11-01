@@ -187,6 +187,7 @@ namespace Задание6_3
                 {
                     isSearchCorrect = true;
                     player = _players[i];
+                    return isSearchCorrect;
                 }
             }
 
@@ -195,7 +196,7 @@ namespace Задание6_3
                 Console.WriteLine("Игрока с таким номером найти не удалось");
             }
 
-            return isSearchCorrect;
+            return false;
         }
     }
 }

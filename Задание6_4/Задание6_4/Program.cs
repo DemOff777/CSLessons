@@ -41,7 +41,7 @@ namespace Задание6_4
                 switch(userInput)
                 {
                     case(CommandTakePlayer):
-                        players.TakePlayerCards(players.TryTakePlayer(), playDeck.TryGiveCards());
+                        players.TakePlayerCards(players.TryGetPlayersName(), playDeck.TryGiveCards());
                         break;
                     case(CommandAddPlayer):
                         players.AddPlayer();
@@ -96,13 +96,13 @@ namespace Задание6_4
 
         public void TakeCards(List<Card> cards)
         {
-            _cardsInHand = cards;
+            _cardsInHand.AddRange(cards);
         }
     }
 
     public class GamingTable
     {
-        List<Player> _players = new List<Player>();
+        private List<Player> _players = new List<Player>();
 
         public void AddPlayer()
         {
@@ -119,7 +119,7 @@ namespace Задание6_4
             }
         }
 
-        public string TryTakePlayer()
+        public string TryGetPlayersName()
         {
             ShowPlayers();
 
@@ -162,7 +162,7 @@ namespace Задание6_4
 
     public class Deck
     {
-        List<Card> _cards = new List<Card>();
+        private List<Card> _cards = new List<Card>();
 
         public void FillDeck()
         {
@@ -180,42 +180,16 @@ namespace Задание6_4
             string hearts = "Червей";
             string spades = "Пик";
 
-            _cards.Add(new Card(six, clubs));
-            _cards.Add(new Card(seven, clubs));
-            _cards.Add(new Card(eigth, clubs));
-            _cards.Add(new Card(nine, clubs));
-            _cards.Add(new Card(ten, clubs));
-            _cards.Add(new Card(jack, clubs));
-            _cards.Add(new Card(queen, clubs));
-            _cards.Add(new Card(king, clubs));
-            _cards.Add(new Card(ace, clubs));
-            _cards.Add(new Card(six, diamonds));
-            _cards.Add(new Card(seven, diamonds));
-            _cards.Add(new Card(eigth, diamonds));
-            _cards.Add(new Card(nine, diamonds));
-            _cards.Add(new Card(ten, diamonds));
-            _cards.Add(new Card(jack, diamonds));
-            _cards.Add(new Card(queen, diamonds));
-            _cards.Add(new Card(king, diamonds));
-            _cards.Add(new Card(ace, diamonds));
-            _cards.Add(new Card(six, hearts));
-            _cards.Add(new Card(seven, hearts));
-            _cards.Add(new Card(eigth, hearts));
-            _cards.Add(new Card(nine, hearts));
-            _cards.Add(new Card(ten, hearts));
-            _cards.Add(new Card(jack, hearts));
-            _cards.Add(new Card(queen, hearts));
-            _cards.Add(new Card(king, hearts));
-            _cards.Add(new Card(ace, hearts));
-            _cards.Add(new Card(six, spades));
-            _cards.Add(new Card(seven, spades));
-            _cards.Add(new Card(eigth, spades));
-            _cards.Add(new Card(nine, spades));
-            _cards.Add(new Card(ten, spades));
-            _cards.Add(new Card(jack, spades));
-            _cards.Add(new Card(queen, spades));
-            _cards.Add(new Card(king, spades));
-            _cards.Add(new Card(ace, spades));
+            string[] ranks = new string[] {six, seven, eigth, nine, ten, jack, queen, king, ace};
+            string[] suites = new string[] {clubs, diamonds, hearts, spades};
+
+            for (int i = 0; i < suites.Length; i++)
+            {
+                for (int j = 0; j < ranks.Length; j++)
+                {
+                    _cards.Add(new Card(ranks[j], suites[i]));
+                }            
+            }
         }
 
         public void MixDeck()
@@ -281,7 +255,7 @@ namespace Задание6_4
 
         public void ShowCard()
         {
-            Console.WriteLine($"|{_rank}|");
+            Console.WriteLine($"|{_rank}|{_suite}|");
         }
     }
 }
