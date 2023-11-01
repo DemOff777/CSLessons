@@ -13,9 +13,9 @@ namespace Задание6_4
             const string CommandShowDeck = "4";
             const string CommandExit = "5";
 
-            CardDeck playDeck  = new CardDeck();
+            Deck playDeck  = new Deck();
 
-            Players players = new Players();
+            GamingTable players = new GamingTable();
 
             playDeck.FillDeck();
             playDeck.MixDeck();
@@ -41,48 +41,49 @@ namespace Задание6_4
                 switch(userInput)
                 {
                     case(CommandTakePlayer):
-                        players.TakePlayerCards(players.TryTakePlayer(), playDeck.TryGiveCard());
+                        players.TakePlayerCards(players.TryTakePlayer(), playDeck.TryGiveCards());
                         break;
-
                     case(CommandAddPlayer):
                         players.AddPlayer();
                         break;
-
                     case(CommandShowPlayers):
                         players.ShowPlayers();
                         break;
                     case (CommandShowDeck):
                         playDeck.ShowDeck();
                         break;
-
                     case (CommandExit):
                         isWork = false; 
+                        break;
+                    default:
+                        Console.WriteLine("Неверный формат ввода");
                         break;
                 }
             }
         }
     }
 
-    class Player
-    {       
+    public class Player
+    {
+        private List<Card> _cardsInHand;
+
         public Player(string playersName, List<Card> cardsInHand)
         {
-            PlayerName = playersName;
-            CardsInHand = cardsInHand;
+            Name = playersName;
+            _cardsInHand = cardsInHand;
         }
 
-        public string PlayerName { get; private set; }
-        public List<Card> CardsInHand { get; private set; } = new List<Card>();
+        public string Name { get; private set; }       
 
-        public void ShowPlayerData()
+        public void ShowData()
         {
-            Console.WriteLine($"Имя игрока - {PlayerName}");
+            Console.WriteLine($"Имя игрока - {Name}");
             
-            if( CardsInHand.Count > 0)
+            if( _cardsInHand.Count > 0)
             {
                 Console.WriteLine($"В руке находятся карты:");
 
-                foreach (Card card in CardsInHand)
+                foreach (Card card in _cardsInHand)
                 {
                     card.ShowCard();
                 }
@@ -92,9 +93,14 @@ namespace Задание6_4
                 Console.WriteLine("Карты в руке отсутствуют");
             }
         }
+
+        public void TakeCards(List<Card> cards)
+        {
+            _cardsInHand = cards;
+        }
     }
 
-    class Players
+    public class GamingTable
     {
         List<Player> _players = new List<Player>();
 
@@ -109,12 +115,14 @@ namespace Задание6_4
         {
             foreach (Player player in _players)
             {
-                player.ShowPlayerData();
+                player.ShowData();
             }
         }
 
         public string TryTakePlayer()
         {
+            ShowPlayers();
+
             Console.WriteLine("Введите имя игрока");
 
             string playerNameInput;
@@ -125,9 +133,9 @@ namespace Задание6_4
 
             for (int i = 0; i < _players.Count; i++)
             {
-                if (_players[i].PlayerName.ToLower() == playerNameInput.ToLower())
+                if (_players[i].Name.ToLower() == playerNameInput.ToLower())
                 {
-                    playerNameInput = _players[i].PlayerName;
+                    playerNameInput = _players[i].Name;
                     isPlayerTaked = true;
                 }
             }
@@ -144,56 +152,70 @@ namespace Задание6_4
         {
             for (int i = 0; i < _players.Count; i++)
             {
-                if (_players[i].PlayerName == playerName)
+                if (_players[i].Name == playerName)
                 {
-                    _players[i].CardsInHand.AddRange(cards);
+                    _players[i].TakeCards(cards);
                 }
             }
         }
     }
 
-    class CardDeck
+    public class Deck
     {
-        List<Card> _cardDeck = new List<Card>();
+        List<Card> _cards = new List<Card>();
 
         public void FillDeck()
         {
-            _cardDeck.Add(new Card("Шестерка Треф"));
-            _cardDeck.Add(new Card("Семерка Треф"));
-            _cardDeck.Add(new Card("Восьмерка Треф"));
-            _cardDeck.Add(new Card("Девятка Треф"));
-            _cardDeck.Add(new Card("Десятка Треф"));
-            _cardDeck.Add(new Card("Валет Треф"));
-            _cardDeck.Add(new Card("Дама Треф"));
-            _cardDeck.Add(new Card("Король Треф"));
-            _cardDeck.Add(new Card("Туз Треф"));
-            _cardDeck.Add(new Card("Шестерка Пик"));
-            _cardDeck.Add(new Card("Семерка Пик"));
-            _cardDeck.Add(new Card("Восьмерка Пик"));
-            _cardDeck.Add(new Card("Девятка Пик"));
-            _cardDeck.Add(new Card("Десятка Пик"));
-            _cardDeck.Add(new Card("Валет Пик"));
-            _cardDeck.Add(new Card("Дама Пик"));
-            _cardDeck.Add(new Card("Король Пик"));
-            _cardDeck.Add(new Card("Туз Пик"));
-            _cardDeck.Add(new Card("Шестерка Червей"));
-            _cardDeck.Add(new Card("Семерка Червей"));
-            _cardDeck.Add(new Card("Восьмерка Червей"));
-            _cardDeck.Add(new Card("Девятка Червей"));
-            _cardDeck.Add(new Card("Десятка Червей"));
-            _cardDeck.Add(new Card("Валет Червей"));
-            _cardDeck.Add(new Card("Дама Червей"));
-            _cardDeck.Add(new Card("Король Червей"));
-            _cardDeck.Add(new Card("Туз Червей"));
-            _cardDeck.Add(new Card("Шестерка Бубей"));
-            _cardDeck.Add(new Card("Семерка Бубей"));
-            _cardDeck.Add(new Card("Восьмерка Бубей"));
-            _cardDeck.Add(new Card("Девятка Бубей"));
-            _cardDeck.Add(new Card("Десятка Бубей"));
-            _cardDeck.Add(new Card("Валет Бубей"));
-            _cardDeck.Add(new Card("Дама Бубей"));
-            _cardDeck.Add(new Card("Король Бубей"));
-            _cardDeck.Add(new Card("Туз Бубей"));
+            string six = "Шестерка";
+            string seven = "Семерка";
+            string eigth = "Восьмерка";
+            string nine = "Девятка";
+            string ten = "Десятка";
+            string jack = "Валет";
+            string queen = "Дама";
+            string king = "Король";
+            string ace = "Туз";
+            string clubs = "Треф";
+            string diamonds = "Бубей";
+            string hearts = "Червей";
+            string spades = "Пик";
+
+            _cards.Add(new Card(six, clubs));
+            _cards.Add(new Card(seven, clubs));
+            _cards.Add(new Card(eigth, clubs));
+            _cards.Add(new Card(nine, clubs));
+            _cards.Add(new Card(ten, clubs));
+            _cards.Add(new Card(jack, clubs));
+            _cards.Add(new Card(queen, clubs));
+            _cards.Add(new Card(king, clubs));
+            _cards.Add(new Card(ace, clubs));
+            _cards.Add(new Card(six, diamonds));
+            _cards.Add(new Card(seven, diamonds));
+            _cards.Add(new Card(eigth, diamonds));
+            _cards.Add(new Card(nine, diamonds));
+            _cards.Add(new Card(ten, diamonds));
+            _cards.Add(new Card(jack, diamonds));
+            _cards.Add(new Card(queen, diamonds));
+            _cards.Add(new Card(king, diamonds));
+            _cards.Add(new Card(ace, diamonds));
+            _cards.Add(new Card(six, hearts));
+            _cards.Add(new Card(seven, hearts));
+            _cards.Add(new Card(eigth, hearts));
+            _cards.Add(new Card(nine, hearts));
+            _cards.Add(new Card(ten, hearts));
+            _cards.Add(new Card(jack, hearts));
+            _cards.Add(new Card(queen, hearts));
+            _cards.Add(new Card(king, hearts));
+            _cards.Add(new Card(ace, hearts));
+            _cards.Add(new Card(six, spades));
+            _cards.Add(new Card(seven, spades));
+            _cards.Add(new Card(eigth, spades));
+            _cards.Add(new Card(nine, spades));
+            _cards.Add(new Card(ten, spades));
+            _cards.Add(new Card(jack, spades));
+            _cards.Add(new Card(queen, spades));
+            _cards.Add(new Card(king, spades));
+            _cards.Add(new Card(ace, spades));
         }
 
         public void MixDeck()
@@ -204,24 +226,24 @@ namespace Задание6_4
 
             int temporaryCardIndex;
 
-            for (int i = 0; i < _cardDeck.Count; i++)
+            for (int i = 0; i < _cards.Count; i++)
             {
-                temporaryCardRank = _cardDeck[i];
-                temporaryCardIndex = random.Next(_cardDeck.Count);
-                _cardDeck[i] = _cardDeck[temporaryCardIndex];
-                _cardDeck[temporaryCardIndex] = temporaryCardRank;
+                temporaryCardRank = _cards[i];
+                temporaryCardIndex = random.Next(_cards.Count);
+                _cards[i] = _cards[temporaryCardIndex];
+                _cards[temporaryCardIndex] = temporaryCardRank;
             }
         }
 
         public void ShowDeck()
         {
-            foreach (Card card in _cardDeck)
+            foreach (Card card in _cards)
             {
                 card.ShowCard();
             }
         }
 
-        public List<Card> TryGiveCard()
+        public List<Card> TryGiveCards()
         {
             List<Card> cards = new List<Card>();
 
@@ -229,12 +251,12 @@ namespace Задание6_4
             
             int.TryParse(Console.ReadLine(), out int userInput);
 
-            if (_cardDeck.Count >= userInput)
+            if (_cards.Count >= userInput)
             {
                 for (int i = 0; i < userInput; i++)
                 {
-                    cards.Add(_cardDeck[0]);
-                    _cardDeck.RemoveAt(0);
+                    cards.Add(_cards[0]);
+                    _cards.RemoveAt(0);
                 }
             }
             else
@@ -246,13 +268,15 @@ namespace Задание6_4
         }
     }
     
-    class Card
+    public class Card
     {
         private string _rank;
+        private string _suite;
 
-        public Card(string rank)
+        public Card(string rank, string suite)
         {
             _rank = rank;
+            _suite = suite;
         }
 
         public void ShowCard()

@@ -122,7 +122,7 @@ namespace Задание6_3
             string userName = Console.ReadLine();
 
             Console.WriteLine("Введите уровень игрока");
-            int userLevel = TryInput();
+            int userLevel = GetInput();
 
             bool isBanned = false ;
 
@@ -138,11 +138,7 @@ namespace Задание6_3
 
         public void RemovePlayerByNumber()
         {
-            Player player;
-
-            bool isSearchCorrect = TryGetPlayer(out player);
-
-            if (isSearchCorrect)
+            if (TryGetPlayer(out Player player))
             {
                 _players.Remove(player);
             }         
@@ -150,11 +146,7 @@ namespace Задание6_3
 
         public void BanPlayerByNumber()
         {
-            Player player;
-
-            bool isSearchCorrect = TryGetPlayer(out player);
-
-            if (isSearchCorrect)
+            if (TryGetPlayer(out Player player))
             {
                 player.Ban();
             }
@@ -162,17 +154,13 @@ namespace Задание6_3
 
         public void UnbanPlayerByNumber()
         {
-            Player player;
-
-            bool isSearchCorrect = TryGetPlayer(out player);
-
-            if (isSearchCorrect)
+            if (TryGetPlayer(out Player player))
             {
                 player.Unban();
             }
         }
 
-        private int TryInput()
+        private int GetInput()
         {
             int userInput = 0;
 
@@ -191,7 +179,7 @@ namespace Задание6_3
             bool isSearchCorrect = false;
 
             Console.WriteLine("Введите номер игрока");
-            int userUniqueNumber = TryInput();
+            int userUniqueNumber = GetInput();
 
             for (int i = 0; i < _players.Count; i++)
             {

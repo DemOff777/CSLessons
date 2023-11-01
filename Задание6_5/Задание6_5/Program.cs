@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Задание6_5
 {
@@ -57,26 +54,30 @@ namespace Задание6_5
 
     class Book
     {
-        public Book(string name, string autor, int releaseYear)
+        public Book(int index, string name, string autor, int releaseYear)
         {
+            Index = index;
             Name = name;
             Autor = autor;
             ReleaseYear = releaseYear;
         }
 
-        public string Name { get; set; }
-        public string Autor { get; set; }
-        public int ReleaseYear { get; set; }
+        public int Index { get; private set; }
+        public string Name { get; private set; }
+        public string Autor { get; private set; }
+        public int ReleaseYear { get; private set; }
 
         public void ShowBook()
         {
-            Console.WriteLine($"Название книги - {Name}, имя автора - {Autor}, год выпуска - {ReleaseYear}");
+            Console.WriteLine($"ID - {Index}, Название книги - {Name}, имя автора - {Autor}, год выпуска - {ReleaseYear}");
         }
     }
 
     class Library
     {
         private List<Book> _books = new List<Book>();
+
+        int _indexCounter = 1;
 
         public void AddBook()
         {
@@ -87,81 +88,84 @@ namespace Задание6_5
             string autor = Console.ReadLine();
 
             Console.WriteLine("Введите год выпуска книги");
-            int releaseYear = TryTakeInsert();
+            int releaseYear = GetNumber();
 
-            Book book = new Book(name, autor, releaseYear);
+            Book book = new Book(_indexCounter, name, autor, releaseYear);
+
+            _indexCounter++;
 
             _books.Add(book);
         }
 
-        public Book TryGetBook()
+        public void ShowFindBook()
         {
-            List<Book> books = _books;
-
-            Book book = null;
-
             const string CommandByName = "1";
             const string CommandByAutor = "2";
             const string CommandByReleaseYear = "3";
 
-            bool isBookGet = false;
+            Console.WriteLine("Введите параметр по которому будет осуществляться поиск:");
+            Console.WriteLine($"По названию книги - {CommandByName}");
+            Console.WriteLine($"По имени автора книги - {CommandByAutor}");
+            Console.WriteLine($"По году выпуска книги - {CommandByReleaseYear}");
 
-            while (isBookGet == false)
+            string userInput = Console.ReadLine();
+
+            switch (userInput)
             {
-                Console.WriteLine("Введите параметр по которому будет осуществляться поиск:");
-                Console.WriteLine($"По названию книги - {CommandByName}");
-                Console.WriteLine($"По имени автора книги - {CommandByAutor}");
-                Console.WriteLine($"По году выпуска книги - {CommandByReleaseYear}");
-
-                string userInput = Console.ReadLine();
-
-                switch (userInput)
-                {
-                    case CommandByName:
-                        book = SortListByName(ref isBookGet, ref books);
-                        break;
-                    case CommandByAutor:
-                        book = SortListByAutor(ref isBookGet, ref books);
-                        break;
-                    case CommandByReleaseYear:
-                        book = SortListByReleaseYear(ref isBookGet, ref books);
-                        break;
-                    default:
-                        Console.WriteLine("Неправильный формат ввода");
-                        break;
-                }
+                case CommandByName:
+                    ShowByName();
+                    break;
+                case CommandByAutor:
+                    ShowByAutor();
+                    break;
+                case CommandByReleaseYear:
+                    ShowByReleaseYear();
+                    break;
+                default:
+                    Console.WriteLine("Неправильный формат ввода");
+                    break;
             }
-
-            return book;
         }
 
         public void RemoveBook()
         {
-            _books.Remove(TryGetBook());
-            Console.WriteLine("Книга удалена");
+            Console.WriteLine("Введите номер книги:");
+            int userInput = GetNumber();
+
+            if (userInput < _indexCounter)
+            {
+                for (int i = 0; i < _books.Count; i++)
+                {
+                    if (_books[i].Index == userInput)
+                    {
+                        _books.Remove(_books[i]);
+                    }
+                }
+
+                Console.WriteLine("Книга удалена");
+            }
+            else
+            {
+                Console.WriteLine("Книга с таким номером не найдена");
+            }
         }
 
-        public Book SortListByName(ref bool isBookGet, ref List<Book> books)
+        public void ShowByName()
         {
-            List<Book> temporaryBooks = new List<Book>();
-            
-            Book book = null;
+            List<Book> temporaryBooks = null;
 
             Console.WriteLine("Введите название книги");
             string userInput = Console.ReadLine();
 
-            for (int i = 0; i < books.Count; i++)
+            for (int i = 0; i < _books.Count; i++)
             {
-                if (books[i].Name == userInput)
+                if (_books[i].Name == userInput)
                 {
-                    temporaryBooks.Add(books[i]);
-                    isBookGet = true;
+                    temporaryBooks.Add(_books[i]);
                 }
             }
 
-            books = temporaryBooks;
-
-            if (isBookGet == false)
+            if (temporaryBooks == null)
             {
                 Console.WriteLine("Книг с таким названием не найдено");
             }
@@ -169,145 +173,78 @@ namespace Задание6_5
             {
                 Console.WriteLine("Найдены книги:");
 
-                foreach (Book findBook in books)
-                {
-                    findBook.ShowBook();
-                }
+                ShowBooks(temporaryBooks);
             }
-
-            return book = GetBook(ref isBookGet, books);
         }
 
-        public Book SortListByAutor(ref bool isBookGet, ref List<Book> books)
+        public void ShowByAutor()
         {
-            List<Book> temporaryBooks = new List<Book>();
-
-            Book book = null;
+            List<Book> temporaryBooks = null;
 
             Console.WriteLine("Введите имя автора книги");
             string userInput = Console.ReadLine();
 
-            for (int i = 0; i < books.Count; i++)
+            for (int i = 0; i < _books.Count; i++)
             {
-                if (books[i].Autor == userInput)
+                if (_books[i].Autor == userInput)
                 {
-                    temporaryBooks.Add(books[i]);
-                    isBookGet = true;
+                    temporaryBooks.Add(_books[i]);
                 }
             }
 
-            books = temporaryBooks;
-
-            if (isBookGet == false)
+            if (temporaryBooks == null)
             {
-                Console.WriteLine("Книг с таким названием не найдено");
+                Console.WriteLine("Книг такого автора не найдено");
             }
             else
             {
                 Console.WriteLine("Найдены книги:");
 
-                foreach (Book findBook in books)
-                {
-                    findBook.ShowBook();
-                }
+                ShowBooks(temporaryBooks);
             }
-
-            return book = GetBook(ref isBookGet, books);
         }
 
-        public Book SortListByReleaseYear(ref bool isBookGet, ref List<Book> books)
+        public void ShowByReleaseYear()
         {
-            List<Book> temporaryBooks = new List<Book>();
-
-            Book book = null;
+            List<Book> temporaryBooks = null;
 
             Console.WriteLine("Введите год выпуска книги");
-            int userInput = TryTakeInsert();
+            int userInput = GetNumber();
 
-            for (int i = 0; i < books.Count; i++)
+            for (int i = 0; i < _books.Count; i++)
             {
-                if (books[i].ReleaseYear == userInput)
+                if (_books[i].ReleaseYear == userInput)
                 {
-                    temporaryBooks.Add(books[i]);
-                    isBookGet = true;
+                    temporaryBooks.Add(_books[i]);
                 }
             }
 
-            books = temporaryBooks;
-
-            if (isBookGet == false)
+            if (temporaryBooks == null)
             {
-                Console.WriteLine("Книг с таким названием не найдено");
+                Console.WriteLine("Книг этого года выпуска не найдено");
             }
             else
             {
                 Console.WriteLine("Найдены книги:");
 
-                foreach (Book findBook in books)
-                {
-                    findBook.ShowBook();
-                }
+                ShowBooks(temporaryBooks);
             }
-
-            return book = GetBook(ref isBookGet, books);
-        }
-
-
-
-        public Book GetBook(ref bool isBookGet, List<Book> books)
-        {
-            Book book = null;
-
-            string сommandContinueResearch = "1";
-            string сommandGetBook = "2";
-
-            Console.WriteLine($"Продолжить сортировку - {сommandContinueResearch}");
-            Console.WriteLine($"Взять книгу - {сommandGetBook}");
-
-            string userInput = Console.ReadLine();
-
-            bool isInputCorect = false;
-
-            while (isInputCorect == false)
-            {
-                if (userInput == сommandContinueResearch)
-                {
-                    isBookGet = false;
-                    isInputCorect = true;
-                }
-
-                if (userInput == сommandGetBook)
-                {
-                    book = books[0];
-                    isInputCorect = true;
-                }
-                else
-                {
-                    Console.WriteLine("Неверный формат ввода");
-                }
-
-            }
-
-            return book;
-        }
-
-        public void ShowFindBook()
-        {
-            Book book = null;
-            book = TryGetBook();
-            Console.WriteLine("Ваша книга:");
-            book.ShowBook();
         }
 
         public void ShowAllBooks()
         {
-            foreach (Book book in _books)
+            ShowBooks(_books);
+        }
+
+        public void ShowBooks(List<Book> books)
+        {
+            foreach (Book book in books)
             {
                 book.ShowBook();
             }
         }
 
-        private int TryTakeInsert()
+        private int GetNumber()
         {
             int userInsert = 0;
 
