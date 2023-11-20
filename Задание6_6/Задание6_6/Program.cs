@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Задание6_6
 {
@@ -14,11 +11,10 @@ namespace Задание6_6
             const string CommandShowPlayerBag = "2";
             const string CommandBuyProduct = "3";
 
-            Player player = new Player();
+            Player player = new Player(UserUtils.FillMoneyAmount());
 
             Seller seller = new Seller();
 
-            player.FillMoneyAmount();
             seller.FillBag();
 
             while (player.Money > 0)
@@ -34,13 +30,13 @@ namespace Задание6_6
                 switch(userInput )
                 {
                     case CommandShowSellerBag:
-                        seller.ShowBag();
+                        seller.ShowInventory();
                         break;
                     case CommandShowPlayerBag:
                         player.ShowInventory();
                         break;
                     case CommandBuyProduct:
-                        player.TakeProduct(seller.GetProduct(player));
+                        player.BuyProduct(seller.GetProduct(player));
                         break;
                 }
             }
@@ -49,9 +45,9 @@ namespace Задание6_6
         } 
     }
 
-    public abstract class Menu
+    static class UserUtils
     {
-        public void ClearInventory()
+        public static void ClearInventory()
         {
             Console.SetCursorPosition(0, 3);
             Console.WriteLine("                                                     ");
@@ -78,7 +74,7 @@ namespace Задание6_6
             Console.SetCursorPosition(0, 3);
         }
 
-        public void ClearMenu()
+        public static void ClearMenu()
         {
             Console.SetCursorPosition(0, 0);
             Console.WriteLine("                                                     ");
@@ -86,6 +82,36 @@ namespace Задание6_6
             Console.WriteLine("                                                     ");
             Console.WriteLine("                                                     ");
             Console.SetCursorPosition(0, 0);
+        }
+        public static int FillMoneyAmount()
+        {
+            int money;
+            int moneyMinAmount = 1000;
+            int moneyMaxAmount = 5000;
+
+            Random random = new Random();
+
+            money = random.Next(moneyMinAmount, moneyMaxAmount + 1);
+
+            return money;
+        }
+    }
+
+    public class Store
+    {
+        public List<Product> Inventory { get; private set; } = new List<Product>();
+
+        public void ShowInventory()
+        {
+            UserUtils.ClearInventory();
+            Console.SetCursorPosition(0, 4);
+
+            foreach (Product product in Inventory)
+            {
+                product.Show();
+            }
+
+            Console.SetCursorPosition(0, 4);
         }
     }
 
@@ -106,10 +132,8 @@ namespace Задание6_6
         }
     }
 
-    public class Seller : Menu
+    public class Seller : Store
     {
-        private List<Product> _bag = new List<Product>();
-
         public void FillBag()
         {
             int sellersBagCapacity = 20;
@@ -120,21 +144,8 @@ namespace Задание6_6
 
             for (int i = 0; i < sellersBagCapacity; i++)
             {
-                _bag.Add(new Product($"{i}", priceRandom.Next(priceMinVolue, priceMaxVolue + 1)));
+                Inventory.Add(new Product($"{i}", priceRandom.Next(priceMinVolue, priceMaxVolue + 1)));
             }
-        }
-
-        public void ShowBag()
-        {
-            ClearInventory();
-            Console.SetCursorPosition(0, 4);
-
-            foreach (Product product in _bag)
-            {
-                product.Show();
-            }
-
-            Console.SetCursorPosition(0, 4);
         }
 
         public Product GetProduct(Player player)
@@ -143,23 +154,23 @@ namespace Задание6_6
 
             string userInput;
 
-            ClearMenu();
+            UserUtils.ClearMenu();
             Console.WriteLine("Введите номер товара");
             Console.SetCursorPosition(0, 3);
 
             userInput = Console.ReadLine();
 
-            for (int i = 0; i < _bag.Count; i++)
+            for (int i = 0; i < Inventory.Count; i++)
             {
-                if (userInput == _bag[i].Name)
+                if (userInput == Inventory[i].Name)
                 {
-                    product = _bag[i];
-                    _bag.RemoveAt(i);
+                    product = Inventory[i];
+                    Inventory.RemoveAt(i);
                     return product;
                 }
             }
 
-            ClearMenu();
+            UserUtils.ClearMenu();
             Console.WriteLine("Такого товара не найдено. Нажмите любую клавишу");
             Console.ReadKey();
 
@@ -167,22 +178,13 @@ namespace Задание6_6
         }
     }
 
-    public class Player : Menu
+    public class Player : Store
     {
-        private int _moneyToPay;
-
-        private List<Product> _inventory = new List<Product>();
-
         public int Money { get; private set; }
 
-        public void FillMoneyAmount()
+        public Player(int money)
         {
-            int moneyMinAmount = 1000;
-            int moneyMaxAmount = 5000;
-
-            Random random = new Random();
-
-            Money = random.Next(1000, 5000 + 1);
+            Money = money;
         }
 
         public void ShowMoney()
@@ -194,33 +196,22 @@ namespace Задание6_6
             Console.SetCursorPosition(0, 0);
         }
 
-        public void ShowInventory()
+        public void BuyProduct(Product product)
         {
-            ClearInventory();
-            Console.SetCursorPosition(0, 4);
+            int moneyToPay;
 
-            foreach (Product product in _inventory)
-            {
-                product.Show();
-            }
-
-            Console.SetCursorPosition(0, 4);
-        }
-
-        public void TakeProduct(Product product)
-        {
             if (product != null)
             {
-                _moneyToPay = product.Price;
+                moneyToPay = product.Price;
 
-                if (Money > _moneyToPay)
+                if (Money > moneyToPay)
                 {
-                    _inventory.Add(product);
-                    Money -= _moneyToPay;
+                    Inventory.Add(product);
+                    Money -= moneyToPay;
                 }
                 else
                 {
-                    Money -= _moneyToPay;
+                    Money -= moneyToPay;
                 }
             }
         }

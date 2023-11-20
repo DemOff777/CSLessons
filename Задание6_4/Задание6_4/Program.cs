@@ -196,16 +196,16 @@ namespace Задание6_4
         {
             Random random = new Random();
 
-            Card temporaryCardRank;
+            Card temporaryCard;
 
             int temporaryCardIndex;
 
             for (int i = 0; i < _cards.Count; i++)
             {
-                temporaryCardRank = _cards[i];
+                temporaryCard = _cards[i];
                 temporaryCardIndex = random.Next(_cards.Count);
                 _cards[i] = _cards[temporaryCardIndex];
-                _cards[temporaryCardIndex] = temporaryCardRank;
+                _cards[temporaryCardIndex] = temporaryCard;
             }
         }
 
