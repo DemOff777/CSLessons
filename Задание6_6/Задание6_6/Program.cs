@@ -29,12 +29,10 @@ namespace Задание6_6
                 switch(userInput )
                 {
                     case CommandShowSellerBag:
-                        seller.ShowInventory();
-                        seller.ShowMoney();
+                        seller.ShowStats();
                         break;
                     case CommandShowPlayerBag:
-                        player.ShowInventory();
-                        player.ShowMoney();
+                        player.ShowStats();
                         break;
                     case CommandBuyProduct:
                         seller.TakeMoney(player.BuyProduct(seller.GetProduct()));
@@ -98,7 +96,7 @@ namespace Задание6_6
 
         public int Money;
 
-        public void ShowInventory()
+        public void ShowStats()
         {
             UserUtils.ClearInventory();
             Console.SetCursorPosition(0, 4);
@@ -108,11 +106,6 @@ namespace Задание6_6
                 product.Show();
             }
 
-            Console.SetCursorPosition(0, 4);
-        }
-
-        public void ShowMoney()
-        {
             Console.SetCursorPosition(0, 25);
             Console.WriteLine("               ");
             Console.SetCursorPosition(0, 25);
