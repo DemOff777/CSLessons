@@ -10,97 +10,136 @@ namespace Задание6_7
     {
         static void Main(string[] args)
         {
-            Train train = new Train();
+            Depot depot = new Depot();
 
             bool isWork = true;
 
+            Console.WriteLine("Отправившихся поездов нет.");
+
             while (isWork)
             {
-                train.ShowPassengers();
-
-                Console.SetCursorPosition(0, 17);
-                Console.WriteLine("Введите направление");
-                string userInput = Console.ReadLine();
-                train.TakeDirection(userInput);
-
-                train.TakePassengers(train.GetPassengers());
+                depot.CreateTrain();
+                depot.TakeCurrentTrain().SetDirection();
+                depot.TakeCurrentTrain().GetPassengers();
 
                 Console.WriteLine("Для отправки поезда нажмите любую клавишу");
                 Console.ReadKey();
                 Console.Clear();
+
+                depot.TakeCurrentTrain().ShowDirection();
+                depot.TakeCurrentTrain().ShowPassengers();
             }
+        }
+    }
+
+    class Depot
+    {
+        private Stack<Train> _trains = new Stack<Train>();
+
+        public void CreateTrain() 
+        { 
+            Train train = new Train();
+
+            _trains.Push(train);
+        }
+
+        public Train TakeCurrentTrain()
+        {
+            return _trains.Peek();
         }
     }
 
     class Train 
     {
-        List<int> _carriages = new List<int>();
+        private List<int> _carriages = new List<int>();
 
-        private int _carriageMaxPassengerAmount = 54;
-        private string _direction;
+        Direction _direction = new Direction();
 
-        public void TakeDirection(string userInput)
+        public void GetPassengers()
         {
-            _direction = userInput;
-        }
-
-        public List<int> GetPassengers()
-        {
-            List<int> carriages = new List<int>();
-
             int passengersMinVolue = 50;
             int passengersMaxVolue = 500;
-            int passengersInCarriageMinAmount = _carriageMaxPassengerAmount / 2;
-            int passengersInCarriageMaxAmount = _carriageMaxPassengerAmount;
+            int passengersInCarriageMinAmount = 27;
+            int passengersInCarriageMaxAmount = 54;
             int passengersAmount;
             int temporaryPassengersAmountInCarriage;
 
-            Random randomPassengerAmount = new Random();
-            Random randomPassengersInCarriage = new Random();
+            Random random = new Random();
 
-            passengersAmount = randomPassengerAmount.Next(passengersMinVolue, passengersMaxVolue);
+            passengersAmount = random.Next(passengersMinVolue, passengersMaxVolue);
 
             Console.WriteLine($"{passengersAmount} Пассажиров купили бидеты");
 
             while(passengersAmount > 0)
             {
-                temporaryPassengersAmountInCarriage = randomPassengersInCarriage.Next(passengersInCarriageMinAmount, passengersInCarriageMaxAmount + 1);
+                temporaryPassengersAmountInCarriage = random.Next(passengersInCarriageMinAmount, passengersInCarriageMaxAmount + 1);
 
                 if (passengersAmount > temporaryPassengersAmountInCarriage)
                 {
-                    carriages.Add(temporaryPassengersAmountInCarriage);
+                    _carriages.Add(temporaryPassengersAmountInCarriage);
                     passengersAmount -= temporaryPassengersAmountInCarriage;
                 }
                 else
                 {
-                    carriages.Add(passengersAmount);
+                    _carriages.Add(passengersAmount);
                     break;
                 }
             }
-
-            return carriages;
-        }
-
-        public void TakePassengers(List<int> carriages)
-        {
-            _carriages = carriages;
         }
 
         public void ShowPassengers()
         {
-            if (_carriages.Count > 0 )
-            {
-                Console.WriteLine($"Скорый поезд - {_direction}");
+            for (int i = 0; i < _carriages.Count; i++)
+            {                   
+                Console.WriteLine($"В вагоне {i + 1} - {_carriages[i]}человек");
+            }
+        }
 
-                for (int i = 0; i < _carriages.Count; i++)
-                {                   
-                    Console.WriteLine($"В вагоне {i + 1} - {_carriages[i]}человек");
+        public void ShowDirection()
+        {
+            _direction.ShowPoints();
+        }
+
+        public void SetDirection()
+        {
+            _direction.GetPoints();
+        }
+    }
+
+    class Direction
+    {
+        private string _departurePoint;
+        private string _arrivalPoint;
+
+        public void GetPoints()
+        {
+            bool isPointsCorrect = false;
+
+            while (isPointsCorrect == false)
+            {
+                Console.SetCursorPosition(0, 17);
+                Console.WriteLine("Введите место отправки");
+                string userInput = Console.ReadLine();
+                _departurePoint = userInput;
+
+                Console.WriteLine("Введите место прибытия");
+                userInput = Console.ReadLine();
+
+                if (_departurePoint != userInput)
+                {
+                    _arrivalPoint = userInput;
+                    isPointsCorrect = true;
+                }
+                else
+                {
+                    Console.WriteLine("Пункт отправки и пункт назначения совпадают, попробуйте другой вариант");
                 }
             }
-            else
-            {
-                Console.WriteLine("Отправившихся поездов нет");
-            }
+        }
+
+        public void ShowPoints()
+        {
+            Console.WriteLine($"пункт отправления - {_departurePoint} | пункт прибытия - {_arrivalPoint}");
         }
     }
 }

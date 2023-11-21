@@ -19,8 +19,7 @@ namespace Задание6_6
 
             while (player.Money > 0)
             {
-                player.ShowMoney();
-
+                UserUtils.ClearMenu();
                 Console.WriteLine($"Посмотреть сумку продавца - {CommandShowSellerBag}");
                 Console.WriteLine($"Посмотреть инвентарь - {CommandShowPlayerBag}");
                 Console.WriteLine($"Купить товар - {CommandBuyProduct}");
@@ -31,12 +30,17 @@ namespace Задание6_6
                 {
                     case CommandShowSellerBag:
                         seller.ShowInventory();
+                        seller.ShowMoney();
                         break;
                     case CommandShowPlayerBag:
                         player.ShowInventory();
+                        player.ShowMoney();
                         break;
                     case CommandBuyProduct:
-                        player.BuyProduct(seller.GetProduct(player));
+                        seller.TakeMoney(player.BuyProduct(seller.GetProduct()));
+                        break;
+                    default:
+                        Console.WriteLine("Неверная команда");
                         break;
                 }
             }
@@ -49,38 +53,29 @@ namespace Задание6_6
     {
         public static void ClearInventory()
         {
+            int inventorySize = 21;
+
             Console.SetCursorPosition(0, 3);
-            Console.WriteLine("                                                     ");
-            Console.WriteLine("                                                     ");
-            Console.WriteLine("                                                     ");
-            Console.WriteLine("                                                     ");
-            Console.WriteLine("                                                     ");
-            Console.WriteLine("                                                     ");
-            Console.WriteLine("                                                     ");
-            Console.WriteLine("                                                     ");
-            Console.WriteLine("                                                     ");
-            Console.WriteLine("                                                     ");
-            Console.WriteLine("                                                     ");
-            Console.WriteLine("                                                     ");
-            Console.WriteLine("                                                     ");
-            Console.WriteLine("                                                     ");
-            Console.WriteLine("                                                     ");
-            Console.WriteLine("                                                     ");
-            Console.WriteLine("                                                     ");
-            Console.WriteLine("                                                     ");
-            Console.WriteLine("                                                     ");
-            Console.WriteLine("                                                     ");
-            Console.WriteLine("                                                     ");
+
+            for (int i = 0; i < inventorySize; i++)
+            {
+                Console.WriteLine("                                                     ");
+            }
+
             Console.SetCursorPosition(0, 3);
         }
 
         public static void ClearMenu()
         {
+            int menuSize = 4;
+
             Console.SetCursorPosition(0, 0);
-            Console.WriteLine("                                                     ");
-            Console.WriteLine("                                                     ");
-            Console.WriteLine("                                                     ");
-            Console.WriteLine("                                                     ");
+
+            for (int i = 0; i < menuSize; i++)
+            {
+                Console.WriteLine("                                                     ");
+            }
+            
             Console.SetCursorPosition(0, 0);
         }
         public static int FillMoneyAmount()
@@ -97,9 +92,11 @@ namespace Задание6_6
         }
     }
 
-    public class Store
+    public class Character
     {
-        public List<Product> Inventory { get; private set; } = new List<Product>();
+        public List<Product> Inventory = new List<Product>();
+
+        public int Money;
 
         public void ShowInventory()
         {
@@ -112,6 +109,15 @@ namespace Задание6_6
             }
 
             Console.SetCursorPosition(0, 4);
+        }
+
+        public void ShowMoney()
+        {
+            Console.SetCursorPosition(0, 25);
+            Console.WriteLine("               ");
+            Console.SetCursorPosition(0, 25);
+            Console.WriteLine($"Деньги: {Money}");
+            Console.SetCursorPosition(0, 0);
         }
     }
 
@@ -132,7 +138,7 @@ namespace Задание6_6
         }
     }
 
-    public class Seller : Store
+    public class Seller : Character
     {
         public void FillBag()
         {
@@ -140,15 +146,15 @@ namespace Задание6_6
             int priceMinVolue = 20;
             int priceMaxVolue = 1000;
 
-            Random priceRandom = new Random();
+            Random random = new Random();
 
             for (int i = 0; i < sellersBagCapacity; i++)
             {
-                Inventory.Add(new Product($"{i}", priceRandom.Next(priceMinVolue, priceMaxVolue + 1)));
+                Inventory.Add(new Product($"{i}", random.Next(priceMinVolue, priceMaxVolue + 1)));
             }
         }
 
-        public Product GetProduct(Player player)
+        public Product GetProduct()
         {
             Product product = null;
 
@@ -176,29 +182,23 @@ namespace Задание6_6
 
             return product;
         }
+
+        public void TakeMoney(int money)
+        {
+            Money += money;
+        }
     }
 
-    public class Player : Store
+    public class Player : Character
     {
-        public int Money { get; private set; }
-
         public Player(int money)
         {
             Money = money;
         }
 
-        public void ShowMoney()
+        public int BuyProduct(Product product)
         {
-            Console.SetCursorPosition(0, 25);
-            Console.WriteLine("               ");
-            Console.SetCursorPosition(0, 25);
-            Console.WriteLine($"Деньги: {Money}");
-            Console.SetCursorPosition(0, 0);
-        }
-
-        public void BuyProduct(Product product)
-        {
-            int moneyToPay;
+            int moneyToPay = 0;
 
             if (product != null)
             {
@@ -214,6 +214,8 @@ namespace Задание6_6
                     Money -= moneyToPay;
                 }
             }
+
+            return moneyToPay;
         }
     }
 }
