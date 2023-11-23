@@ -11,13 +11,9 @@ namespace Задание6_6
             const string CommandShowPlayerBag = "2";
             const string CommandBuyProduct = "3";
 
-            Player player = new Player(UserUtils.FillMoneyAmount());
+            Shop shop = new Shop();
 
-            Seller seller = new Seller();
-
-            seller.FillBag();
-
-            while (player.Money > 0)
+            while (shop.GivePlayer().Money > 0)
             {
                 UserUtils.ClearMenu();
                 Console.WriteLine($"Посмотреть сумку продавца - {CommandShowSellerBag}");
@@ -29,13 +25,13 @@ namespace Задание6_6
                 switch(userInput )
                 {
                     case CommandShowSellerBag:
-                        seller.ShowStats();
+                        shop.GiveSeller().ShowStats();
                         break;
                     case CommandShowPlayerBag:
-                        player.ShowStats();
+                        shop.GivePlayer().ShowStats();
                         break;
                     case CommandBuyProduct:
-                        seller.TakeMoney(player.BuyProduct(seller.GetProduct()));
+                        shop.Trade();
                         break;
                     default:
                         Console.WriteLine("Неверная команда");
@@ -45,6 +41,33 @@ namespace Задание6_6
 
             Console.WriteLine("Деньги закончились - до свидания!");
         } 
+    }
+
+    class Shop
+    {
+        Player player = new Player(UserUtils.FillMoneyAmount(), null);
+
+        Seller seller = new Seller(0, UserUtils.FillInventory());
+        
+        public void Trade()
+        {
+            int moneyTemporary;
+            Product productTemporary;
+
+            productTemporary = seller.GiveProduct();
+            moneyTemporary = player.BuyProduct(productTemporary);
+            seller.TakeMoney(moneyTemporary);
+        }
+
+        public Player GivePlayer()
+        {
+            return player;
+        }
+
+        public Seller GiveSeller()
+        {
+            return seller;
+        }
     }
 
     static class UserUtils
@@ -57,7 +80,7 @@ namespace Задание6_6
 
             for (int i = 0; i < inventorySize; i++)
             {
-                Console.WriteLine("                                                     ");
+                Console.WriteLine($"{string.Join(" ", 53)}");
             }
 
             Console.SetCursorPosition(0, 3);
@@ -71,7 +94,7 @@ namespace Задание6_6
 
             for (int i = 0; i < menuSize; i++)
             {
-                Console.WriteLine("                                                     ");
+                Console.WriteLine($"{string.Join(" ", 53)}");
             }
             
             Console.SetCursorPosition(0, 0);
@@ -88,13 +111,31 @@ namespace Задание6_6
 
             return money;
         }
+
+        public static List<Product> FillInventory()
+        {
+            List<Product> inventory = new List<Product>();
+
+            int sellersBagCapacity = 20;
+            int priceMinVolue = 20;
+            int priceMaxVolue = 1000;
+
+            Random random = new Random();
+
+            for (int i = 0; i < sellersBagCapacity; i++)
+            {
+                inventory.Add(new Product($"{i}", random.Next(priceMinVolue, priceMaxVolue + 1)));
+            }
+
+            return inventory;
+        }
     }
 
     public class Character
     {
-        public List<Product> Inventory = new List<Product>();
+        protected List<Product> Inventory = new List<Product>();
 
-        public int Money;
+        protected int Money;
 
         public void ShowStats()
         {
@@ -133,21 +174,13 @@ namespace Задание6_6
 
     public class Seller : Character
     {
-        public void FillBag()
+        public Seller(int money, List<Product> inventory)
         {
-            int sellersBagCapacity = 20;
-            int priceMinVolue = 20;
-            int priceMaxVolue = 1000;
-
-            Random random = new Random();
-
-            for (int i = 0; i < sellersBagCapacity; i++)
-            {
-                Inventory.Add(new Product($"{i}", random.Next(priceMinVolue, priceMaxVolue + 1)));
-            }
+            Money = money;
+            Inventory = inventory;
         }
 
-        public Product GetProduct()
+        public Product GiveProduct()
         {
             Product product = null;
 
@@ -184,9 +217,10 @@ namespace Задание6_6
 
     public class Player : Character
     {
-        public Player(int money)
+        public Player(int money, List<Product> inventory)
         {
             Money = money;
+            Inventory = inventory;
         }
 
         public int BuyProduct(Product product)
