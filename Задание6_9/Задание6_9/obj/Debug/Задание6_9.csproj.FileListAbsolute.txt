@@ -1,0 +1,8 @@
+C:\Users\Asus\Documents\Задачи C#\Задание6_9\Задание6_9\bin\Debug\Задание6_9.exe.config
+C:\Users\Asus\Documents\Задачи C#\Задание6_9\Задание6_9\bin\Debug\Задание6_9.exe
+C:\Users\Asus\Documents\Задачи C#\Задание6_9\Задание6_9\bin\Debug\Задание6_9.pdb
+C:\Users\Asus\Documents\Задачи C#\Задание6_9\Задание6_9\obj\Debug\Задание6_9.csproj.AssemblyReference.cache
+C:\Users\Asus\Documents\Задачи C#\Задание6_9\Задание6_9\obj\Debug\Задание6_9.csproj.SuggestedBindingRedirects.cache
+C:\Users\Asus\Documents\Задачи C#\Задание6_9\Задание6_9\obj\Debug\Задание6_9.csproj.CoreCompileInputs.cache
+C:\Users\Asus\Documents\Задачи C#\Задание6_9\Задание6_9\obj\Debug\Задание6_9.exe
+C:\Users\Asus\Documents\Задачи C#\Задание6_9\Задание6_9\obj\Debug\Задание6_9.pdb
