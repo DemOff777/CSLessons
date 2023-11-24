@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Задание6_6
 {
@@ -45,7 +46,7 @@ namespace Задание6_6
 
     class Shop
     {
-        Player player = new Player(UserUtils.FillMoneyAmount(), null);
+        Player player = new Player(UserUtils.FillMoneyAmount(), new List<Product>());
 
         Seller seller = new Seller(0, UserUtils.FillInventory());
         
@@ -80,7 +81,7 @@ namespace Задание6_6
 
             for (int i = 0; i < inventorySize; i++)
             {
-                Console.WriteLine($"{string.Join(" ", 53)}");
+                Console.WriteLine($"{string.Join("", Enumerable.Repeat(" ", 53))}");
             }
 
             Console.SetCursorPosition(0, 3);
@@ -94,7 +95,7 @@ namespace Задание6_6
 
             for (int i = 0; i < menuSize; i++)
             {
-                Console.WriteLine($"{string.Join(" ", 53)}");
+                Console.WriteLine($"{string.Join("", Enumerable.Repeat(" ", 53))}");
             }
             
             Console.SetCursorPosition(0, 0);
@@ -135,7 +136,7 @@ namespace Задание6_6
     {
         protected List<Product> Inventory = new List<Product>();
 
-        protected int Money;
+        public int Money { get; protected set; }
 
         public void ShowStats()
         {
