@@ -10,7 +10,9 @@ namespace Задание6_9
         {
             SuperMarket superMarket = new SuperMarket();
 
-            superMarket.AddCustomers();
+            Random random = new Random();
+
+            superMarket.AddCustomers(random);
 
             while (superMarket.GiveRemainingCustomersVolue() > 0)
             {
@@ -116,7 +118,7 @@ namespace Задание6_9
             _name = $"покупатель {name}";
         }
 
-        public void GetProducts()
+        public void GetProducts(Random random)
         {
             int minProductVolue = 5;
             int maxProductVolue = 10;
@@ -124,8 +126,6 @@ namespace Задание6_9
             int maxProductPrice = 700;
             int productsVolue;
             int productPrice;
-
-            Random random = new Random();
 
             productsVolue = random.Next(minProductVolue, maxProductVolue + 1);
 
@@ -146,12 +146,10 @@ namespace Задание6_9
             _products.RemoveAt(randomProductIndex);
         }
 
-        public void GetMoney()
+        public void GetMoney(Random random)
         {
             int minMoneyVolue = 500;
             int maxMoneyVolue = 1000;
-
-            Random random = new Random();
 
             _money = random.Next(minMoneyVolue, maxMoneyVolue + 1);
 
@@ -204,15 +202,15 @@ namespace Задание6_9
 
         int _money;
 
-        public void AddCustomers()
+        public void AddCustomers(Random random)
         {
             int CustomersVolue = 10;
 
             for (int i = 0; i < CustomersVolue; i++)
             {
                 Customer customer = new Customer($"{i + 1}");
-                customer.GetProducts();
-                customer.GetMoney();
+                customer.GetProducts(random);
+                customer.GetMoney(random);
                 _customers.Enqueue(customer);
             }
         }
