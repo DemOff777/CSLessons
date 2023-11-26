@@ -26,10 +26,10 @@ namespace Задание6_6
                 switch(userInput )
                 {
                     case CommandShowSellerBag:
-                        shop.GiveSeller().ShowStats();
+                        shop.ShowSellerStats();
                         break;
                     case CommandShowPlayerBag:
-                        shop.GivePlayer().ShowStats();
+                        shop.ShowPlayerStats();
                         break;
                     case CommandBuyProduct:
                         shop.Trade();
@@ -44,35 +44,10 @@ namespace Задание6_6
         } 
     }
 
-    class Shop
-    {
-        Player player = new Player(UserUtils.FillMoneyAmount(), new List<Product>());
-
-        Seller seller = new Seller(0, UserUtils.FillInventory());
-        
-        public void Trade()
-        {
-            int moneyTemporary;
-            Product productTemporary;
-
-            productTemporary = seller.GiveProduct();
-            moneyTemporary = player.BuyProduct(productTemporary);
-            seller.TakeMoney(moneyTemporary);
-        }
-
-        public Player GivePlayer()
-        {
-            return player;
-        }
-
-        public Seller GiveSeller()
-        {
-            return seller;
-        }
-    }
-
     static class UserUtils
     {
+        private static Random _random = new Random();
+
         public static void ClearInventory()
         {
             int inventorySize = 21;
@@ -97,18 +72,17 @@ namespace Задание6_6
             {
                 Console.WriteLine($"{string.Join("", Enumerable.Repeat(" ", 53))}");
             }
-            
+
             Console.SetCursorPosition(0, 0);
         }
+
         public static int FillMoneyAmount()
         {
             int money;
             int moneyMinAmount = 1000;
             int moneyMaxAmount = 5000;
 
-            Random random = new Random();
-
-            money = random.Next(moneyMinAmount, moneyMaxAmount + 1);
+            money = _random.Next(moneyMinAmount, moneyMaxAmount + 1);
 
             return money;
         }
@@ -121,14 +95,61 @@ namespace Задание6_6
             int priceMinVolue = 20;
             int priceMaxVolue = 1000;
 
-            Random random = new Random();
-
             for (int i = 0; i < sellersBagCapacity; i++)
             {
-                inventory.Add(new Product($"{i}", random.Next(priceMinVolue, priceMaxVolue + 1)));
+                inventory.Add(new Product($"{i}", _random.Next(priceMinVolue, priceMaxVolue + 1)));
             }
 
             return inventory;
+        }
+
+    }
+
+    class Shop
+    {
+        private Player _player = new Player(UserUtils.FillMoneyAmount(), new List<Product>());
+
+        private Seller _seller = new Seller(0, UserUtils.FillInventory());
+        
+        public void Trade()
+        {
+            int moneyTemporary;
+            Product productTemporary;
+
+            productTemporary = _seller.TryGiveProduct();
+            moneyTemporary = _player.CheckMoneyAmount(productTemporary);
+
+            if (moneyTemporary > 0)
+            {
+                _player.GiveMoney(moneyTemporary);
+                _seller.TakeMoney(moneyTemporary);
+                _seller.GiveProduct(productTemporary);
+                _player.TakeProduct(productTemporary);
+            }
+            else
+            {
+                _player.GiveMoney(moneyTemporary);
+            }
+        }
+
+        public Player GivePlayer()
+        {
+            return _player;
+        }
+
+        public Seller GiveSeller()
+        {
+            return _seller;
+        }
+
+        public void ShowSellerStats()
+        {
+            _seller.ShowStats();
+        }
+
+        public void ShowPlayerStats()
+        {
+            _player.ShowStats();
         }
     }
 
@@ -181,7 +202,7 @@ namespace Задание6_6
             Inventory = inventory;
         }
 
-        public Product GiveProduct()
+        public Product TryGiveProduct()
         {
             Product product = null;
 
@@ -198,7 +219,6 @@ namespace Задание6_6
                 if (userInput == Inventory[i].Name)
                 {
                     product = Inventory[i];
-                    Inventory.RemoveAt(i);
                     return product;
                 }
             }
@@ -208,6 +228,11 @@ namespace Задание6_6
             Console.ReadKey();
 
             return product;
+        }
+
+        public void GiveProduct(Product product)
+        {
+            Inventory.Remove(product);
         }
 
         public void TakeMoney(int money)
@@ -224,26 +249,26 @@ namespace Задание6_6
             Inventory = inventory;
         }
 
-        public int BuyProduct(Product product)
+        public int CheckMoneyAmount(Product product)
         {
             int moneyToPay = 0;
 
             if (product != null)
             {
                 moneyToPay = product.Price;
-
-                if (Money > moneyToPay)
-                {
-                    Inventory.Add(product);
-                    Money -= moneyToPay;
-                }
-                else
-                {
-                    Money -= moneyToPay;
-                }
             }
 
             return moneyToPay;
+        }
+
+        public void GiveMoney(int moneyToPay)
+        {
+            Money -= moneyToPay;
+        }
+
+        public void TakeProduct(Product product)
+        {
+            Inventory.Add(product);
         }
     }
 }
