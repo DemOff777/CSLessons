@@ -152,7 +152,6 @@ namespace Задание6_9
             int maxMoneyVolue = 1000;
 
             _money = random.Next(minMoneyVolue, maxMoneyVolue + 1);
-
         }
 
         public int BuyProducts()

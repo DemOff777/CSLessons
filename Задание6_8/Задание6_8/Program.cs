@@ -20,24 +20,41 @@ namespace Задание6_8
 
             while (isFigthOver == false)
             {
-                arena.MakeFigthTurn();
+                arena.MakeTurn(arena.GivePlayer1(), arena.GivePlayer2());
+                arena.MakeTurn(arena.GivePlayer2(), arena.GivePlayer1());
                 arena.ShowPlayersStats();
-                isFigthOver = arena.CheckPlayersHealth();
+                isFigthOver = arena.CheckWinner();
             }
         }
     }
 
     class Arena
     {
-        public Character Player1 = new Character();
-        public Character Player2 = new Character();
+        Character _player1 = new Character();
+        Character _player2 = new Character();
+        Character _playerCheck = new Character();
 
-        public bool Player1Turn { get; private set; }
+        bool IsPlayerTurnRuns;
 
-        public bool Player2Turn { get; private set; }
+        public Character GivePlayer1()
+        {
+            return _player1;
+        }
 
+        public Character GivePlayer2()
+        {
+            return _player2;
+        }
+
+        public void SetPlayersCheckExample()
+        {
+            _player1 = _playerCheck;
+            _player2 = _playerCheck;
+        }
         public void ChooseCharacters()
         {
+            SetPlayersCheckExample();
+
             const string Nobody = "1";
             const string LuckyStrike = "2";
             const string BlindVampireSurvivor = "3";
@@ -61,23 +78,28 @@ namespace Задание6_8
                 switch (userInput)
                 {
                     case Nobody:
-                        Player1 = PickNobody(ref isPLayerPicked);
+                        _player1 = PickNobody();
                         break;
                     case LuckyStrike:
-                        Player1 = PickLuckyStrike(ref isPLayerPicked);
+                        _player1 = PickLuckyStrike();
                         break;
                     case BlindVampireSurvivor:
-                        Player1 = PickBlindVampireSurvivor(ref isPLayerPicked);
+                        _player1 = PickBlindVampireSurvivor();
                         break;
                     case LoopHeroStanding:
-                        Player1 = PickLoopHeroStanding(ref isPLayerPicked);
+                        _player1 = PickLoopHeroStanding();
                         break;
                     case DungeonestDarkness:
-                        Player1 = PickDungeonestDarkness(ref isPLayerPicked);
+                        _player1 = PickDungeonestDarkness();
                         break;
                     default:
                         Console.WriteLine("Неверный формат");
                         break;
+                }
+
+                if (_player1 != _playerCheck)
+                {
+                    isPLayerPicked = true;
                 }
             }
 
@@ -96,130 +118,120 @@ namespace Задание6_8
                 switch (userInput)
                 {
                     case Nobody:
-                        Player2 = PickNobody(ref isPLayerPicked);
+                        _player2 = PickNobody();
                         break;
                     case LuckyStrike:
-                        Player2 = PickLuckyStrike(ref isPLayerPicked);
+                        _player2 = PickLuckyStrike();
                         break;
                     case BlindVampireSurvivor:
-                        Player2 = PickBlindVampireSurvivor(ref isPLayerPicked);
+                        _player2 = PickBlindVampireSurvivor();
                         break;
                     case LoopHeroStanding:
-                        Player2 = PickLoopHeroStanding(ref isPLayerPicked);
+                        _player2 = PickLoopHeroStanding();
                         break;
                     case DungeonestDarkness:
-                        Player2 = PickDungeonestDarkness(ref isPLayerPicked);
+                        _player2 = PickDungeonestDarkness();
                         break;
                     default:
                         Console.WriteLine("Неверный формат");
                         break;
                 }
+
+                if (_player2 != _playerCheck)
+                {
+                    isPLayerPicked = true;
+                }
             }
         }
 
-        public Nobody PickNobody(ref bool isPLayerPicked)
+        private Nobody PickNobody()
         {
             Nobody player = new Nobody();
 
             player.GetStats();
 
-            isPLayerPicked = true;
-
             return player;
         }
 
-        public LuckyStrike PickLuckyStrike(ref bool isPLayerPicked)
+        private LuckyStrike PickLuckyStrike()
         {
             LuckyStrike player = new LuckyStrike();
 
             player.GetStats();
 
-            isPLayerPicked = true;
-
             return player;
         }
 
-        public BlindVampireSurvivor PickBlindVampireSurvivor(ref bool isPLayerPicked)
+        private BlindVampireSurvivor PickBlindVampireSurvivor()
         {
             BlindVampireSurvivor player = new BlindVampireSurvivor();
 
             player.GetStats();
 
-            isPLayerPicked = true;
-
             return player;
         }
 
-        public LoopHeroStanding PickLoopHeroStanding(ref bool isPLayerPicked)
+        private LoopHeroStanding PickLoopHeroStanding()
         {
             LoopHeroStanding player = new LoopHeroStanding();
 
             player.GetStats();
 
-            isPLayerPicked = true;
-
             return player;
         }
 
-        public DungeonestDarkness PickDungeonestDarkness(ref bool isPLayerPicked)
+        private DungeonestDarkness PickDungeonestDarkness()
         {
             DungeonestDarkness player = new DungeonestDarkness();
 
             player.GetStats();
 
-            isPLayerPicked = true;
-
             return player;
         }
 
-        public void MakeFigthTurn()
+        public void MakeTurn(Character playerActive, Character playerPassive)
         {
-            Player1Turn = true;
-            Player2Turn = true;
+            IsPlayerTurnRuns = true;
 
-            while (Player1Turn)
+            while (IsPlayerTurnRuns)
             {
-                Player1Turn = false;
-                Player1Turn = Player1.UseSkill(Player2.TakeDamage(Player1.GetDamage()));
-            }
-
-            while (Player2Turn)
-            {
-                Player2Turn = false;
-                Player2Turn = Player2.UseSkill(Player1.TakeDamage(Player2.GetDamage()));
+                IsPlayerTurnRuns = false;
+                IsPlayerTurnRuns = playerActive.UseSkill(playerPassive.TakeDamage(playerActive.Attack()));
             }
         }
 
         public void ShowPlayersStats()
         {
-            Console.WriteLine("---------------");
-            Player1.ShowStats();
-            Console.WriteLine("---------------");
-            Player2.ShowStats();
-            Console.WriteLine("---------------");
+            char separatorMark = '-';
+
+            Console.WriteLine(string.Join("", Enumerable.Repeat(separatorMark, 15)));
+            _player1.ShowStats();
+            Console.WriteLine(string.Join("", Enumerable.Repeat(separatorMark, 15)));
+            _player2.ShowStats();
+            Console.WriteLine(string.Join("", Enumerable.Repeat(separatorMark, 15)));
 
             Console.WriteLine("Для следующего хода нажмите любую клавишу");
             Console.ReadKey();
-            Console.WriteLine("---------------");
+            Console.WriteLine(string.Join("", Enumerable.Repeat(separatorMark, 15)));
         }
 
-        public bool CheckPlayersHealth()
+        public bool CheckWinner()
         {
             bool isFightOver = false;
 
-            if (Player1.Health > 0 && Player2.Health <= 0)
+            if (_player1.Health > 0 && _player2.Health <= 0)
             {
-                Console.WriteLine($"Победил {Player1.Name}");
+                Console.WriteLine($"Победил {_player1.Name}");
                 isFightOver = true;
             }
 
-            if (Player2.Health > 0 && Player1.Health <= 0)
+            if (_player2.Health > 0 && _player1.Health <= 0)
             {
-                Console.WriteLine($"Победил {Player2.Name}");
+                Console.WriteLine($"Победил {_player2.Name}");
                 isFightOver = true;
             }
 
-            if (Player1.Health <= 0 && Player2.Health <= 0)
+            if (_player1.Health <= 0 && _player2.Health <= 0)
             {
                 Console.WriteLine($"Игроки убили друг друга");
                 isFightOver = true;
@@ -231,27 +243,30 @@ namespace Задание6_8
 
     class Character
     {
-        public string Name { get; set; }
+        public string Name { get; protected set; }
 
-        public int Health { get; set; } = 100;
-        public int Armor;
-        public int Strength;
-        public int Accuracy;
-        public int Agility;
-        public int Concentration;
-        public int Luck;
+        public  int Health { get; protected set; } = 100;
+
+        protected int Armor;
+        protected int Strength;
+        protected int Accuracy;
+        protected int Agility;
+        protected int Concentration;
+        protected int Luck;
 
         Random Random = new Random();
 
-        public int GetDamage()
+        public int Attack()
         {
+            int criticalDamageIndex = 2;
+            int bonusDamageIndex = 2;
             int damage;
 
             if (GetRandomChance() <= Accuracy)
             {
                 if (GetRandomChance() <= Concentration)
                 {
-                    damage = Strength * 2;
+                    damage = Strength * criticalDamageIndex;
                     Console.WriteLine($"{Name} наносит двойной урон");
                 }
                 else
@@ -261,7 +276,7 @@ namespace Задание6_8
 
                 if (GetRandomChance() <= Luck)
                 {
-                    damage += Strength / 2;
+                    damage += Strength / bonusDamageIndex;
                     Console.WriteLine($"{Name} сопутствует удача и его удар стал в половину сильнее");
                 }
             }
@@ -276,6 +291,8 @@ namespace Задание6_8
 
         public int TakeDamage(int damage)
         {
+            int percentIndex = 100;
+
             if (GetRandomChance() <= Agility)
             {
                 damage = 0;
@@ -283,12 +300,12 @@ namespace Задание6_8
             }
             else
             {
-                damage -= damage * Armor / 100 ;
+                damage -= damage * Armor / percentIndex;
             }
 
             if (GetRandomChance() <= Luck)
             {
-                damage -= damage * Agility / 100;
+                damage -= damage * Agility / percentIndex;
                 Console.WriteLine($"{Name} сопутствует удача и он получает меньше урона");
             }
 
@@ -299,7 +316,7 @@ namespace Задание6_8
             return damage;
         }
 
-        public int GetRandomChance()
+        protected int GetRandomChance()
         {
             int minBonusChance = 1;
             int maxBonusChance = 100;
@@ -311,9 +328,8 @@ namespace Задание6_8
 
         public virtual bool UseSkill(int damage)
         {
-            bool makeTurn = false;
-            Console.WriteLine($"{Name} ничего не делает");
-            return makeTurn;
+            bool isTurnRuns = false;
+            return isTurnRuns;
         }
 
         public virtual void ShowSkill()
@@ -363,7 +379,7 @@ namespace Задание6_8
         public override bool UseSkill(int damage)
         {
             int strengthIndex = 3;
-            bool makeTurn = false;
+            bool isTurnRuns = false;
 
             if (GetRandomChance() <= Luck)
             {
@@ -375,7 +391,7 @@ namespace Задание6_8
                 Console.WriteLine($"{Name} ничего не делает в этот раз");
             }
 
-            return makeTurn;
+            return isTurnRuns;
         }
     }
 
@@ -395,7 +411,7 @@ namespace Задание6_8
         public override bool UseSkill(int damage)
         {
             int vampireIndex = 3;
-            bool makeTurn = false;
+            bool isTurnRuns = false;
 
             Console.WriteLine($"{Name} восстанавливает {damage * vampireIndex} здоровья");
 
@@ -409,7 +425,7 @@ namespace Задание6_8
                 }
             }
 
-            return makeTurn;
+            return isTurnRuns;
         }
     }
 
@@ -428,19 +444,19 @@ namespace Задание6_8
 
         public override bool UseSkill(int damage)
         {
-            bool makeTurn = false;
+            bool isTurnRuns = false;
 
             if (GetRandomChance() <= Luck)
             {
                 Console.WriteLine($"По счастливой случайности {Name} атакует еще раз");
-                makeTurn = true;
+                isTurnRuns = true;
             }
             else
             {
                 Console.WriteLine($"{Name} ничего не делает в этот раз");
             }
 
-            return makeTurn;
+            return isTurnRuns;
         }
     }
 
@@ -459,7 +475,7 @@ namespace Задание6_8
 
         public override bool UseSkill(int damage)
         {
-            bool makeTurn = false;
+            bool isTurnRuns = false;
 
             if(Health <= 0)
             {
@@ -472,7 +488,7 @@ namespace Задание6_8
                 Console.WriteLine($"{Name} был повержен в уязвимое место");
             }
 
-            return makeTurn;
+            return isTurnRuns;
         }
     }
 }
