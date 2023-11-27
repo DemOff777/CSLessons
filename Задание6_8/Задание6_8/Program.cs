@@ -369,7 +369,7 @@ namespace Задание6_8
             Accuracy = 90;
             Agility = 10;
             Concentration = 10;
-            Luck = 50;
+            Luck = 60;
         }
 
         public override bool UseSkill(int damage)
