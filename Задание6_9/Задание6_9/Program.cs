@@ -119,6 +119,8 @@ namespace Задание6_9
 
         public List<Product> GetBasket()
         {
+            List<Product> basket = _basket;
+
             return _basket;
         }
 
@@ -189,24 +191,6 @@ namespace Задание6_9
             }
         }
 
-        private Customer GetProducts(Customer customer)
-        {
-            int minProductVolue = 5;
-            int maxProductVolue = 10;
-            int minProductPrice = 50;
-            int maxProductPrice = 700;
-            int productsVolue;
-
-            productsVolue = UserUtils.GetRandomNumber(minProductVolue, maxProductVolue);
-
-            for (int i = 0; i < productsVolue; i++)
-            {
-                customer.GetBasket().Add(new Product($"продукт номер {i + 1}", UserUtils.GetRandomNumber(minProductPrice, maxProductPrice)));
-            }
-
-            return customer;
-        }
-
         public Customer GetCurrentCustomer()
         {
             return _customers.Peek();
@@ -233,6 +217,23 @@ namespace Задание6_9
         {
             int customersAmount = _customers.Count;
             return customersAmount;
+        }
+        private Customer GetProducts(Customer customer)
+        {
+            int minProductVolue = 5;
+            int maxProductVolue = 10;
+            int minProductPrice = 50;
+            int maxProductPrice = 700;
+            int productsVolue;
+
+            productsVolue = UserUtils.GetRandomNumber(minProductVolue, maxProductVolue);
+
+            for (int i = 0; i < productsVolue; i++)
+            {
+                customer.GetBasket().Add(new Product($"продукт номер {i + 1}", UserUtils.GetRandomNumber(minProductPrice, maxProductPrice)));
+            }
+
+            return customer;
         }
     }
 }
