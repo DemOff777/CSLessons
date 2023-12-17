@@ -105,7 +105,6 @@ namespace Задание6_9
 
     class Customer
     { 
-        private List<Product> _products = new List<Product>();
         private List<Product> _basket = new List<Product>();
 
         private int _money;
@@ -134,6 +133,8 @@ namespace Задание6_9
 
         public int BuyProducts()
         {
+            List<Product> products = new List<Product>();
+
             int moneyToPay = 0;
 
             while (_basket.Count > 0)
@@ -144,7 +145,7 @@ namespace Задание6_9
                 {
                     _money -= _basket[randomProductIndex].Price;
                     moneyToPay += _basket[randomProductIndex].Price;
-                    _products.Add(_basket[randomProductIndex]);
+                    products.Add(_basket[randomProductIndex]);
                     _basket.RemoveAt(randomProductIndex);
                 }
                 else
@@ -153,6 +154,8 @@ namespace Задание6_9
                     _basket.RemoveAt(randomProductIndex);           
                 }
             }
+
+            _basket = products;
 
             return moneyToPay;
         }
