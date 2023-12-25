@@ -16,16 +16,16 @@ namespace Задание6_9
 
             while (superMarket.GetRemainingCustomersVolue() > 0)
             {
-                UserUtils.ClearShopCashPlace();
+                Render.ClearShopCashPlace();
                 superMarket.ShowCash();
                 
-                UserUtils.ClearCustomersQueuePlace();
+                Render.ClearCustomersQueuePlace();
                 superMarket.ShowRemainingCustomersVolue();
 
-                UserUtils.ClearCurrentCustomerPLace();
+                Render.ClearCurrentCustomerPLace();
                 superMarket.GetCurrentCustomer().ShowInfo();
 
-                UserUtils.ClearDialogPlace();
+                Render.ClearDialogPlace();
                 Console.WriteLine("Для того чтобы пробить товар нажмите на любую клавишу");
                 Console.ReadKey();
 
@@ -40,7 +40,7 @@ namespace Задание6_9
         }
     }
 
-    static class UserUtils
+    class Render
     {
         private static Random s_random = new Random();
 
@@ -108,7 +108,6 @@ namespace Задание6_9
         private List<Product> _basket = new List<Product>();
 
         private int _money;
-
         private string _name;
 
         public Customer(string name)
@@ -116,11 +115,12 @@ namespace Задание6_9
             _name = $"покупатель {name}";
         }
 
-        public List<Product> GetBasket()
+        public void TakeProducts(List<Product> products)
         {
-            List<Product> basket = _basket;
-
-            return _basket;
+            for (int i = 0; i < products.Count; i++)
+            {
+                _basket.Add(products[i]);
+            }
         }
 
         public void GenerateMoney()
@@ -128,7 +128,7 @@ namespace Задание6_9
             int minMoneyVolue = 500;
             int maxMoneyVolue = 1000;
 
-            _money = UserUtils.GetRandomNumber(minMoneyVolue, maxMoneyVolue);
+            _money = Render.GetRandomNumber(minMoneyVolue, maxMoneyVolue);
         }
 
         public int BuyProducts()
@@ -139,7 +139,7 @@ namespace Задание6_9
 
             while (_basket.Count > 0)
             {
-                int randomProductIndex = UserUtils.GetRandomNumber(0, _basket.Count - 1);
+                int randomProductIndex = Render.GetRandomNumber(0, _basket.Count - 1);
 
                 if (_money >= _basket[randomProductIndex].Price)
                 {
@@ -183,12 +183,15 @@ namespace Задание6_9
 
         public void AddCustomers(Random random)
         {
+            List<Product> products = new List<Product>();
+
             int CustomersVolue = 10;
 
             for (int i = 0; i < CustomersVolue; i++)
             {
                 Customer customer = new Customer($"{i + 1}");
-                customer = GetProducts(customer);
+                products = GetProducts();
+                customer.TakeProducts(products);
                 customer.GenerateMoney();
                 _customers.Enqueue(customer);
             }
@@ -201,8 +204,7 @@ namespace Задание6_9
 
         public void MakeDeal()
         {
-            int moneyToPay;
-            moneyToPay = _customers.Dequeue().BuyProducts();
+            int moneyToPay = _customers.Dequeue().BuyProducts();
             _money += moneyToPay;
         }
 
@@ -221,22 +223,24 @@ namespace Задание6_9
             int customersAmount = _customers.Count;
             return customersAmount;
         }
-        private Customer GetProducts(Customer customer)
+        private List<Product> GetProducts()
         {
+            List<Product> products = new List<Product>();
+
             int minProductVolue = 5;
             int maxProductVolue = 10;
             int minProductPrice = 50;
             int maxProductPrice = 700;
             int productsVolue;
 
-            productsVolue = UserUtils.GetRandomNumber(minProductVolue, maxProductVolue);
+            productsVolue = Render.GetRandomNumber(minProductVolue, maxProductVolue);
 
             for (int i = 0; i < productsVolue; i++)
             {
-                customer.GetBasket().Add(new Product($"продукт номер {i + 1}", UserUtils.GetRandomNumber(minProductPrice, maxProductPrice)));
+                products.Add(new Product($"продукт номер {i + 1}", Render.GetRandomNumber(minProductPrice, maxProductPrice)));
             }
 
-            return customer;
+            return products;
         }
     }
 }
