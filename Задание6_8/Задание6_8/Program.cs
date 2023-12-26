@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 
-
 namespace Задание6_8
 {
     internal class Program
@@ -12,35 +11,25 @@ namespace Задание6_8
 
             bool isFigthOver = false;
 
-            arena.SetPlayers();
+            arena.ChoosePlayers();
 
             while (isFigthOver == false)
             {
-                arena.MakePlayer1Turn();
-                arena.MakePlayer2Turn();
+                arena.MakePlayersTurns();
                 arena.ShowPlayersStats();
-                isFigthOver = arena.TestHealth();
+                isFigthOver = arena.TestPlayersDeath();
             }
         }
     }
 
     class Arena
     {
+        private Character _player1 = new Character();
+        private Character _player2 = new Character();
+
         private bool _isPlayerTurnRuns;
 
-        private Character _playerCheck = null;
-
-        public Character Player1 { get; private set; } = new Character();
-
-        public Character Player2 { get; private set; } = new Character();
-
-        public void SetPlayersCheckExample()
-        {
-            Player1 = _playerCheck;
-            Player2 = _playerCheck;
-        }
-
-        public Character GetCharacter()
+        private Character ChoosePlayer()
         {
             Character player = null;
 
@@ -90,7 +79,7 @@ namespace Задание6_8
                         break;
                 }
 
-                if (player != _playerCheck)
+                if (player != null)
                 {
                     isPLayerPicked = true;
                 }
@@ -99,38 +88,29 @@ namespace Задание6_8
             return player;
         }
 
-        public void SetPlayers()
+        public void ChoosePlayers()
         {
-            SetPlayersCheckExample();
-
             Console.WriteLine("Выберите первого бойца");
-            Player1 = GetCharacter();
+            _player1 = ChoosePlayer();
 
             Console.WriteLine("Выберите второго бойца");
-            Player2 = GetCharacter();
+            _player2 = ChoosePlayer();
         }
 
-        public void MakePlayer1Turn()
+        public void MakePlayersTurns()
+        {
+            MakePlayerTurn(_player1, _player2);
+            MakePlayerTurn(_player2, _player1);
+        }
+
+        private void MakePlayerTurn(Character player1, Character player2)
         {
             _isPlayerTurnRuns = true;
 
             while (_isPlayerTurnRuns)
             {
                 _isPlayerTurnRuns = false;
-                int damage = Player1.Attack(Player2);
-                _isPlayerTurnRuns = Player1.UseSkill(damage);
-            }
-        }
-
-        public void MakePlayer2Turn()
-        {
-            _isPlayerTurnRuns = true;
-
-            while (_isPlayerTurnRuns)
-            {
-                _isPlayerTurnRuns = false;
-                int damage = Player2.Attack(Player1);
-                _isPlayerTurnRuns = Player2.UseSkill(damage);
+                _isPlayerTurnRuns = player1.Attack(player2);
             }
         }
 
@@ -139,9 +119,9 @@ namespace Задание6_8
             char separatorMark = '-';
 
             Console.WriteLine(string.Join("", Enumerable.Repeat(separatorMark, 15)));
-            Player1.ShowStats();
+            _player1.ShowStats();
             Console.WriteLine(string.Join("", Enumerable.Repeat(separatorMark, 15)));
-            Player2.ShowStats();
+            _player2.ShowStats();
             Console.WriteLine(string.Join("", Enumerable.Repeat(separatorMark, 15)));
 
             Console.WriteLine("Для следующего хода нажмите любую клавишу");
@@ -149,21 +129,21 @@ namespace Задание6_8
             Console.WriteLine(string.Join("", Enumerable.Repeat(separatorMark, 15)));
         }
 
-        public bool TestHealth()
+        public bool TestPlayersDeath()
         {
             bool isFightOver = false;
 
-            if (Player1.Health > 0 && Player2.Health <= 0)
+            if (_player1.Health > 0 && _player2.Health <= 0)
             {
-                Console.WriteLine($"Победил {Player1.Name}");
+                Console.WriteLine($"Победил {_player1.Name}");
                 isFightOver = true;
             }
-            else if (Player2.Health > 0 && Player1.Health <= 0)
+            else if (_player2.Health > 0 && _player1.Health <= 0)
             {
-                Console.WriteLine($"Победил {Player2.Name}");
+                Console.WriteLine($"Победил {_player2.Name}");
                 isFightOver = true;
             }
-            else if (Player1.Health <= 0 && Player2.Health <= 0)
+            else if (_player1.Health <= 0 && _player2.Health <= 0)
             {
                 Console.WriteLine($"Игроки убили друг друга");
                 isFightOver = true;
@@ -182,13 +162,13 @@ namespace Задание6_8
         protected int Concentration;
         protected int Luck;
 
-        private Random Random = new Random();
+        private Random _random = new Random();
 
         public string Name { get; protected set; }
 
         public int Health { get; protected set; } = 100;
 
-        private int GetDamage()
+        protected int GetDamage()
         {
             int criticalDamageIndex = 2;
             int bonusDamageIndex = 2;
@@ -221,13 +201,15 @@ namespace Задание6_8
             return damage;
         }
 
-        public int Attack(Character enemy)
+        public virtual bool Attack(Character enemy)
         {
-            int damage = enemy.TakeDamage(GetDamage());
-            return damage;
+            bool isTurnRuns = false;
+            int damage = GetDamage();
+            enemy.TakeDamage(damage);
+            return isTurnRuns;
         }
 
-        public int TakeDamage(int damage)
+        public void TakeDamage(int damage)
         {
             int percentIndex = 100;
 
@@ -250,8 +232,6 @@ namespace Задание6_8
             Console.WriteLine($"{Name} получает {damage} урона");
 
             Health -= damage;
-
-            return damage;
         }
 
         protected int GetRandomChance()
@@ -259,15 +239,9 @@ namespace Задание6_8
             int minBonusChance = 1;
             int maxBonusChance = 100;
 
-            int bonusChance = Random.Next(minBonusChance, maxBonusChance + 1);
+            int bonusChance = _random.Next(minBonusChance, maxBonusChance + 1);
 
             return bonusChance;
-        }
-
-        public virtual bool UseSkill(int damage)
-        {
-            bool isTurnRuns = false;
-            return isTurnRuns;
         }
 
         public void ShowStats()
@@ -309,10 +283,14 @@ namespace Задание6_8
             Luck = 60;
         }
 
-        public override bool UseSkill(int damage)
+        public override bool Attack(Character enemy)
         {
             int strengthIndex = 3;
+
             bool isTurnRuns = false;
+
+            int damage = GetDamage();
+            enemy.TakeDamage(damage);
 
             if (GetRandomChance() <= Luck)
             {
@@ -341,10 +319,14 @@ namespace Задание6_8
             Luck = 10;
         }
 
-        public override bool UseSkill(int damage)
+        public override bool Attack(Character enemy)
         {
             int vampireIndex = 3;
+
             bool isTurnRuns = false;
+
+            int damage = GetDamage();
+            enemy.TakeDamage(damage);
 
             Console.WriteLine($"{Name} восстанавливает {damage * vampireIndex} здоровья");
 
@@ -375,9 +357,12 @@ namespace Задание6_8
             Luck = 30;
         }
 
-        public override bool UseSkill(int damage)
+        public override bool Attack(Character enemy)
         {
             bool isTurnRuns = false;
+
+            int damage = GetDamage();
+            enemy.TakeDamage(damage);
 
             if (GetRandomChance() <= Luck)
             {
@@ -406,14 +391,17 @@ namespace Задание6_8
             Luck = 10;
         }
 
-        public override bool UseSkill(int damage)
+        public override bool Attack(Character enemy)
         {
             int deathNumber = 10;
             int fullHealth = 100;
 
             bool isTurnRuns = false;
 
-            if(Health <= 0)
+            int damage = GetDamage();
+            enemy.TakeDamage(damage);
+
+            if (Health <= 0)
             {
                 Health = 100;
                 Console.WriteLine($"{Name} возродился");
