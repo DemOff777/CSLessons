@@ -114,8 +114,9 @@ namespace Задание6_9
         public Customer(string name, List<Product> products)
         {
             _name = $"покупатель {name}";
-            TakeProducts(products);
             _money = GenerateMoney();
+
+            TakeProducts(products);
         }
 
         private void TakeProducts(List<Product> products)
