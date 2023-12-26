@@ -11,21 +11,22 @@ namespace Задание6_9
             SuperMarket superMarket = new SuperMarket();
 
             Random random = new Random();
+            Render render = new Render();
 
             superMarket.AddCustomers(random);
 
             while (superMarket.GetRemainingCustomersVolue() > 0)
             {
-                Render.ClearShopCashPlace();
+                render.ClearShopCashPlace();
                 superMarket.ShowCash();
-                
-                Render.ClearCustomersQueuePlace();
+
+                render.ClearCustomersQueuePlace();
                 superMarket.ShowRemainingCustomersVolue();
 
-                Render.ClearCurrentCustomerPLace();
+                render.ClearCurrentCustomerPLace();
                 superMarket.GetCurrentCustomer().ShowInfo();
 
-                Render.ClearDialogPlace();
+                render.ClearDialogPlace();
                 Console.WriteLine("Для того чтобы пробить товар нажмите на любую клавишу");
                 Console.ReadKey();
 
@@ -44,21 +45,21 @@ namespace Задание6_9
     {
         private static Random s_random = new Random();
 
-        public static void ClearShopCashPlace()
+        public void ClearShopCashPlace()
         {
             Console.SetCursorPosition(0, 0);
             Console.WriteLine($"{string.Join("", Enumerable.Repeat(" ", 10))}");
             Console.SetCursorPosition(0, 0);
         }
 
-        public static void ClearCustomersQueuePlace()
+        public void ClearCustomersQueuePlace()
         {
             Console.SetCursorPosition(0, 2);
             Console.WriteLine($"{string.Join("", Enumerable.Repeat(" ", 10))}");
             Console.SetCursorPosition(0, 2);
         }
 
-        public static void ClearCurrentCustomerPLace()
+        public void ClearCurrentCustomerPLace()
         {
             int customerInfoSize = 13;
 
@@ -72,14 +73,14 @@ namespace Задание6_9
             Console.SetCursorPosition(0, 4);
         }
 
-        public static void ClearDialogPlace()
+        public void ClearDialogPlace()
         {
             Console.SetCursorPosition(0, 20);
             Console.WriteLine($"{string.Join("", Enumerable.Repeat(" ", 10))}");
             Console.SetCursorPosition(0, 20);
         }
 
-        public static int GetRandomNumber(int minVolue, int maxVolue)
+        public int GetRandomNumber(int minVolue, int maxVolue)
         {
             return s_random.Next(minVolue, maxVolue + 1);
         }
@@ -110,12 +111,14 @@ namespace Задание6_9
         private int _money;
         private string _name;
 
-        public Customer(string name)
+        public Customer(string name, List<Product> products)
         {
             _name = $"покупатель {name}";
+            TakeProducts(products);
+            _money = GenerateMoney();
         }
 
-        public void TakeProducts(List<Product> products)
+        private void TakeProducts(List<Product> products)
         {
             for (int i = 0; i < products.Count; i++)
             {
@@ -123,23 +126,29 @@ namespace Задание6_9
             }
         }
 
-        public void GenerateMoney()
+        private int GenerateMoney()
         {
+            Render render = new Render();
+
             int minMoneyVolue = 500;
             int maxMoneyVolue = 1000;
 
-            _money = Render.GetRandomNumber(minMoneyVolue, maxMoneyVolue);
+            int money = render.GetRandomNumber(minMoneyVolue, maxMoneyVolue);
+
+            return money;
         }
 
         public int BuyProducts()
         {
             List<Product> products = new List<Product>();
 
+            Render render = new Render();
+
             int moneyToPay = 0;
 
             while (_basket.Count > 0)
             {
-                int randomProductIndex = Render.GetRandomNumber(0, _basket.Count - 1);
+                int randomProductIndex = render.GetRandomNumber(0, _basket.Count - 1);
 
                 if (_money >= _basket[randomProductIndex].Price)
                 {
@@ -189,10 +198,7 @@ namespace Задание6_9
 
             for (int i = 0; i < CustomersVolue; i++)
             {
-                Customer customer = new Customer($"{i + 1}");
-                products = GetProducts();
-                customer.TakeProducts(products);
-                customer.GenerateMoney();
+                Customer customer = new Customer($"{i + 1}", CreateProducts());        
                 _customers.Enqueue(customer);
             }
         }
@@ -220,12 +226,13 @@ namespace Задание6_9
 
         public int GetRemainingCustomersVolue()
         {
-            int customersAmount = _customers.Count;
-            return customersAmount;
+            return _customers.Count;
         }
-        private List<Product> GetProducts()
+        private List<Product> CreateProducts()
         {
             List<Product> products = new List<Product>();
+
+            Render render = new Render();
 
             int minProductVolue = 5;
             int maxProductVolue = 10;
@@ -233,11 +240,11 @@ namespace Задание6_9
             int maxProductPrice = 700;
             int productsVolue;
 
-            productsVolue = Render.GetRandomNumber(minProductVolue, maxProductVolue);
+            productsVolue = render.GetRandomNumber(minProductVolue, maxProductVolue);
 
             for (int i = 0; i < productsVolue; i++)
             {
-                products.Add(new Product($"продукт номер {i + 1}", Render.GetRandomNumber(minProductPrice, maxProductPrice)));
+                products.Add(new Product($"продукт номер {i + 1}", render.GetRandomNumber(minProductPrice, maxProductPrice)));
             }
 
             return products;
