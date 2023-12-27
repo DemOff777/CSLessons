@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Задание6_8
@@ -31,52 +32,42 @@ namespace Задание6_8
 
         private Character ChoosePlayer()
         {
+            List<Character> players = new List<Character>();
+
             Character player = null;
 
-            const string Nobody = "1";
-            const string LuckyStrike = "2";
-            const string BlindVampireSurvivor = "3";
-            const string LoopHeroStanding = "4";
-            const string DungeonestDarkness = "5";
+            players.Add(new Nobody());
+            players.Add(new LuckyStrike());
+            players.Add(new BlindVampireSurvivor());
+            players.Add(new LoopHeroStanding());
+            players.Add(new DungeonestDarkness());
 
-            string userInput;
+            int userInput;
 
             bool isPLayerPicked = false;
 
             while (isPLayerPicked == false)
             {
-                Console.WriteLine($"Nobody - {Nobody}");
-                Console.WriteLine($"LuckyStrike - {LuckyStrike}");
-                Console.WriteLine($"BlindVampireSurvivor - {BlindVampireSurvivor}");
-                Console.WriteLine($"LoopHeroStanding - {LoopHeroStanding}");
-                Console.WriteLine($"DungeonestDarkness - {DungeonestDarkness}");
-                userInput = Console.ReadLine();
-
-                switch (userInput)
+                for (int i = 0; i < players.Count; i++)
                 {
-                    case Nobody:
-                        player = new Nobody();
-                        break;
+                    Console.WriteLine($"{i + 1}. {players[i].Name}");
+                }
 
-                    case LuckyStrike:
-                        player = new LuckyStrike();
-                        break;
+                userInput = Convert.ToInt32(Console.ReadLine());
 
-                    case BlindVampireSurvivor:
-                        player = new BlindVampireSurvivor();
-                        break;
-
-                    case LoopHeroStanding:
-                        player = new LoopHeroStanding();
-                        break;
-
-                    case DungeonestDarkness:
-                        player = new DungeonestDarkness();
-                        break;
-
-                    default:
-                        Console.WriteLine("Неверный формат");
-                        break;
+                if (userInput > 0 && userInput <= players.Count)
+                {
+                    for (int i = 0; i < players.Count; i++)
+                    {
+                        if (userInput == i + 1)
+                        {
+                            player = players[i];
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Неверное значение. опробуйте еще раз");
                 }
 
                 if (player != null)
@@ -117,16 +108,17 @@ namespace Задание6_8
         public void ShowPlayersStats()
         {
             char separatorMark = '-';
+            string border = string.Join("", Enumerable.Repeat(separatorMark, 15));
 
-            Console.WriteLine(string.Join("", Enumerable.Repeat(separatorMark, 15)));
+            Console.WriteLine(border);
             _player1.ShowStats();
-            Console.WriteLine(string.Join("", Enumerable.Repeat(separatorMark, 15)));
+            Console.WriteLine(border);
             _player2.ShowStats();
-            Console.WriteLine(string.Join("", Enumerable.Repeat(separatorMark, 15)));
+            Console.WriteLine(border);
 
             Console.WriteLine("Для следующего хода нажмите любую клавишу");
             Console.ReadKey();
-            Console.WriteLine(string.Join("", Enumerable.Repeat(separatorMark, 15)));
+            Console.WriteLine(border);
         }
 
         public bool TestPlayersDeath()
@@ -322,6 +314,7 @@ namespace Задание6_8
         public override bool Attack(Character enemy)
         {
             int vampireIndex = 3;
+            int fullHealthAmount = 100;
 
             bool isTurnRuns = false;
 
@@ -330,13 +323,13 @@ namespace Задание6_8
 
             Console.WriteLine($"{Name} восстанавливает {damage * vampireIndex} здоровья");
 
-            if (Health < 100)
+            if (Health < fullHealthAmount)
             {
                 Health += damage * vampireIndex;
 
-                if (Health > 100)
+                if (Health > fullHealthAmount)
                 {
-                    Health = 100;
+                    Health = fullHealthAmount;
                 }
             }
 
@@ -403,7 +396,7 @@ namespace Задание6_8
 
             if (Health <= 0)
             {
-                Health = 100;
+                Health = fullHealth;
                 Console.WriteLine($"{Name} возродился");
             }
             if(Health % deathNumber == 0 && Health != fullHealth)
