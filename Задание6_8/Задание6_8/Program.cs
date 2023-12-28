@@ -18,66 +18,17 @@ namespace Задание6_8
             {
                 arena.MakePlayersTurns();
                 arena.ShowPlayersStats();
-                isFigthOver = arena.TestPlayersDeath();
+                isFigthOver = arena.TestingFightOver();
             }
         }
     }
 
     class Arena
     {
-        private Character _player1 = new Character();
-        private Character _player2 = new Character();
+        private Character _player1 = null;
+        private Character _player2 = null;
 
         private bool _isPlayerTurnRuns;
-
-        private Character ChoosePlayer()
-        {
-            List<Character> players = new List<Character>();
-
-            Character player = null;
-
-            players.Add(new Nobody());
-            players.Add(new LuckyStrike());
-            players.Add(new BlindVampireSurvivor());
-            players.Add(new LoopHeroStanding());
-            players.Add(new DungeonestDarkness());
-
-            int userInput;
-
-            bool isPLayerPicked = false;
-
-            while (isPLayerPicked == false)
-            {
-                for (int i = 0; i < players.Count; i++)
-                {
-                    Console.WriteLine($"{i + 1}. {players[i].Name}");
-                }
-
-                userInput = Convert.ToInt32(Console.ReadLine());
-
-                if (userInput > 0 && userInput <= players.Count)
-                {
-                    for (int i = 0; i < players.Count; i++)
-                    {
-                        if (userInput == i + 1)
-                        {
-                            player = players[i];
-                        }
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Неверное значение. опробуйте еще раз");
-                }
-
-                if (player != null)
-                {
-                    isPLayerPicked = true;
-                }
-            }
-
-            return player;
-        }
 
         public void ChoosePlayers()
         {
@@ -92,17 +43,6 @@ namespace Задание6_8
         {
             MakePlayerTurn(_player1, _player2);
             MakePlayerTurn(_player2, _player1);
-        }
-
-        private void MakePlayerTurn(Character player1, Character player2)
-        {
-            _isPlayerTurnRuns = true;
-
-            while (_isPlayerTurnRuns)
-            {
-                _isPlayerTurnRuns = false;
-                _isPlayerTurnRuns = player1.Attack(player2);
-            }
         }
 
         public void ShowPlayersStats()
@@ -121,7 +61,7 @@ namespace Задание6_8
             Console.WriteLine(border);
         }
 
-        public bool TestPlayersDeath()
+        public bool TestingFightOver()
         {
             bool isFightOver = false;
 
@@ -143,6 +83,80 @@ namespace Задание6_8
 
             return isFightOver;
         }
+
+        private Character ChoosePlayer()
+        {
+            List<Character> players = new List<Character>();
+
+            Character player = null;
+
+            players.Add(new Nobody());
+            players.Add(new LuckyStrike());
+            players.Add(new BlindVampireSurvivor());
+            players.Add(new LoopHeroStanding());
+            players.Add(new DungeonestDarkness());
+
+            int userInput;
+            int characterIndex;
+
+            bool isPLayerPicked = false;
+
+            while (isPLayerPicked == false)
+            {
+                for (int i = 0; i < players.Count; i++)
+                {
+                    Console.WriteLine($"{i + 1}. {players[i].Name}");
+                }
+
+                userInput = GetInt();
+
+                if (userInput > 0 && userInput <= players.Count)
+                {
+                    player = players[userInput - 1];
+                }
+                else
+                {
+                    Console.WriteLine("Неверное значение. опробуйте еще раз");
+                }
+
+                if (player != null)
+                {
+                    isPLayerPicked = true;
+                }
+            }
+
+            return player;
+        }
+
+        private int GetInt()
+        {
+            int userNumber = 0;
+
+            bool isConvertationCorrect = false;
+
+            while (isConvertationCorrect == false)
+            {
+                isConvertationCorrect = int.TryParse(Console.ReadLine(), out userNumber);
+
+                if (isConvertationCorrect == false)
+                {
+                    Console.WriteLine("Неверный формат");
+                }
+            }
+
+            return userNumber;
+        }
+
+        private void MakePlayerTurn(Character player1, Character player2)
+        {
+            _isPlayerTurnRuns = true;
+
+            while (_isPlayerTurnRuns)
+            {
+                _isPlayerTurnRuns = false;
+                _isPlayerTurnRuns = player1.Attack(player2);
+            }
+        }     
     }
 
     class Character
@@ -159,39 +173,6 @@ namespace Задание6_8
         public string Name { get; protected set; }
 
         public int Health { get; protected set; } = 100;
-
-        protected int GetDamage()
-        {
-            int criticalDamageIndex = 2;
-            int bonusDamageIndex = 2;
-            int damage;
-
-            if (GetRandomChance() <= Accuracy)
-            {
-                if (GetRandomChance() <= Concentration)
-                {
-                    damage = Strength * criticalDamageIndex;
-                    Console.WriteLine($"{Name} наносит двойной урон");
-                }
-                else
-                {
-                    damage = Strength;
-                }
-
-                if (GetRandomChance() <= Luck)
-                {
-                    damage += Strength / bonusDamageIndex;
-                    Console.WriteLine($"{Name} сопутствует удача и его удар стал в половину сильнее");
-                }
-            }
-            else
-            {
-                Console.WriteLine($"{Name} промахивается и ненаносит урона");
-                damage = 0;
-            }
-
-            return damage;
-        }
 
         public virtual bool Attack(Character enemy)
         {
@@ -226,16 +207,6 @@ namespace Задание6_8
             Health -= damage;
         }
 
-        protected int GetRandomChance()
-        {
-            int minBonusChance = 1;
-            int maxBonusChance = 100;
-
-            int bonusChance = _random.Next(minBonusChance, maxBonusChance + 1);
-
-            return bonusChance;
-        }
-
         public void ShowStats()
         {
             Console.WriteLine($"{Name}");
@@ -245,6 +216,49 @@ namespace Задание6_8
             Console.WriteLine($"Ловкость {Agility}");
             Console.WriteLine($"Концентрация {Concentration}");
             Console.WriteLine($"Удача {Luck}");
+        }
+
+        protected int GetDamage()
+        {
+            int criticalDamageIndex = 2;
+            int bonusDamageIndex = 2;
+            int damage;
+
+            if (GetRandomChance() <= Accuracy)
+            {
+                if (GetRandomChance() <= Concentration)
+                {
+                    damage = Strength * criticalDamageIndex;
+                    Console.WriteLine($"{Name} наносит двойной урон");
+                }
+                else
+                {
+                    damage = Strength;
+                }
+
+                if (GetRandomChance() <= Luck)
+                {
+                    damage += Strength / bonusDamageIndex;
+                    Console.WriteLine($"{Name} сопутствует удача и его удар стал в половину сильнее");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"{Name} промахивается и ненаносит урона");
+                damage = 0;
+            }
+
+            return damage;
+        }
+
+        protected int GetRandomChance()
+        {
+            int minBonusChance = 1;
+            int maxBonusChance = 100;
+
+            int bonusChance = _random.Next(minBonusChance, maxBonusChance + 1);
+
+            return bonusChance;
         }
     }
 
