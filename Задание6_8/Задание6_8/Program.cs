@@ -18,8 +18,10 @@ namespace Задание6_8
             {
                 arena.MakePlayersTurns();
                 arena.ShowPlayersStats();
-                isFigthOver = arena.TestingFightOver();
+                isFigthOver = arena.CheckFightOver();
             }
+
+            arena.ShowWinner();
         }
     }
 
@@ -61,27 +63,25 @@ namespace Задание6_8
             Console.WriteLine(border);
         }
 
-        public bool TestingFightOver()
+        public bool CheckFightOver()
         {
-            bool isFightOver = false;
+            return _player1.Health <= 0 || _player2.Health <= 0;
+        }
 
+        public void ShowWinner()
+        {
             if (_player1.Health > 0 && _player2.Health <= 0)
             {
                 Console.WriteLine($"Победил {_player1.Name}");
-                isFightOver = true;
             }
             else if (_player2.Health > 0 && _player1.Health <= 0)
             {
                 Console.WriteLine($"Победил {_player2.Name}");
-                isFightOver = true;
             }
             else if (_player1.Health <= 0 && _player2.Health <= 0)
             {
                 Console.WriteLine($"Игроки убили друг друга");
-                isFightOver = true;
             }
-
-            return isFightOver;
         }
 
         private Character ChoosePlayer()

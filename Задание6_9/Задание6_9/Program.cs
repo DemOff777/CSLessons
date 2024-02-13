@@ -10,31 +10,7 @@ namespace Задание6_9
         {
             SuperMarket superMarket = new SuperMarket();
 
-            Render render = new Render();
-
-            superMarket.AddCustomers();
-
-            while (superMarket.Customers.Count() > 0)
-            {
-                render.ClearShopCashPlace();
-                superMarket.ShowCash();
-
-                render.ClearCustomersQueuePlace();
-                superMarket.ShowRemainingCustomersVolue();
-
-                render.ClearCurrentCustomerPLace();
-                superMarket.GetCurrentCustomer().ShowInfo();
-
-                render.ClearDialogPlace();
-                Console.WriteLine("Для того чтобы пробить товар нажмите на любую клавишу");
-                Console.ReadKey();
-
-                superMarket.MakeDeal();
-
-                Console.WriteLine("Для того чтобы перейти к следующему покупателю нажмите на любую клавишу");
-                Console.ReadKey();
-                Console.Clear();
-            }
+            superMarket.Work();
 
             Console.WriteLine("Очередь закончилась - магазин закрыт!");
         }
@@ -42,52 +18,11 @@ namespace Задание6_9
 
     static class UserUtils
     {
-        private static Random _random = new Random();
+        private static Random s_random = new Random();
 
         public static int GetRandomNumber(int minVolue, int maxVolue)
         {
-            return _random.Next(minVolue, maxVolue + 1);
-        }
-    }
-
-    class Render
-    {
-        private string _borber1 = string.Join("", Enumerable.Repeat(" ", 10));
-        private string _border2 = string.Join("", Enumerable.Repeat(" ", 20));
-
-        public void ClearShopCashPlace()
-        {
-            Console.SetCursorPosition(0, 0);
-            Console.WriteLine($"{_borber1}");
-            Console.SetCursorPosition(0, 0);
-        }
-
-        public void ClearCustomersQueuePlace()
-        {
-            Console.SetCursorPosition(0, 2);
-            Console.WriteLine($"{_borber1}");
-            Console.SetCursorPosition(0, 2);
-        }
-
-        public void ClearCurrentCustomerPLace()
-        {
-            int customerInfoSize = 13;
-
-            Console.SetCursorPosition(0, 4);
-
-            for (int i = 0; i < customerInfoSize; i++)
-            {
-                Console.WriteLine($"{_border2}");
-            }
-            
-            Console.SetCursorPosition(0, 4);
-        }
-
-        public void ClearDialogPlace()
-        {
-            Console.SetCursorPosition(0, 20);
-            Console.WriteLine($"{_borber1}");
-            Console.SetCursorPosition(0, 20);
+            return s_random.Next(minVolue, maxVolue + 1);
         }
     }
 
@@ -190,38 +125,103 @@ namespace Задание6_9
     {
         private int _money;
 
-        public Queue<Customer> Customers { get; private set; } = new Queue<Customer>();
+        private string _borber1 = string.Join("", Enumerable.Repeat(" ", 10));
+        private string _border2 = string.Join("", Enumerable.Repeat(" ", 20));
 
-        public void AddCustomers()
+        public Queue<Customer> _сustomers = new Queue<Customer>();
+
+        public void Work()
+        {
+            AddCustomers();
+
+            while (_сustomers.Count() > 0)
+            {
+                ClearShopCashPlace();
+                ShowCash();
+
+                ClearCustomersQueuePlace();
+                ShowRemainingCustomersVolue();
+
+                ClearCurrentCustomerPLace();
+                GetCurrentCustomer().ShowInfo();
+
+                ClearDialogPlace();
+                Console.WriteLine("Для того чтобы пробить товар нажмите на любую клавишу");
+                Console.ReadKey();
+
+                MakeDeal();
+
+                Console.WriteLine("Для того чтобы перейти к следующему покупателю нажмите на любую клавишу");
+                Console.ReadKey();
+                Console.Clear();
+            }
+        }
+
+        private void ClearShopCashPlace()
+        {
+            Console.SetCursorPosition(0, 0);
+            Console.WriteLine($"{_borber1}");
+            Console.SetCursorPosition(0, 0);
+        }
+
+        private void ClearCustomersQueuePlace()
+        {
+            Console.SetCursorPosition(0, 2);
+            Console.WriteLine($"{_borber1}");
+            Console.SetCursorPosition(0, 2);
+        }
+
+        private void ClearCurrentCustomerPLace()
+        {
+            int customerInfoSize = 13;
+
+            Console.SetCursorPosition(0, 4);
+
+            for (int i = 0; i < customerInfoSize; i++)
+            {
+                Console.WriteLine($"{_border2}");
+            }
+
+            Console.SetCursorPosition(0, 4);
+        }
+
+        private void ClearDialogPlace()
+        {
+            Console.SetCursorPosition(0, 20);
+            Console.WriteLine($"{_borber1}");
+            Console.SetCursorPosition(0, 20);
+        }
+
+        private void AddCustomers()
         {
             int CustomersCount = 10;
 
             for (int i = 0; i < CustomersCount; i++)
             {
                 Customer customer = new Customer($"{i + 1}", CreateProducts());        
-                Customers.Enqueue(customer);
+                _сustomers.Enqueue(customer);
             }
         }
 
-        public Customer GetCurrentCustomer()
+        private Customer GetCurrentCustomer()
         {
-            return Customers.Peek();
+            return _сustomers.Peek();
         }
 
-        public void MakeDeal()
+        private void MakeDeal()
         {
-            int moneyToPay = Customers.Dequeue().BuyProducts();
+            int moneyToPay = _сustomers.Dequeue().BuyProducts();
             _money += moneyToPay;
         }
 
-        public void ShowCash() 
+        private void ShowCash() 
         {
             Console.WriteLine($"В кассе - {_money} рублей");
         }
 
-        public void ShowRemainingCustomersVolue()
+        private void ShowRemainingCustomersVolue()
         {
-            Console.WriteLine($"В очереди осталось {Customers.Count} человек");
+            Console.WriteLine($"В очереди осталось {_сustomers.Count} человек");
         }
 
         private List<Product> CreateProducts()
