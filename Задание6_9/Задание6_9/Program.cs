@@ -19,7 +19,6 @@ namespace Задание6_9
     static class UserUtils
     {
         private static Random s_random = new Random();
-
         public static int GetRandomNumber(int minVolue, int maxVolue)
         {
             return s_random.Next(minVolue, maxVolue + 1);
