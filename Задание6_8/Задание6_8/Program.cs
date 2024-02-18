@@ -10,18 +10,7 @@ namespace Задание6_8
         {
             Arena arena = new Arena();
 
-            bool isFigthOver = false;
-
-            arena.ChoosePlayers();
-
-            while (isFigthOver == false)
-            {
-                arena.MakePlayersTurns();
-                arena.ShowPlayersStats();
-                isFigthOver = arena.CheckFightOver();
-            }
-
-            arena.ShowWinner();
+            arena.Figth();
         }
     }
 
@@ -31,6 +20,22 @@ namespace Задание6_8
         private Character _player2 = null;
 
         private bool _isPlayerTurnRuns;
+
+        public void Figth()
+        {
+            bool isFigthOver = false;
+
+            ChoosePlayers();
+
+            while (isFigthOver == false)
+            {
+                MakePlayersTurns();
+                ShowPlayersStats();
+                isFigthOver = GetPlayersHealthSwitch();
+            }
+
+            ShowWinner();
+        }
 
         public void ChoosePlayers()
         {
@@ -63,7 +68,7 @@ namespace Задание6_8
             Console.WriteLine(border);
         }
 
-        public bool CheckFightOver()
+        public bool GetPlayersHealthSwitch()
         {
             return _player1.Health <= 0 || _player2.Health <= 0;
         }
@@ -185,6 +190,8 @@ namespace Задание6_8
         public void TakeDamage(int damage)
         {
             int percentIndex = 100;
+            int armorCorrectionDamage = damage * Armor / percentIndex;
+            int luckyCorrectionDamage = damage * Agility / percentIndex;
 
             if (GetRandomChance() <= Agility)
             {
@@ -193,12 +200,12 @@ namespace Задание6_8
             }
             else
             {
-                damage -= damage * Armor / percentIndex;
+                damage -= armorCorrectionDamage;
             }
 
             if (GetRandomChance() <= Luck)
             {
-                damage -= damage * Agility / percentIndex;
+                damage -= luckyCorrectionDamage;
                 Console.WriteLine($"{Name} сопутствует удача и он получает меньше урона");
             }
 
@@ -223,12 +230,14 @@ namespace Задание6_8
             int criticalDamageIndex = 2;
             int bonusDamageIndex = 2;
             int damage;
+            int criticalDamage = Strength * criticalDamageIndex;
+            int luckyDamage = Strength / bonusDamageIndex;
 
             if (GetRandomChance() <= Accuracy)
             {
                 if (GetRandomChance() <= Concentration)
                 {
-                    damage = Strength * criticalDamageIndex;
+                    damage = criticalDamage;
                     Console.WriteLine($"{Name} наносит двойной урон");
                 }
                 else
@@ -238,7 +247,7 @@ namespace Задание6_8
 
                 if (GetRandomChance() <= Luck)
                 {
-                    damage += Strength / bonusDamageIndex;
+                    damage += luckyDamage;
                     Console.WriteLine($"{Name} сопутствует удача и его удар стал в половину сильнее");
                 }
             }
