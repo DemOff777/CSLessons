@@ -6,3 +6,11 @@ C:\Users\Asus\Documents\Задачи C#\Задание6_10\Задание6_10\bi
 C:\Users\Asus\Documents\Задачи C#\Задание6_10\Задание6_10\bin\Debug\Задание6_10.pdb
 C:\Users\Asus\Documents\Задачи C#\Задание6_10\Задание6_10\obj\Debug\Задание6_10.exe
 C:\Users\Asus\Documents\Задачи C#\Задание6_10\Задание6_10\obj\Debug\Задание6_10.pdb
+C:\Users\Asus\Documents\GitHub\CSLessons\Задание6_10\Задание6_10\bin\Debug\Задание6_10.exe.config
+C:\Users\Asus\Documents\GitHub\CSLessons\Задание6_10\Задание6_10\bin\Debug\Задание6_10.exe
+C:\Users\Asus\Documents\GitHub\CSLessons\Задание6_10\Задание6_10\bin\Debug\Задание6_10.pdb
+C:\Users\Asus\Documents\GitHub\CSLessons\Задание6_10\Задание6_10\obj\Debug\Задание6_10.csproj.AssemblyReference.cache
+C:\Users\Asus\Documents\GitHub\CSLessons\Задание6_10\Задание6_10\obj\Debug\Задание6_10.csproj.SuggestedBindingRedirects.cache
+C:\Users\Asus\Documents\GitHub\CSLessons\Задание6_10\Задание6_10\obj\Debug\Задание6_10.csproj.CoreCompileInputs.cache
+C:\Users\Asus\Documents\GitHub\CSLessons\Задание6_10\Задание6_10\obj\Debug\Задание6_10.exe
+C:\Users\Asus\Documents\GitHub\CSLessons\Задание6_10\Задание6_10\obj\Debug\Задание6_10.pdb

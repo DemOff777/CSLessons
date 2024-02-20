@@ -31,13 +31,13 @@ namespace Задание6_8
             {
                 MakePlayersTurns();
                 ShowPlayersStats();
-                isFigthOver = GetPlayersHealthSwitch();
+                isFigthOver = isPlayersHealthFinished();
             }
 
             ShowWinner();
         }
 
-        public void ChoosePlayers()
+        private void ChoosePlayers()
         {
             Console.WriteLine("Выберите первого бойца");
             _player1 = ChoosePlayer();
@@ -46,13 +46,7 @@ namespace Задание6_8
             _player2 = ChoosePlayer();
         }
 
-        public void MakePlayersTurns()
-        {
-            MakePlayerTurn(_player1, _player2);
-            MakePlayerTurn(_player2, _player1);
-        }
-
-        public void ShowPlayersStats()
+        private void ShowPlayersStats()
         {
             char separatorMark = '-';
             string border = string.Join("", Enumerable.Repeat(separatorMark, 15));
@@ -68,22 +62,22 @@ namespace Задание6_8
             Console.WriteLine(border);
         }
 
-        public bool GetPlayersHealthSwitch()
+        private bool isPlayersHealthFinished()
         {
             return _player1.Health <= 0 || _player2.Health <= 0;
         }
 
-        public void ShowWinner()
+        private void ShowWinner()
         {
-            if (_player1.Health > 0 && _player2.Health <= 0)
+            if (_player1.Health > 0)
             {
                 Console.WriteLine($"Победил {_player1.Name}");
             }
-            else if (_player2.Health > 0 && _player1.Health <= 0)
+            else if (_player2.Health > 0)
             {
                 Console.WriteLine($"Победил {_player2.Name}");
             }
-            else if (_player1.Health <= 0 && _player2.Health <= 0)
+            else
             {
                 Console.WriteLine($"Игроки убили друг друга");
             }
@@ -131,6 +125,12 @@ namespace Задание6_8
             }
 
             return player;
+        }
+
+        private void MakePlayersTurns()
+        {
+            MakePlayerTurn(_player1, _player2);
+            MakePlayerTurn(_player2, _player1);
         }
 
         private int GetInt()

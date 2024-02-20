@@ -18,13 +18,23 @@ namespace Задание6_9
 
     static class UserUtils
     {
-        public static string border1 = string.Join("", Enumerable.Repeat(" ", 10));
-        public static string border2 = string.Join("", Enumerable.Repeat(" ", 20));
+        private static string border1 = string.Join("", Enumerable.Repeat(" ", 10));
+        private static string border2 = string.Join("", Enumerable.Repeat(" ", 20));
 
         private static Random s_random = new Random();
         public static int GenerateRandomNumber(int minVolue, int maxVolue)
         {
             return s_random.Next(minVolue, maxVolue + 1);
+        }
+
+        public static void ShowBorder1()
+        {
+            Console.WriteLine($"{border1}");
+        }
+
+        public static void ShowBorder2()
+        {
+            Console.WriteLine($"{border2}");
         }
     }
 
@@ -63,31 +73,34 @@ namespace Задание6_9
 
         public int BuyProducts()
         {
-            List<Product> products = new List<Product>();
+            int allProductsPrice = 0;
+            int randomProductIndex;
 
-            int moneyToPay = 0;
+            bool isBuyComplete = false;
 
-            while (_basket.Count > 0)
+            while (isBuyComplete == false)
             {
-                int randomProductIndex = UserUtils.GenerateRandomNumber(0, _basket.Count - 1);
+                allProductsPrice = 0;
 
-                if (_money >= _basket[randomProductIndex].Price)
+                for (int i = 0; i < _basket.Count; i++)
                 {
-                    _money -= _basket[randomProductIndex].Price;
-                    moneyToPay += _basket[randomProductIndex].Price;
-                    products.Add(_basket[randomProductIndex]);
+                    allProductsPrice += _basket[i].Price;
+                }
+
+                if (_money < allProductsPrice)
+                {
+                    randomProductIndex = UserUtils.GenerateRandomNumber(0, _basket.Count - 1);
+                    Console.WriteLine($"{_name} выложил {_basket[randomProductIndex].Name}");
                     _basket.RemoveAt(randomProductIndex);
                 }
                 else
                 {
-                    Console.WriteLine($"{_name} выложил {_basket[randomProductIndex].Name}");
-                    _basket.RemoveAt(randomProductIndex);
-                }
+                    isBuyComplete = true;
+                    _money -= allProductsPrice;
+                }   
             }
 
-            _basket = products;
-
-            return moneyToPay;
+            return allProductsPrice;
         }
 
         public void ShowInfo()
@@ -115,7 +128,7 @@ namespace Задание6_9
         private int GenerateMoney()
         {
             int minMoneyVolue = 500;
-            int maxMoneyVolue = 1000;
+            int maxMoneyVolue = 4000;
 
             int money = UserUtils.GenerateRandomNumber(minMoneyVolue, maxMoneyVolue);
 
@@ -127,12 +140,13 @@ namespace Задание6_9
     {
         private int _money;
 
-
-
         private Queue<Customer> _сustomers = new Queue<Customer>();
+
+        private List<Product> _allProducts = new List<Product>();
 
         public void Work()
         {
+            CreateProducts();
             AddCustomers();
 
             while (_сustomers.Count() > 0)
@@ -161,14 +175,14 @@ namespace Задание6_9
         private void ClearShopCashPlace()
         {
             Console.SetCursorPosition(0, 0);
-            Console.WriteLine($"{UserUtils.border1}");
+            UserUtils.ShowBorder1();
             Console.SetCursorPosition(0, 0);
         }
 
         private void ClearCustomersQueuePlace()
         {
             Console.SetCursorPosition(0, 2);
-            Console.WriteLine($"{UserUtils.border1}");
+            UserUtils.ShowBorder1();
             Console.SetCursorPosition(0, 2);
         }
 
@@ -180,7 +194,7 @@ namespace Задание6_9
 
             for (int i = 0; i < customerInfoSize; i++)
             {
-                Console.WriteLine($"{UserUtils.border2}");
+                UserUtils.ShowBorder2();
             }
 
             Console.SetCursorPosition(0, 4);
@@ -189,7 +203,7 @@ namespace Задание6_9
         private void ClearDialogPlace()
         {
             Console.SetCursorPosition(0, 20);
-            Console.WriteLine($"{UserUtils.border1}");
+            UserUtils.ShowBorder1();
             Console.SetCursorPosition(0, 20);
         }
 
@@ -199,7 +213,7 @@ namespace Задание6_9
 
             for (int i = 0; i < CustomersCount; i++)
             {
-                Customer customer = new Customer($"{i + 1}", CreateProducts());        
+                Customer customer = new Customer($"{i + 1}", GetRandomProducts());        
                 _сustomers.Enqueue(customer);
             }
         }
@@ -225,24 +239,36 @@ namespace Задание6_9
             Console.WriteLine($"В очереди осталось {_сustomers.Count} человек");
         }
 
-        private List<Product> CreateProducts()
+        private void CreateProducts()
         {
-            List<Product> products = new List<Product>();
-
-            int minProductVolue = 5;
-            int maxProductVolue = 10;
             int minProductPrice = 50;
             int maxProductPrice = 700;
-            int productsVolue;
-
-            productsVolue = UserUtils.GenerateRandomNumber(minProductVolue, maxProductVolue);
+            int productsVolue = 100;
 
             for (int i = 0; i < productsVolue; i++)
             {
-                products.Add(new Product($"продукт номер {i + 1}", UserUtils.GenerateRandomNumber(minProductPrice, maxProductPrice)));
+                _allProducts.Add(new Product($"продукт номер {i + 1}", UserUtils.GenerateRandomNumber(minProductPrice, maxProductPrice)));
+            }
+        }
+
+        private List<Product> GetRandomProducts()
+        {
+            List<Product> randomProducts = new List<Product>();
+
+            int minProductsCount = 5;
+            int maxProductsCount = 10;
+            int productsCount = UserUtils.GenerateRandomNumber(minProductsCount, maxProductsCount);
+
+            for (int i = 0; i < productsCount; i++)
+            {
+                int minProductIndex = 0;
+                int randomProductIndex = UserUtils.GenerateRandomNumber(minProductIndex, _allProducts.Count - 1);
+
+                randomProducts.Add(_allProducts[randomProductIndex]);
+                _allProducts.RemoveAt(randomProductIndex);
             }
 
-            return products;
+            return randomProducts;
         }
     }
 }
