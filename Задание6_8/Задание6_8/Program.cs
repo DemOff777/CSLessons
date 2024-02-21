@@ -21,15 +21,12 @@ namespace Задание6_8
 
         public void Figth()
         {
-            bool isFigthOver = false;
-
             ChoosePlayers();
 
-            while (isFigthOver == false)
+            while (IsPlayersHealthFinished())
             {
                 MakePlayersTurns();
                 ShowPlayersStats();
-                isFigthOver = IsPlayersHealthFinished();
             }
 
             ShowWinner();
@@ -94,7 +91,6 @@ namespace Задание6_8
             players.Add(new DungeonestDarkness());
 
             int userInput;
-            int characterIndex;
 
             bool isPLayerPicked = false;
 
@@ -329,11 +325,13 @@ namespace Задание6_8
             int damage = GetDamage();
             enemy.TakeDamage(damage);
 
-            Console.WriteLine($"{Name} восстанавливает {damage * vampireIndex} здоровья");
+            int healingValue = damage * vampireIndex;
+
+            Console.WriteLine($"{Name} восстанавливает {healingValue} здоровья");
 
             if (Health < fullHealthAmount)
             {
-                Health += damage * vampireIndex;
+                Health += healingValue;
 
                 if (Health > fullHealthAmount)
                 {

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Задание6_11
 {
@@ -35,7 +33,7 @@ namespace Задание6_11
 
     class Aquarium
     {
-        List<Fish> _fishes = new List<Fish>();
+        private List<Fish> _fishes = new List<Fish>();
 
         public void Work()
         {
@@ -53,7 +51,7 @@ namespace Задание6_11
                 UserUtils.ShowBorder();
                 ShowFishes();
                 UserUtils.ShowBorder();
-                UserActions(maxFishCount);
+                UserAction(maxFishCount);
                 TakeAwayFishesLifeTime();
                 Console.WriteLine("Для завершения дня нажмите на любую кнопку");
                 Console.ReadKey();
@@ -85,7 +83,7 @@ namespace Задание6_11
 
                     for (int i = 0; i < fishCount; i++)
                     {
-                        _fishes.Add(new Fish());
+                        _fishes.Add(new Fish(SetFishName(), SetLifeTime()));
                     }
                 }
             }
@@ -126,7 +124,7 @@ namespace Задание6_11
             }
         }
 
-        private void UserActions(int maxFishCount)
+        private void UserAction(int maxFishCount)
         {
             const string AddFish = "1";
             const string DeleteFish = "2";
@@ -141,70 +139,67 @@ namespace Задание6_11
 
             while (isUserInputCorrect == false)
             {
+                isUserInputCorrect = true;
                 string userInput = Console.ReadLine();
 
                 switch (userInput)
                 {
                     case AddFish:
-                        isUserInputCorrect = this.AddFish(maxFishCount);
+                        this.AddFish(maxFishCount);
                         break;
                     case DeleteFish:
-                        isUserInputCorrect = this.DeleteFish();
+                        this.DeleteFish();
                         break;
                     case WatchTheFish:
-                        isUserInputCorrect = this.WatchTheFish();
+                        this.WatchTheFish();
                         break;
                     default:
-                        Console.WriteLine("Некорректное значение. Попробуйте еще раз");
+                        isUserInputCorrect = false;
                         break;
                 }
             }
         }
 
-        private bool AddFish(int maxFishCount)
+        private void AddFish(int maxFishCount)
         {
-            bool isFishAdded = true;
-
             if (_fishes.Count < maxFishCount)
             {    
-                _fishes.Add(new Fish());      
+                _fishes.Add(new Fish(SetFishName(), SetLifeTime()));      
             }
             else
             {
                 Console.WriteLine("Добавить рыбу невозможно. Аквариум полностью заполнен");
             }
-
-            return isFishAdded;
         }
 
-        private bool DeleteFish()
+        private void DeleteFish()
         {
             int userNumber = 0;
 
-            bool isUserInputCorrect = false;
+            bool isFishDeleted = false;
 
             Console.WriteLine("Введите номер удаляемой рыбы");
 
-            while (isUserInputCorrect == false)
+            while (isFishDeleted == false)
             {
-                isUserInputCorrect = Int32.TryParse(Console.ReadLine(), out userNumber);
+                bool isUserInputCorrect = Int32.TryParse(Console.ReadLine(), out userNumber);
 
-                if (isUserInputCorrect == false && userNumber > _fishes.Count - 1)
+                if (isUserInputCorrect == false || userNumber > _fishes.Count - 1 || userNumber < 0)
                 {
                     Console.WriteLine("Значение не верно либо превышает количество рыб в аквариуме");
+                }
+                else
+                {
+                    isFishDeleted = true; 
                 }
             }
 
             _fishes.RemoveAt(userNumber);
-            bool isFishDeleted = true;
-            return isFishDeleted;
         }
 
-        private bool WatchTheFish()
+        private void WatchTheFish()
         {
-            bool isFishSwim = true;
             Console.WriteLine("Вы просто наблюдаете за рыбами");
-            return isFishSwim;
         }
 
         private void TakeAwayFishesLifeTime()
@@ -235,26 +230,8 @@ namespace Задание6_11
                 }
             }
         }
-    }
 
-    class Fish
-    {
-        private string _name;
-
-        public int LifeTime { get; private set; }
-
-        public Fish()
-        {
-            SetName();
-            SetLifeTime();
-        }
-
-        public void TakeAwayLifeTime()
-        {
-            LifeTime --;
-        }
-
-        private void SetName()
+        private string SetFishName()
         {
             string flounder = "камбала";
             string pike = "щука";
@@ -269,33 +246,55 @@ namespace Задание6_11
             const int BreamIndex = 4;
 
             int fishIndex = UserUtils.GetRandomNumber(FlounderIndex, BreamIndex);
-            
-            switch(fishIndex)
+            string name = "";
+
+            switch (fishIndex)
             {
                 case FlounderIndex:
-                    _name = flounder;
+                    name = flounder;
                     break;
                 case PikeIndex:
-                    _name = pike;
+                    name = pike;
                     break;
                 case CarpIndex:
-                    _name = carp;
+                    name = carp;
                     break;
                 case VoblaIndex:
-                    _name = vobla;
+                    name = vobla;
                     break;
                 case BreamIndex:
-                    _name = bream;
+                    name = bream;
                     break;
             }
+
+            return name;
         }
 
-        private void SetLifeTime()
+        private int SetLifeTime()
         {
             int minLifeTime = 3;
             int maxLifeTime = 10;
 
-            LifeTime = UserUtils.GetRandomNumber(minLifeTime, maxLifeTime);
+            int lifeTime = UserUtils.GetRandomNumber(minLifeTime, maxLifeTime);
+            return lifeTime;
+        }
+    }
+
+    class Fish
+    {
+        private string _name;
+
+        public Fish(string name, int lifeTime)
+        {
+            _name = name;
+            LifeTime = lifeTime;
+        }
+
+        public int LifeTime { get; private set; }
+
+        public void TakeAwayLifeTime()
+        {
+            LifeTime --;
         }
 
         public void ShowStats()
