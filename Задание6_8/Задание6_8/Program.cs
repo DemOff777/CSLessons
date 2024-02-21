@@ -19,8 +19,6 @@ namespace Задание6_8
         private Character _player1 = null;
         private Character _player2 = null;
 
-        private bool _isPlayerTurnRuns;
-
         public void Figth()
         {
             bool isFigthOver = false;
@@ -31,7 +29,7 @@ namespace Задание6_8
             {
                 MakePlayersTurns();
                 ShowPlayersStats();
-                isFigthOver = isPlayersHealthFinished();
+                isFigthOver = IsPlayersHealthFinished();
             }
 
             ShowWinner();
@@ -62,7 +60,7 @@ namespace Задание6_8
             Console.WriteLine(border);
         }
 
-        private bool isPlayersHealthFinished()
+        private bool IsPlayersHealthFinished()
         {
             return _player1.Health <= 0 || _player2.Health <= 0;
         }
@@ -154,13 +152,7 @@ namespace Задание6_8
 
         private void MakePlayerTurn(Character player1, Character player2)
         {
-            _isPlayerTurnRuns = true;
-
-            while (_isPlayerTurnRuns)
-            {
-                _isPlayerTurnRuns = false;
-                _isPlayerTurnRuns = player1.Attack(player2);
-            }
+            player1.Attack(player2);
         }     
     }
 
@@ -179,12 +171,10 @@ namespace Задание6_8
 
         public int Health { get; protected set; } = 100;
 
-        public virtual bool Attack(Character enemy)
+        public virtual void Attack(Character enemy)
         {
-            bool isTurnRuns = false;
             int damage = GetDamage();
             enemy.TakeDamage(damage);
-            return isTurnRuns;
         }
 
         public void TakeDamage(int damage)
@@ -257,6 +247,7 @@ namespace Задание6_8
                 damage = 0;
             }
 
+            Console.WriteLine($"{Name} наносит {damage} урона");
             return damage;
         }
 
@@ -298,11 +289,9 @@ namespace Задание6_8
             Luck = 60;
         }
 
-        public override bool Attack(Character enemy)
+        public override void Attack(Character enemy)
         {
             int strengthIndex = 3;
-
-            bool isTurnRuns = false;
 
             int damage = GetDamage();
             enemy.TakeDamage(damage);
@@ -316,8 +305,6 @@ namespace Задание6_8
             {
                 Console.WriteLine($"{Name} ничего не делает в этот раз");
             }
-
-            return isTurnRuns;
         }
     }
 
@@ -334,12 +321,10 @@ namespace Задание6_8
             Luck = 10;
         }
 
-        public override bool Attack(Character enemy)
+        public override void Attack(Character enemy)
         {
-            int vampireIndex = 3;
+            int vampireIndex = 1;
             int fullHealthAmount = 100;
-
-            bool isTurnRuns = false;
 
             int damage = GetDamage();
             enemy.TakeDamage(damage);
@@ -355,8 +340,6 @@ namespace Задание6_8
                     Health = fullHealthAmount;
                 }
             }
-
-            return isTurnRuns;
         }
     }
 
@@ -373,24 +356,27 @@ namespace Задание6_8
             Luck = 30;
         }
 
-        public override bool Attack(Character enemy)
+        public override void Attack(Character enemy)
         {
-            bool isTurnRuns = false;
+            bool isTurnRuns = true;
 
-            int damage = GetDamage();
-            enemy.TakeDamage(damage);
-
-            if (GetRandomChance() <= Luck)
+            while (isTurnRuns)
             {
-                Console.WriteLine($"По счастливой случайности {Name} атакует еще раз");
-                isTurnRuns = true;
-            }
-            else
-            {
-                Console.WriteLine($"{Name} ничего не делает в этот раз");
-            }
+                isTurnRuns = false;
 
-            return isTurnRuns;
+                int damage = GetDamage();
+                enemy.TakeDamage(damage);
+
+                if (GetRandomChance() <= Luck)
+                {
+                    Console.WriteLine($"По счастливой случайности {Name} атакует еще раз");
+                    isTurnRuns = true;
+                }
+                else
+                {
+                    Console.WriteLine($"{Name} ничего не делает в этот раз");
+                }
+            }
         }
     }
 
@@ -407,12 +393,10 @@ namespace Задание6_8
             Luck = 10;
         }
 
-        public override bool Attack(Character enemy)
+        public override void Attack(Character enemy)
         {
             int deathNumber = 10;
             int fullHealth = 100;
-
-            bool isTurnRuns = false;
 
             int damage = GetDamage();
             enemy.TakeDamage(damage);
@@ -427,8 +411,6 @@ namespace Задание6_8
                 Health = 0;
                 Console.WriteLine($"{Name} был повержен в уязвимое место");
             }
-
-            return isTurnRuns;
         }
     }
 }
