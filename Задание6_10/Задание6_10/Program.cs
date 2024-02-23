@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Задание6_10
 {
@@ -104,7 +105,7 @@ namespace Задание6_10
         {
             int damage = _turnQueue.GetFirstSoldier().GetDamage();
             passiveSquad.TakeDamage(damage);
-            UseBonus(activeSquad, passiveSquad, _turnQueue.GetFirstSoldier());
+            _turnQueue.GetFirstSoldier().UseBonus(activeSquad, passiveSquad);
             _turnQueue.GetFirstSoldier().UseSkill(activeSquad, passiveSquad, _turnQueue);
             MoveSoldierToTurnEnd(_turnQueue.GetFirstSoldier(), _turnQueue);
             _turnQueue.GetFirstSoldier().SetDoubleTurn(_turnQueue);
@@ -116,97 +117,11 @@ namespace Задание6_10
             int secondSquadIndex = 2;
 
             _firstCountrySquad.GetName(firstSquadIndex);
-            _firstCountrySquad.FillSquad();
+            _firstCountrySquad.Fill();
             _firstCountrySquad.GetSquadMark(firstSquadIndex);
             _secondCountrySquad.GetName(secondSquadIndex);
-            _secondCountrySquad.FillSquad();
+            _secondCountrySquad.Fill();
             _secondCountrySquad.GetSquadMark(secondSquadIndex);
-        }
-
-        private void UseBonus(Squad activeSquad, Squad passiveSquad, Soldier turnSoldier)
-        {
-            if (turnSoldier.Bonus is Grenade grenade)
-            {
-                Console.WriteLine($"{turnSoldier.Name} кидает гранату");
-                passiveSquad.TakeAreaDamage(grenade.Damage);
-            }
-
-            if (turnSoldier.Bonus is RadioSet radioSet)
-            {
-                bool isBonusUsed = false;
-
-                while (isBonusUsed == false)
-                {
-                    int soldierRandomIndex = UserUtils.GetRandomNumber(activeSquad.GetCount());
-
-                    if (activeSquad.GetSoldier(soldierRandomIndex) != turnSoldier)
-                    {
-                        Console.WriteLine($"{turnSoldier.Name} использует рацию");
-                        activeSquad.GetSoldier(soldierRandomIndex).TakeSpeedBonus(radioSet.SpeedBonusValue);
-                        isBonusUsed = true;
-                    }
-                }
-            }
-
-            if (turnSoldier.Bonus is MedKit medKit)
-            {
-                int lastSoldierValue = 1;
-                int fullHealthSoldiers = 0;
-
-                bool isBonusUsed = false;
-
-                while (isBonusUsed == false)
-                {
-                    for (int k = 0; k < activeSquad.GetCount(); k++)
-                    {
-                        if (activeSquad.GetSoldier(k).Health == activeSquad.GetSoldier(k).FullHealth)
-                        {
-                            fullHealthSoldiers++;
-                        }
-                    }
-
-                    if (fullHealthSoldiers == activeSquad.GetCount() - 1 && turnSoldier.Health < turnSoldier.FullHealth)
-                    {
-                        isBonusUsed = true;
-                    }
-                    else if (fullHealthSoldiers == activeSquad.GetCount())
-                    {
-                        isBonusUsed = true;
-                    }
-
-                    if (activeSquad.GetCount() == lastSoldierValue)
-                    {
-                        isBonusUsed = true;
-                    }
-
-                    int temporarySoldierIndex = UserUtils.GetRandomNumber(activeSquad.GetCount());
-
-                    if (activeSquad.GetSoldier(temporarySoldierIndex).Health < activeSquad.GetSoldier(temporarySoldierIndex).FullHealth && activeSquad.GetSoldier(temporarySoldierIndex) != turnSoldier)
-                    {
-                        Console.WriteLine($"{turnSoldier.Name} использует аптечку");
-                        activeSquad.GetSoldier(temporarySoldierIndex).TakeHealth(medKit.HealthRecoveryValue);
-                        isBonusUsed = true;
-                    }
-                }
-            }
-
-            if (turnSoldier.Bonus is SpeedBonus speedBonus)
-            {
-                turnSoldier.TakeSpeedBonus(speedBonus.Value);
-                turnSoldier.RemoveBonus();
-            }
-
-            if (turnSoldier.Bonus is DamageBonus damageBonus)
-            {
-                turnSoldier.TakeDamageBonus(damageBonus.Value);
-                turnSoldier.RemoveBonus();
-            }
-
-            if (turnSoldier.Bonus is ArmorBonus armorBonus)
-            {
-                turnSoldier.TakeArmorBonus(armorBonus.Value);
-                turnSoldier.RemoveBonus();
-            }
         }
 
         private void MoveSoldierToTurnEnd(Soldier turnSoldier, Squad turnQueue)
@@ -258,7 +173,7 @@ namespace Задание6_10
             return _soldiers[firstSoldierIndex];
         }
 
-        public void FillSquad()
+        public void Fill()
         {
             int soldiersInSquad = 6;
 
@@ -466,95 +381,180 @@ namespace Задание6_10
         {
             return new Bonus();
         }
+
+        public virtual void Use(Squad activeSquad, Squad passiveSquad, Soldier turnSoldier) {}
     }
 
     class Grenade : Bonus
     {
-        public int Damage { get; private set; } = 70;
-
         public Grenade()
         {
             Name = "grenade";
         }
 
+        public int Damage { get; private set; } = 70;
+
         public override Bonus Clone()
         {
             return new Grenade();
+        }
+
+        public override void Use(Squad activeSquad, Squad passiveSquad, Soldier turnSoldier)
+        {
+            Console.WriteLine($"{turnSoldier.Name} кидает гранату");
+            passiveSquad.TakeAreaDamage(Damage);
         }
     }
 
     class RadioSet : Bonus
     {
-        public int SpeedBonusValue { get; private set; } = 5;
-
         public RadioSet()
         {
             Name = "radioSet";
         }
 
+        public int SpeedBonusValue { get; private set; } = 5;
+
         public override Bonus Clone()
         {
             return new RadioSet();
+        }
+
+        public override void Use(Squad activeSquad, Squad passiveSquad, Soldier turnSoldier)
+        {
+            bool isBonusUsed = false;
+
+            while (isBonusUsed == false)
+            {
+                int soldierRandomIndex = UserUtils.GetRandomNumber(activeSquad.GetCount());
+
+                if (activeSquad.GetSoldier(soldierRandomIndex) != turnSoldier)
+                {
+                    Console.WriteLine($"{turnSoldier.Name} использует рацию");
+                    activeSquad.GetSoldier(soldierRandomIndex).TakeSpeedBonus(SpeedBonusValue);
+                    isBonusUsed = true;
+                }
+            }
         }
     }
 
     class MedKit : Bonus
     {
-        public int HealthRecoveryValue { get; private set; } = 50;
-
         public MedKit()
         {
             Name = "medKit";
         }
 
+        public int HealthRecoveryValue { get; private set; } = 50;
+
         public override Bonus Clone()
         {
             return new MedKit();
+        }
+
+        public override void Use(Squad activeSquad, Squad passiveSquad, Soldier turnSoldier)
+        {
+            int lastSoldierValue = 1;
+            int fullHealthSoldiers = 0;
+
+            bool isBonusUsed = false;
+
+            while (isBonusUsed == false)
+            {
+                for (int k = 0; k < activeSquad.GetCount(); k++)
+                {
+                    if (activeSquad.GetSoldier(k).Health == activeSquad.GetSoldier(k).FullHealth)
+                    {
+                        fullHealthSoldiers++;
+                    }
+                }
+
+                if (fullHealthSoldiers == activeSquad.GetCount() - 1 && turnSoldier.Health < turnSoldier.FullHealth)
+                {
+                    isBonusUsed = true;
+                }
+                else if (fullHealthSoldiers == activeSquad.GetCount())
+                {
+                    isBonusUsed = true;
+                }
+
+                if (activeSquad.GetCount() == lastSoldierValue)
+                {
+                    isBonusUsed = true;
+                }
+
+                int temporarySoldierIndex = UserUtils.GetRandomNumber(activeSquad.GetCount());
+
+                if (activeSquad.GetSoldier(temporarySoldierIndex).Health < activeSquad.GetSoldier(temporarySoldierIndex).FullHealth && activeSquad.GetSoldier(temporarySoldierIndex) != turnSoldier)
+                {
+                    Console.WriteLine($"{turnSoldier.Name} использует аптечку");
+                    activeSquad.GetSoldier(temporarySoldierIndex).TakeHealth(HealthRecoveryValue);
+                    isBonusUsed = true;
+                }
+            }
         }
     }
 
     class SpeedBonus : Bonus
     {
-        public int Value { get; private set; } = 10;
-
         public SpeedBonus()
         {
             Name = "speedBonus";
         }
 
+        public int Value { get; private set; } = 10;
+
         public override Bonus Clone()
         {
             return new SpeedBonus();
+        }
+
+        public override void Use(Squad activeSquad, Squad passiveSquad, Soldier turnSoldier)
+        {
+            turnSoldier.TakeSpeedBonus(Value);
+            turnSoldier.RemoveBonus();
         }
     }
 
     class DamageBonus : Bonus
     {
-        public int Value { get; private set; } = 10;
-
         public DamageBonus()
         {
             Name = "damageBonus";
         }
 
+        public int Value { get; private set; } = 10;
+
         public override Bonus Clone()
         {
             return new DamageBonus();
+        }
+
+        public override void Use(Squad activeSquad, Squad passiveSquad, Soldier turnSoldier)
+        {
+            turnSoldier.TakeDamageBonus(Value);
+            turnSoldier.RemoveBonus();
         }
     }
 
     class ArmorBonus : Bonus
     {
-        public int Value { get; private set; } = 10;
-
         public ArmorBonus()
         {
             Name = "armorBonus";
         }
 
+        public int Value { get; private set; } = 10;
+
         public override Bonus Clone()
         {
             return new ArmorBonus();
+        }
+
+        public override void Use(Squad activeSquad, Squad passiveSquad, Soldier turnSoldier)
+        {
+            turnSoldier.TakeArmorBonus(Value);
+            turnSoldier.RemoveBonus();
         }
     }
 
@@ -596,15 +596,18 @@ namespace Задание6_10
 
         public void ShowStats()
         {
+            string bonusValue;
+
             if (Bonus != null)
             {
-                Console.WriteLine($"{Name} Здоровье - {Health} Броня - {Armor} Скорость - {Speed} Урон - {Damage} Бонус - {Bonus.Name} [{SquadNumber}]Отряд");
+                bonusValue = Bonus.Name;
             }
             else
             {
-                Console.WriteLine($"{Name} Здоровье - {Health} Броня - {Armor} Скорость - {Speed} Урон - {Damage} Бонус - использован [{SquadNumber}]Отряд");
+                bonusValue = "использован";
             }
-            
+
+            Console.WriteLine($"{Name} Здоровье - {Health} Броня - {Armor} Скорость - {Speed} Урон - {Damage} Бонус - {bonusValue} [{SquadNumber}]Отряд");
         }
 
         public virtual void GetBonus()
@@ -754,6 +757,14 @@ namespace Задание6_10
         public void RemoveBonus()
         {
             Bonus = null;
+        }
+
+        public void UseBonus(Squad activeSquad, Squad passiveSquad)
+        {
+            if (Bonus != null)
+            {
+                Bonus.Use(activeSquad, passiveSquad, this);
+            }
         }
     }
 
