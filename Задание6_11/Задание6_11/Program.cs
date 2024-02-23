@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Linq;
 
 namespace Задание6_11
 {
@@ -24,6 +23,11 @@ namespace Задание6_11
             return s_random.Next(minVolue, maxVolue);
         }
 
+        public static int GetRandomNumber(int maxVolue)
+        {
+            return s_random.Next(maxVolue);
+        }
+
         public static void ShowBorder()
         {
             char separateMark = '-';
@@ -37,21 +41,21 @@ namespace Задание6_11
 
         public void Work()
         {
-            int maxFishCount = GetMaxFishCount();
+            int maxFishCount = GiveMaxFishCount();
             int minFishCount = 0;
 
-            bool isAuquariumWork = true;
+            bool isWork = true;
 
-            GereradeFishes(maxFishCount);
+            GeneradeFishes(maxFishCount);
 
-            while (isAuquariumWork)
+            while (isWork)
             {
                 Console.Clear();
                 Console.WriteLine("В аквариуме плавает:");
                 UserUtils.ShowBorder();
                 ShowFishes();
                 UserUtils.ShowBorder();
-                UserAction(maxFishCount);
+                MakeUserAction(maxFishCount);
                 TakeAwayFishesLifeTime();
                 Console.WriteLine("Для завершения дня нажмите на любую кнопку");
                 Console.ReadKey();
@@ -59,44 +63,44 @@ namespace Задание6_11
 
                 if (_fishes.Count <= minFishCount)
                 {
-                    isAuquariumWork = false;
+                    isWork = false;
                 }
             }
 
             Console.WriteLine("Все рыбы погибли. Аквариум завершил свою деятельность");
         }
 
-        private void GereradeFishes(int maxFishesCount)
+        private void GeneradeFishes(int maxFishesCount)
         {
             int minFishCount = 1;
             int maxFishCount = 10;
+            int fishCount = 0;
 
             bool isFishesGenerade = false;
 
             while (isFishesGenerade == false)
             {
-                int fishCount = UserUtils.GetRandomNumber(minFishCount, maxFishCount);
+                fishCount = UserUtils.GetRandomNumber(minFishCount, maxFishCount);
 
                 if (fishCount <= maxFishesCount)
                 {
                     isFishesGenerade = true;
-
-                    for (int i = 0; i < fishCount; i++)
-                    {
-                        _fishes.Add(new Fish(SetFishName(), SetLifeTime()));
-                    }
                 }
+            }
+
+            for (int i = 0; i < fishCount; i++)
+            {
+                _fishes.Add(new Fish(SetFishName(), SetLifeTime()));
             }
         }
 
-        private int GetMaxFishCount()
+        private int GiveMaxFishCount()
         {
             Console.WriteLine("Введите максимальное количество рыб");
-            int maxFishes = GetInt();
-            return maxFishes;
+            return GiveInt();
         }
 
-        private int GetInt() 
+        private int GiveInt() 
         {
             int number = 0;
 
@@ -124,18 +128,18 @@ namespace Задание6_11
             }
         }
 
-        private void UserAction(int maxFishCount)
+        private void MakeUserAction(int maxFishCount)
         {
-            const string AddFish = "1";
-            const string DeleteFish = "2";
-            const string WatchTheFish = "3";
+            const string CommandAddFish = "1";
+            const string CommandDeleteFish = "2";
+            const string CommandWatchTheFish = "3";
 
             bool isUserInputCorrect = false;
 
             Console.WriteLine("Введите желаемое дейсвие");
-            Console.WriteLine($"{AddFish} - добавить рыбу");
-            Console.WriteLine($"{DeleteFish} - удалить рыбу");
-            Console.WriteLine($"{WatchTheFish} - наблюдать за рыбами");
+            Console.WriteLine($"{CommandAddFish} - добавить рыбу");
+            Console.WriteLine($"{CommandDeleteFish} - удалить рыбу");
+            Console.WriteLine($"{CommandWatchTheFish} - наблюдать за рыбами");
 
             while (isUserInputCorrect == false)
             {
@@ -144,14 +148,14 @@ namespace Задание6_11
 
                 switch (userInput)
                 {
-                    case AddFish:
-                        this.AddFish(maxFishCount);
+                    case CommandAddFish:
+                        AddFish(maxFishCount);
                         break;
-                    case DeleteFish:
-                        this.DeleteFish();
+                    case CommandDeleteFish:
+                        DeleteFish();
                         break;
-                    case WatchTheFish:
-                        this.WatchTheFish();
+                    case CommandWatchTheFish:
+                        WatchTheFish();
                         break;
                     default:
                         isUserInputCorrect = false;
@@ -214,60 +218,21 @@ namespace Задание6_11
         {
             int LifeTimeToDeath = 0;
 
-            bool isAllFishesDeleted = true;
-
-            while (isAllFishesDeleted)
+            for (int i = 0; i < _fishes.Count; i++)
             {
-                isAllFishesDeleted = false;
-
-                for (int i = 0; i < _fishes.Count; i++)
+                if (_fishes[i].LifeTime <= LifeTimeToDeath)
                 {
-                    if (_fishes[i].LifeTime <= LifeTimeToDeath)
-                    {
-                        _fishes.RemoveAt(i);
-                        isAllFishesDeleted = true;
-                    }
+                    _fishes.RemoveAt(i);
+                    i--;
                 }
             }
         }
 
         private string SetFishName()
         {
-            string flounder = "камбала";
-            string pike = "щука";
-            string carp = "карп";
-            string vobla = "вобла";
-            string bream = "лещ";
+            string[] names = new string[] { "камбала", "щука", "карп", "вобла", "лещ" };
 
-            const int FlounderIndex = 0;
-            const int PikeIndex = 1;
-            const int CarpIndex = 2;
-            const int VoblaIndex = 3;
-            const int BreamIndex = 4;
-
-            int fishIndex = UserUtils.GetRandomNumber(FlounderIndex, BreamIndex);
-            string name = "";
-
-            switch (fishIndex)
-            {
-                case FlounderIndex:
-                    name = flounder;
-                    break;
-                case PikeIndex:
-                    name = pike;
-                    break;
-                case CarpIndex:
-                    name = carp;
-                    break;
-                case VoblaIndex:
-                    name = vobla;
-                    break;
-                case BreamIndex:
-                    name = bream;
-                    break;
-            }
-
-            return name;
+            return names[UserUtils.GetRandomNumber(names.Length)];
         }
 
         private int SetLifeTime()
