@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Задание6_10
 {
@@ -36,13 +35,14 @@ namespace Задание6_10
     {
         private Squad _firstCountrySquad = new Squad();
         private Squad _secondCountrySquad = new Squad();
-        private Squad _turnQueue = new Squad();
+
+        private List<Soldier> _turnQueue = new List<Soldier>();
 
         public void PrepareForFigth()
         {
             GetSoldiers();
-            _turnQueue.FillTurnQueue(_firstCountrySquad, _secondCountrySquad);
-            _turnQueue.SortQueueBySpeed();
+            FillTurnQueue(_firstCountrySquad, _secondCountrySquad);
+            SortQueueBySpeed();
             _firstCountrySquad.ShowStats();
             _secondCountrySquad.ShowStats();
 
@@ -57,13 +57,14 @@ namespace Задание6_10
             while (_firstCountrySquad.GetCount() != soldiersMinCount && _secondCountrySquad.GetCount() != soldiersMinCount)
             {
                 int firstSquadIndex = 1;
+                int firstSoldierIndex = 0;
 
                 bool isSoldiersMakeTurnFalse = false;
                 bool isSoldiersMakeTurnTrue = false;
 
-                _turnQueue.ShowTurnQueueStats();
+                ShowStats();
 
-                if (_turnQueue.GetFirstSoldier().SquadNumber == firstSquadIndex)
+                if (_turnQueue[firstSoldierIndex].SquadNumber == firstSquadIndex)
                 {
                     MakeTurn(_firstCountrySquad, _secondCountrySquad);
                 }
@@ -72,14 +73,14 @@ namespace Задание6_10
                     MakeTurn(_secondCountrySquad, _firstCountrySquad);
                 }
 
-                _turnQueue.RemoveDeadSoldiers();
+                RemoveDeadSoldiers();
 
-                isSoldiersMakeTurnFalse = _turnQueue.HaveAllSoldirsMadeTurn(false);
-                isSoldiersMakeTurnTrue = _turnQueue.HaveAllSoldirsMadeTurn(true);
+                isSoldiersMakeTurnFalse = HaveAllSoldirsMadeTurn(false);
+                isSoldiersMakeTurnTrue = HaveAllSoldirsMadeTurn(true);
 
                 if (isSoldiersMakeTurnFalse == true || isSoldiersMakeTurnTrue == true)
                 {
-                    _turnQueue.SortQueueBySpeed();
+                    SortQueueBySpeed();
                 }
 
                 Console.WriteLine();
@@ -103,12 +104,97 @@ namespace Задание6_10
 
         public void MakeTurn(Squad activeSquad, Squad passiveSquad)
         {
-            int damage = _turnQueue.GetFirstSoldier().GetDamage();
+            int firstSoldierIndex = 0;
+            int damage = _turnQueue[firstSoldierIndex].GetDamage();
             passiveSquad.TakeDamage(damage);
-            _turnQueue.GetFirstSoldier().UseBonus(activeSquad, passiveSquad);
-            _turnQueue.GetFirstSoldier().UseSkill(activeSquad, passiveSquad, _turnQueue);
-            MoveSoldierToTurnEnd(_turnQueue.GetFirstSoldier(), _turnQueue);
-            _turnQueue.GetFirstSoldier().SetDoubleTurn(_turnQueue);
+            _turnQueue[firstSoldierIndex].UseBonus(activeSquad, passiveSquad);
+            _turnQueue[firstSoldierIndex].UseSkill(activeSquad, passiveSquad);
+            MoveSoldierToTurnEnd();
+            SetDoubleTurn();
+        }
+
+        private void FillTurnQueue(Squad firstSquad, Squad secondSquad)
+        {
+            for (int i = 0; i < firstSquad.GetCount(); i++)
+            {
+                _turnQueue.Add(firstSquad.GetSoldier(i));
+            }
+
+            for (int i = 0; i < secondSquad.GetCount(); i++)
+            {
+                _turnQueue.Add(secondSquad.GetSoldier(i));
+            }
+        }
+
+        private void SortQueueBySpeed()
+        {
+            Soldier temporarySoldier = null;
+
+            int penultSoldierIndex = 2;
+
+            bool isSortingEnd = false;
+
+            while (isSortingEnd == false)
+            {
+                isSortingEnd = true;
+
+                for (int i = 0; i < _turnQueue.Count - 1; i++)
+                {
+                    if (_turnQueue[i].SquadNumber != _turnQueue[i + 1].SquadNumber && _turnQueue[i].Speed == _turnQueue[i + 1].Speed)
+                    {
+                        int chanceIndex = GiveFiftyPercentChanceIndex();
+
+                        if (chanceIndex == _turnQueue[i].SquadNumber)
+                        {
+                            temporarySoldier = _turnQueue[i + 1];
+                            _turnQueue[i + 1] = _turnQueue[i];
+                            _turnQueue[i] = temporarySoldier;
+                        }
+
+                        if (chanceIndex == _turnQueue[i + 1].SquadNumber)
+                        {
+                            temporarySoldier = _turnQueue[i];
+                            _turnQueue[i] = _turnQueue[i + 1];
+                            _turnQueue[i + 1] = temporarySoldier;
+                        }
+                    }
+
+                    if (_turnQueue[i].Speed < _turnQueue[i + 1].Speed)
+                    {
+                        temporarySoldier = _turnQueue[i + 1];
+                        _turnQueue[i + 1] = _turnQueue[i];
+                        _turnQueue[i] = temporarySoldier;
+                        isSortingEnd = false;
+                    }
+
+                    if (_turnQueue[_turnQueue.Count - 1].Speed > _turnQueue[_turnQueue.Count - penultSoldierIndex].Speed)
+                    {
+                        temporarySoldier = _turnQueue[_turnQueue.Count - penultSoldierIndex];
+                        _turnQueue[_turnQueue.Count - penultSoldierIndex] = _turnQueue[_turnQueue.Count - 1];
+                        _turnQueue[_turnQueue.Count - 1] = temporarySoldier;
+                        isSortingEnd = false;
+                    }
+                }
+            }
+        }
+
+        private int GiveFiftyPercentChanceIndex()
+        {
+            int chanceBorder = 49;
+            int chanceMax = 100;
+            int firstSquadIndex = 1;
+            int secondSquadIndex = 2;
+
+            int chanceNumber = UserUtils.GetRandomNumber(0, chanceMax);
+
+            if (chanceNumber <= chanceBorder)
+            {
+                return firstSquadIndex;
+            }
+            else
+            {
+                return secondSquadIndex;
+            }
         }
 
         private void GetSoldiers()
@@ -118,19 +204,75 @@ namespace Задание6_10
 
             _firstCountrySquad.GetName(firstSquadIndex);
             _firstCountrySquad.Fill();
-            _firstCountrySquad.GetSquadMark(firstSquadIndex);
+            _firstCountrySquad.SetSquadMark(firstSquadIndex);
             _secondCountrySquad.GetName(secondSquadIndex);
             _secondCountrySquad.Fill();
-            _secondCountrySquad.GetSquadMark(secondSquadIndex);
+            _secondCountrySquad.SetSquadMark(secondSquadIndex);
         }
 
-        private void MoveSoldierToTurnEnd(Soldier turnSoldier, Squad turnQueue)
+        private void MoveSoldierToTurnEnd()
         {
-            if (turnSoldier.IsDoubleTurnActive == false)
+            int firstSoldierIndex = 0;
+            if (_turnQueue[firstSoldierIndex].IsDoubleTurnActive == false)
             {
-                turnSoldier.SwitchTurnTumbler();
-                turnQueue.TakeSoldier(turnSoldier);
-                turnQueue.RemoveSoldier(turnSoldier);
+                _turnQueue[firstSoldierIndex].SwitchTurnTumbler();
+                _turnQueue.Add(_turnQueue[firstSoldierIndex]);
+                _turnQueue.Remove(_turnQueue[firstSoldierIndex]);
+            }
+        }
+
+        private void ShowStats()
+        {
+            char separateMark = '-';
+
+            Console.WriteLine(string.Join("", Enumerable.Repeat(separateMark, 15)));
+
+            for (int i = 0; i < _turnQueue.Count; i++)
+            {
+                _turnQueue[i].ShowStats();
+            }
+
+            Console.WriteLine();
+        }
+
+        private void RemoveDeadSoldiers()
+        {
+            _turnQueue.RemoveAll(Soldier => Soldier.IsDead == true);
+        }
+
+        private bool HaveAllSoldirsMadeTurn(bool activeValue)
+        {
+            bool isAllSoldiersMadeTurn = false;
+            int soldiersMadeTurnCount = 0;
+
+            for (int i = 0; i < _turnQueue.Count; i++)
+            {
+                if (_turnQueue[i].IsTurnOver == activeValue)
+                {
+                    soldiersMadeTurnCount++;
+                }
+            }
+
+            if (soldiersMadeTurnCount == _turnQueue.Count)
+            {
+                isAllSoldiersMadeTurn = true;
+            }
+
+            return isAllSoldiersMadeTurn;
+        }
+
+        private void SetDoubleTurn()
+        {
+            int firstSoldierIndex = 0;
+
+            if (_turnQueue[firstSoldierIndex].IsDoubleTurnOnceRun)
+            {
+                _turnQueue[firstSoldierIndex].SwitchDoubleTurnFalse();
+            }
+
+            if (_turnQueue[firstSoldierIndex].IsDoubleTurnActive == false && _turnQueue[firstSoldierIndex].IsDoubleTurnOnceRun == false)
+            {
+                _turnQueue[_turnQueue.Count - 1].SwitchDoubleTurnTrue();
             }
         }
     }
@@ -144,11 +286,6 @@ namespace Задание6_10
         public void GetName(int number)
         {
             Name = $"Взвод {number}";
-        }
-
-        public void ShowTurnQueueStats()
-        {
-            ShowStats();
         }
 
         public int GetCount()
@@ -194,72 +331,7 @@ namespace Задание6_10
             }
         }
 
-        public void FillTurnQueue(Squad firstSquad, Squad secondSquad)
-        {
-            for (int i = 0; i < firstSquad._soldiers.Count; i++)
-            {
-                _soldiers.Add(firstSquad._soldiers[i]);
-            }
-
-            for (int i = 0; i < secondSquad._soldiers.Count; i++)
-            {
-                _soldiers.Add(secondSquad._soldiers[i]);
-            }
-        }
-
-        public void SortQueueBySpeed()
-        {
-            Soldier temporarySoldier = null;
-
-            int penultSoldierIndex = 2;
-
-            bool isSortingEnd = false;
-
-            while (isSortingEnd == false)
-            {
-                isSortingEnd = true;
-
-                for (int i = 0; i < _soldiers.Count - 1; i++)
-                {
-                    if (_soldiers[i].SquadNumber != _soldiers[i + 1].SquadNumber && _soldiers[i].Speed == _soldiers[i + 1].Speed)
-                    {
-                        int chanceIndex = GetFiftyPercentChanceSquadIndex();
-
-                        if (chanceIndex == _soldiers[i].SquadNumber)
-                        {
-                            temporarySoldier = _soldiers[i + 1];
-                            _soldiers[i + 1] = _soldiers[i];
-                            _soldiers[i] = temporarySoldier;
-                        }
-
-                        if (chanceIndex == _soldiers[i + 1].SquadNumber)
-                        {
-                            temporarySoldier = _soldiers[i];
-                            _soldiers[i] = _soldiers[i + 1];
-                            _soldiers[i + 1] = temporarySoldier;
-                        }
-                    }
-
-                    if (_soldiers[i].Speed < _soldiers[i + 1].Speed)
-                    {
-                        temporarySoldier = _soldiers[i + 1];
-                        _soldiers[i + 1] = _soldiers[i];
-                        _soldiers[i] = temporarySoldier;
-                        isSortingEnd = false;
-                    }
-
-                    if (_soldiers[_soldiers.Count - 1].Speed > _soldiers[_soldiers.Count - penultSoldierIndex].Speed)
-                    {
-                        temporarySoldier = _soldiers[_soldiers.Count - penultSoldierIndex];
-                        _soldiers[_soldiers.Count - 2] = _soldiers[_soldiers.Count - 1];
-                        _soldiers[_soldiers.Count - 1] = temporarySoldier;
-                        isSortingEnd = false;
-                    }
-                }
-            }
-        }
-
-        public void GetSquadMark(int markIndex)
+        public void SetSquadMark(int markIndex)
         {
             for (int i = 0; i < _soldiers.Count; i++)
             {
@@ -280,32 +352,6 @@ namespace Задание6_10
             }
 
             Console.WriteLine();
-        }
-
-        public void RemoveDeadSoldiers()
-        {
-            _soldiers.RemoveAll(Soldier => Soldier.IsDead == true);
-        }
-
-        public bool HaveAllSoldirsMadeTurn(bool activeValue)
-        {
-            bool isAllSoldiersMadeTurn = false;
-            int soldiersMadeTurnCount = 0;
-
-            for (int i = 0; i < _soldiers.Count; i++)
-            {
-                if (_soldiers[i].IsTurnOver == activeValue)
-                {
-                    soldiersMadeTurnCount++;
-                }
-            }
-
-            if (soldiersMadeTurnCount == _soldiers.Count)
-            {
-                isAllSoldiersMadeTurn = true;
-            }
-
-            return isAllSoldiersMadeTurn;
         }
 
         public void TakeDamage(int damage)
@@ -340,35 +386,6 @@ namespace Задание6_10
             for (int i = 0; i < damageParts; i++)
             {
                 TakeDamage(damage);
-            }
-        }
-
-        public void TakeSoldier(Soldier soldier)
-        {
-            _soldiers.Add(soldier);
-        }
-
-        public void RemoveSoldier(Soldier soldier)
-        {
-            _soldiers.Remove(soldier);
-        }
-
-        private int GetFiftyPercentChanceSquadIndex()
-        {
-            int chanceBorder = 49;
-            int chanceMax = 100;
-            int firstSquadIndex = 1;
-            int secondSquadIndex = 2;
-
-            int chanceNumber = UserUtils.GetRandomNumber(0, chanceMax);
-
-            if (chanceNumber <= chanceBorder)
-            {
-                return firstSquadIndex;
-            }
-            else
-            {
-                return secondSquadIndex;
             }
         }
     }
@@ -568,7 +585,7 @@ namespace Задание6_10
 
         public Soldier()
         {
-            GetBonus();
+            InstallBonus();
         }
 
         public int FullHealth { get; protected set; } = 100;
@@ -586,6 +603,8 @@ namespace Задание6_10
         public bool IsDead => Health <= 0;
 
         public bool IsTurnOver { get; protected set; } = false;
+
+        public bool IsDoubleTurnOnceRun { get; protected set; } = true;
 
         public Bonus Bonus;
 
@@ -610,7 +629,7 @@ namespace Задание6_10
             Console.WriteLine($"{Name} Здоровье - {Health} Броня - {Armor} Скорость - {Speed} Урон - {Damage} Бонус - {bonusValue} [{SquadNumber}]Отряд");
         }
 
-        public virtual void GetBonus()
+        public virtual void InstallBonus()
         {
             List<Bonus> bonuses= new List<Bonus>()
             {
@@ -706,7 +725,7 @@ namespace Задание6_10
             }
         }
 
-        public virtual void UseSkill(Squad activeSquad, Squad passiveSquad, Squad turnQueue)
+        public virtual void UseSkill(Squad activeSquad, Squad passiveSquad)
         {
             int soldierSkillBonusValue = 5;
 
@@ -720,8 +739,6 @@ namespace Задание6_10
             }
         }
 
-        public virtual void SetDoubleTurn(Squad turnQueue) { }
-
         public void Cover()
         {
             IsCovered = true;
@@ -732,14 +749,14 @@ namespace Задание6_10
             SquadNumber = markIndex;
         }
 
-        public void SetDoubleTurnFalse()
-        {
-            IsDoubleTurnActive = false;
-        }
-
-        public void SetDoubleTurnTrue()
+        public void SwitchDoubleTurnTrue()
         {
             IsDoubleTurnActive = true;
+        }
+
+        public void SwitchDoubleTurnFalse()
+        {
+            IsDoubleTurnActive = false;
         }
 
         public void SwitchTurnTumbler()
@@ -776,7 +793,7 @@ namespace Задание6_10
             Armor = 30;
             Speed = 20;
             Damage = 20;
-            GetBonus();
+            InstallBonus();
         }
 
         public override Soldier Clone()
@@ -784,7 +801,7 @@ namespace Задание6_10
             return new StormTrooper();    
         }
 
-        public override void UseSkill(Squad activeSquad, Squad passiveSquad, Squad turnQueue)
+        public override void UseSkill(Squad activeSquad, Squad passiveSquad)
         {
             Grenade grenade = new Grenade();
             Console.WriteLine($"{Name} кидает гранату");
@@ -800,7 +817,7 @@ namespace Задание6_10
             Armor = 10;
             Speed = 10;
             Damage = 10;
-            GetBonus();
+            InstallBonus();
         }
 
         public override Soldier Clone()
@@ -808,7 +825,7 @@ namespace Задание6_10
             return new Medic();
         }
 
-        public override void UseSkill(Squad activeSquad, Squad passiveSquad, Squad turnQueue)
+        public override void UseSkill(Squad activeSquad, Squad passiveSquad)
         {
             int fullHealth = 100;
             int lastSoldierValue = 1;
@@ -860,7 +877,7 @@ namespace Задание6_10
             Armor = 10;
             Speed = 50;
             Damage = 0;
-            GetBonus();
+            InstallBonus();
         }
 
         public override Soldier Clone()
@@ -868,7 +885,7 @@ namespace Задание6_10
             return new DroneOperator();
         }
 
-        public override void UseSkill(Squad activeSquad, Squad passiveSquad, Squad turnQueue)
+        public override void UseSkill(Squad activeSquad, Squad passiveSquad)
         {
             int radioSetSpeedBonus = 5;
             int bonusMaxSoldiersCount = 2;
@@ -911,7 +928,7 @@ namespace Задание6_10
             Armor = 0;
             Speed = 5;
             Damage = 110;
-            GetBonus();
+            InstallBonus();
         }
 
         public override Soldier Clone()
@@ -919,7 +936,7 @@ namespace Задание6_10
             return new Sniper();
         }
 
-        public override void UseSkill(Squad activeSquad, Squad passiveSquad, Squad turnQueue)
+        public override void UseSkill(Squad activeSquad, Squad passiveSquad)
         {
             Console.WriteLine($"{Name} укрывается от следующей атаки");
             Cover();
@@ -935,39 +952,25 @@ namespace Задание6_10
             Speed = 10;
             Damage = 30;
             IsDoubleTurnActive = true;
-            GetBonus();
+            IsDoubleTurnOnceRun = false;
+            InstallBonus();
         }
-
-        private bool _isDoubleTurnOnceRun = false;
 
         public override Soldier Clone()
         {
             return new MachineGunner();
         }
 
-        public override void UseSkill(Squad activeSquad, Squad passiveSquad, Squad turnQueue)
+        public override void UseSkill(Squad activeSquad, Squad passiveSquad)
         {
             if (IsDoubleTurnActive)
             {
-                _isDoubleTurnOnceRun = true;
+                IsDoubleTurnOnceRun = true;
                 Console.WriteLine($"боеприпасы не закончилась и {Name} делает еще один ход");
             }
             else
             {
-                _isDoubleTurnOnceRun = false;
-            }
-        }
-
-        public override void SetDoubleTurn(Squad turnQueue)
-        {
-            if (_isDoubleTurnOnceRun)
-            {
-                IsDoubleTurnActive = false;
-            }
-
-            if (IsDoubleTurnActive == false && _isDoubleTurnOnceRun == false)
-            {
-                turnQueue.GetSoldier(turnQueue.GetCount() - 1).SetDoubleTurnTrue();
+                IsDoubleTurnOnceRun = false;
             }
         }
     }
