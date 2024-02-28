@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Задание6_10
 {
@@ -105,8 +106,7 @@ namespace Задание6_10
         public void MakeTurn(Squad activeSquad, Squad passiveSquad)
         {
             int firstSoldierIndex = 0;
-            int damage = _turnQueue[firstSoldierIndex].GetDamage();
-            passiveSquad.TakeDamage(damage);
+            _turnQueue[firstSoldierIndex].Attack(passiveSquad);
             _turnQueue[firstSoldierIndex].UseBonus(activeSquad, passiveSquad);
             _turnQueue[firstSoldierIndex].UseSkill(activeSquad, passiveSquad);
             MoveSoldierToTurnEnd();
@@ -316,7 +316,7 @@ namespace Задание6_10
 
             List<Soldier> soldiers = new List<Soldier>()
             {
-                new Soldier(), 
+                new Marksman(), 
                 new StormTrooper(),
                 new Medic(),
                 new DroneOperator(),
@@ -357,7 +357,6 @@ namespace Задание6_10
         public void TakeDamage(int damage)
         {
             bool isDamageTaked = false;
-            bool isSoldierDead = false;
 
             if (_soldiers.Count > 0)
             {
@@ -366,9 +365,8 @@ namespace Задание6_10
                     int randomSoldierIndex = UserUtils.GetRandomNumber(0, _soldiers.Count);
 
                     isDamageTaked = _soldiers[randomSoldierIndex].TryTakeDamage(damage);
-                    isSoldierDead = _soldiers[randomSoldierIndex].IsSoldierDead();
 
-                    if (isSoldierDead == true)
+                    if (_soldiers[randomSoldierIndex].IsDead == true)
                     {
                         Console.WriteLine($"{_soldiers[randomSoldierIndex].Name} погиб");
                         _soldiers.RemoveAt(randomSoldierIndex);
@@ -575,18 +573,25 @@ namespace Задание6_10
         }
     }
 
-    class Soldier
+    abstract class Soldier
     {
-        protected int Armor = 10;
-        protected int Damage = 10;
+        protected int Armor;
+        protected int Damage;
 
-        protected bool IsBonusUsed = false;
         protected bool IsCovered = false;
 
-        public Soldier()
+        private Bonus Bonus;
+
+        private List<Bonus> _bonuses = new List<Bonus>()
         {
-            InstallBonus();
-        }
+            new Grenade(),
+            new RadioSet(),
+            new MedKit(),
+            new SpeedBonus(),
+            new DamageBonus(),
+            new ArmorBonus()
+        };
+
 
         public int FullHealth { get; protected set; } = 100;
 
@@ -594,9 +599,9 @@ namespace Задание6_10
 
         public int Health { get; protected set; } = 100;
 
-        public int Speed { get; protected set; } = 10;
+        public int Speed { get; protected set; }
 
-        public string Name { get; protected set; } = "Солдат";
+        public string Name { get; protected set; }
 
         public bool IsDoubleTurnActive { get; protected set; } = false;
 
@@ -606,11 +611,9 @@ namespace Задание6_10
 
         public bool IsDoubleTurnOnceRun { get; protected set; } = true;
 
-        public Bonus Bonus;
-
         public virtual Soldier Clone()
         {
-            return new Soldier();
+            return null;
         }
 
         public void ShowStats()
@@ -631,24 +634,14 @@ namespace Задание6_10
 
         public virtual void InstallBonus()
         {
-            List<Bonus> bonuses= new List<Bonus>()
-            {
-                new Grenade(),
-                new RadioSet(),
-                new MedKit(),
-                new SpeedBonus(),
-                new DamageBonus(),
-                new ArmorBonus()
-            };
-
-            int randomBonusIndex = UserUtils.GetRandomNumber(bonuses.Count);
-            Bonus = bonuses[randomBonusIndex];
+            int randomBonusIndex = UserUtils.GetRandomNumber(_bonuses.Count);
+            Bonus = _bonuses[randomBonusIndex];
         }
 
-        public int GetDamage()
+        public void Attack(Squad passiveSquad)
         {
             Console.WriteLine($"{Name} наносит {Damage} урона");
-            return Damage;        
+            passiveSquad.TakeDamage(Damage);
         }
 
         public bool TryTakeDamage(int damage)
@@ -682,11 +675,6 @@ namespace Задание6_10
             }
             
             return isdamageTaked;
-        }
-
-        public bool IsSoldierDead()
-        {
-            return Health <= 0;
         }
 
         public void TakeHealth(int healthBonus)
@@ -725,19 +713,7 @@ namespace Задание6_10
             }
         }
 
-        public virtual void UseSkill(Squad activeSquad, Squad passiveSquad)
-        {
-            int soldierSkillBonusValue = 5;
-
-            for (int i = 0; i < activeSquad.GetCount(); i++)
-            {
-                if (activeSquad.GetSoldier(i) != this)
-                {
-                    Console.WriteLine($"{Name} повышает боевой дух группы");
-                    activeSquad.GetSoldier(i).TakeDamageBonus(soldierSkillBonusValue);
-                }
-            }
-        }
+        public virtual void UseSkill(Squad activeSquad, Squad passiveSquad){}
 
         public void Cover()
         {
@@ -781,6 +757,37 @@ namespace Задание6_10
             if (Bonus != null)
             {
                 Bonus.Use(activeSquad, passiveSquad, this);
+            }
+        }
+    }
+
+    class Marksman : Soldier
+    {
+        public Marksman()
+        {
+            Name = "Стрелок";
+            Armor = 10;
+            Speed = 10;
+            Damage = 10;
+            InstallBonus();
+        }
+
+        public override Soldier Clone()
+        {
+            return new Marksman();
+        }
+
+        public override void UseSkill(Squad activeSquad, Squad passiveSquad)
+        {
+            int soldierSkillBonusValue = 5;
+
+            for (int i = 0; i < activeSquad.GetCount(); i++)
+            {
+                if (activeSquad.GetSoldier(i) != this)
+                {
+                    Console.WriteLine($"{Name} повышает боевой дух группы");
+                    activeSquad.GetSoldier(i).TakeDamageBonus(soldierSkillBonusValue);
+                }
             }
         }
     }
