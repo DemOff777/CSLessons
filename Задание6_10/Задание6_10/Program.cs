@@ -580,7 +580,7 @@ namespace Задание6_10
 
         protected bool IsCovered = false;
 
-        private Bonus Bonus;
+        private Bonus _bonus;
 
         private List<Bonus> _bonuses = new List<Bonus>()
         {
@@ -620,9 +620,9 @@ namespace Задание6_10
         {
             string bonusValue;
 
-            if (Bonus != null)
+            if (_bonus != null)
             {
-                bonusValue = Bonus.Name;
+                bonusValue = _bonus.Name;
             }
             else
             {
@@ -635,7 +635,7 @@ namespace Задание6_10
         public virtual void InstallBonus()
         {
             int randomBonusIndex = UserUtils.GetRandomNumber(_bonuses.Count);
-            Bonus = _bonuses[randomBonusIndex];
+            _bonus = _bonuses[randomBonusIndex];
         }
 
         public void Attack(Squad passiveSquad)
@@ -646,6 +646,7 @@ namespace Задание6_10
 
         public bool TryTakeDamage(int damage)
         {
+            int oneHundredPrecentValue = 100;
             int zeroArmorValue = 0;
             int finishDamage;
             bool isdamageTaked = false;
@@ -661,7 +662,7 @@ namespace Задание6_10
             {
                 if (Armor != zeroArmorValue)
                 {
-                    finishDamage = damage - (damage / (100 / Armor));
+                    finishDamage = damage - (damage / (oneHundredPrecentValue / Armor));
                     Health -= finishDamage;
                     isdamageTaked = true;
                     Console.WriteLine($"{Name} получает {finishDamage} урона");
@@ -749,14 +750,14 @@ namespace Задание6_10
 
         public void RemoveBonus()
         {
-            Bonus = null;
+            _bonus = null;
         }
 
         public void UseBonus(Squad activeSquad, Squad passiveSquad)
         {
-            if (Bonus != null)
+            if (_bonus != null)
             {
-                Bonus.Use(activeSquad, passiveSquad, this);
+                _bonus.Use(activeSquad, passiveSquad, this);
             }
         }
     }
