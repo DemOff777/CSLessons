@@ -30,7 +30,7 @@ namespace Задание6_12
 
     class Zoo
     {
-        List<Aviary> _aviaries = new List<Aviary>();
+        private List<Aviary> _aviaries = new List<Aviary>();
 
         public void Work()
         {
@@ -112,10 +112,11 @@ namespace Задание6_12
             };
 
             int animalsCount = UserUtils.GiveRandomNumber(minAnimalsCount, maxAnimalsCount);
+            int animalRandomIndex = UserUtils.GiveRandomNumber(animals.Count);
 
             for (int i = 0; i < animalsCount; i++)
             {
-                Animal animal = animals[UserUtils.GiveRandomNumber(animals.Count)].Clone();
+                Animal animal = animals[animalRandomIndex].Clone();
                 animal.SetGender();
                 _animals.Add(animal);
             }
@@ -128,7 +129,7 @@ namespace Задание6_12
 
         public void ShowInfo()
         {
-            Console.WriteLine($"{_name} содержит {_animals.Count} животных, {GiveMaleCount()} {Gender.Мужской}\bго пола, {GiveFemaleCount()} {Gender.Женский}\b\bого пола и {GiveNotDecidedCount()} {Gender.Не_Определился}\b\b\bвшихся");
+            Console.WriteLine($"{_name} содержит {_animals.Count} животных, {GiveMaleCount()} {Gender.Male}\bго пола, {GiveFemaleCount()} {Gender.Female}\b\bого пола и {GiveNotDecidedCount()} {Gender.NotDecide}\b\b\bвшихся");
         }
 
         private Animal GiveFirstAnimal()
@@ -142,7 +143,7 @@ namespace Задание6_12
 
             for (int i = 0; i < _animals.Count; i++)
             {
-                if (_animals[i].Gender == Gender.Мужской)
+                if (_animals[i].Gender == Gender.Male)
                 {
                     count++;
                 }
@@ -157,7 +158,7 @@ namespace Задание6_12
 
             for (int i = 0; i < _animals.Count; i++)
             {
-                if (_animals[i].Gender == Gender.Женский)
+                if (_animals[i].Gender == Gender.Female)
                 {
                     count++;
                 }
@@ -172,7 +173,7 @@ namespace Задание6_12
 
             for (int i = 0; i < _animals.Count; i++)
             {
-                if (_animals[i].Gender == Gender.Не_Определился)
+                if (_animals[i].Gender == Gender.NotDecide)
                 {
                     count++;
                 }
@@ -184,7 +185,7 @@ namespace Задание6_12
 
     class Animal
     {
-        protected string _voiceSound;
+        protected string VoiceSound;
 
         public Gender Gender { get; protected set; }
 
@@ -194,9 +195,9 @@ namespace Задание6_12
         {
             Gender[] genders = new Gender[3]
             {
-                Gender.Мужской,
-                Gender.Женский,
-                Gender.Не_Определился
+                Gender.Male,
+                Gender.Female,
+                Gender.NotDecide
             };
 
             int genderIndex = UserUtils.GiveRandomNumber(genders.Length);
@@ -215,7 +216,7 @@ namespace Задание6_12
         public Cow()
         {
             Name = "Корова";
-            _voiceSound = "Му";
+            VoiceSound = "Му";
         }
 
         public override Animal Clone()
@@ -229,7 +230,7 @@ namespace Задание6_12
         public Horse()
         {
             Name = "Лошадь";
-            _voiceSound = "Ига-га";
+            VoiceSound = "Ига-га";
         }
 
         public override Animal Clone()
@@ -243,7 +244,7 @@ namespace Задание6_12
         public Goat()
         {
             Name = "Коза";
-            _voiceSound = "Бе";
+            VoiceSound = "Бе";
         }
 
         public override Animal Clone()
@@ -257,7 +258,7 @@ namespace Задание6_12
         public Pig()
         {
             Name = "Свинья";
-            _voiceSound = "Хрю";
+            VoiceSound = "Хрю";
         }
 
         public override Animal Clone()
@@ -268,8 +269,8 @@ namespace Задание6_12
 
     enum Gender
     {
-        Мужской,
-        Женский,
-        Не_Определился
+        Male,
+        Female,
+        NotDecide
     }
 }
