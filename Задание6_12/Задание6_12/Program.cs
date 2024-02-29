@@ -63,7 +63,8 @@ namespace Задание6_12
 
                 if (userInput < arriveFirstValueIndex || userInput > arriveMaxValueIndex)
                 {
-
+                    Console.WriteLine("Значение выходит за рамки имеющихся вальеров, попробуйте еще раз");
+                    isInputCorrect = false;
                 }
             }
             
