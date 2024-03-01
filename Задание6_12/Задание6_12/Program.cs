@@ -39,9 +39,9 @@ namespace Задание6_12
             Console.WriteLine($"Вы видите {_aviaries.Count} вольеров");
             Console.WriteLine("Укажите номер вольера к которому вы хотите подойти");
 
-            int userInput = GiveAviaryIndex();
+            int aviaryIndex = GiveAviaryIndex();
 
-            _aviaries[userInput].ShowInfo();
+            _aviaries[aviaryIndex].ShowInfo();
         }
 
         private int GiveAviaryIndex()
@@ -104,34 +104,6 @@ namespace Задание6_12
             InstallName();
         }
 
-        private void Fill()
-        {
-            int minAnimalsCount = 1;
-            int maxAnimalsCount = 51;
-
-            List<Animal> animals = new List<Animal>()
-            {
-                new Cow(),
-                new Horse(),
-                new Goat(),
-                new Pig()
-            };
-
-            int animalsCount = UserUtils.GiveRandomNumber(minAnimalsCount, maxAnimalsCount);
-            int animalRandomIndex = UserUtils.GiveRandomNumber(animals.Count);
-
-            for (int i = 0; i < animalsCount; i++)
-            {
-                Animal animal = animals[animalRandomIndex].Clone();
-                _animals.Add(animal);
-            }
-        }
-
-        private void InstallName()
-        {
-            _name = $"вольер с {GiveFirstAnimal().Name}ми";
-        }
-
         public void ShowInfo()
         {
             Console.WriteLine($"{_name} содержит {_animals.Count} животных, {GiveGenderCount(Gender.Male)} {Gender.Male}\bго пола, {GiveGenderCount(Gender.Female)} {Gender.Female}\b\bого пола и {GiveGenderCount(Gender.NotDecide)} {Gender.NotDecide}\b\b\bвшихся");
@@ -156,6 +128,34 @@ namespace Задание6_12
 
             return count;
         }
+
+        private void InstallName()
+        {
+            _name = $"вольер с {GiveFirstAnimal().Name}ми";
+        }
+
+        private void Fill()
+        {
+            int minAnimalsCount = 1;
+            int maxAnimalsCount = 51;
+
+            List<Animal> animals = new List<Animal>()
+            {
+                new Cow(),
+                new Horse(),
+                new Goat(),
+                new Pig()
+            };
+
+            int animalsCount = UserUtils.GiveRandomNumber(minAnimalsCount, maxAnimalsCount);
+            int animalRandomIndex = UserUtils.GiveRandomNumber(animals.Count);
+
+            for (int i = 0; i < animalsCount; i++)
+            {
+                Animal animal = animals[animalRandomIndex].Clone();
+                _animals.Add(animal);
+            }
+        }
     }
 
     class Animal
@@ -165,6 +165,11 @@ namespace Задание6_12
         public Gender Gender { get; protected set; }
 
         public string Name { get; protected set; }
+
+        public virtual Animal Clone()
+        {
+            return new Animal();
+        }
 
         protected void SetGender()
         {
@@ -178,11 +183,6 @@ namespace Задание6_12
             int genderIndex = UserUtils.GiveRandomNumber(genders.Length);
 
             Gender = genders[genderIndex];
-        }
-
-        public virtual Animal Clone()
-        {
-            return new Animal();
         }
     }
 
