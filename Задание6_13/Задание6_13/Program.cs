@@ -23,11 +23,11 @@ namespace Задание6_13
 
         private static string _border1 = string.Join("-", Enumerable.Repeat("", 10));
 
-        public static int GiveRandomNumber(int maxValue)
+        public static int GenerateRandomNumber(int maxValue)
         {
             return s_random.Next(maxValue);
         }
-        public static int GiveRandomNumber(int minValue, int maxValue)
+        public static int GenerateRandomNumber(int minValue, int maxValue)
         {
             return s_random.Next(minValue, maxValue + 1);
         }
@@ -56,8 +56,6 @@ namespace Задание6_13
 
         public void Work()
         {
-            bool isWork = true;
-
             CreateCarPartsStorageCount();
             CreateClientsQueue();
 
@@ -66,7 +64,7 @@ namespace Задание6_13
                 Console.WriteLine($"в кассе {_money} рублей");
                 UserUtils.ShowBorder1();
                 Console.WriteLine($"в очереди осталось {_clients.Count} клиентов");
-                Console.WriteLine($"Текущая заявка: Поломка = {_clients.Peek().Problem.Name}");
+                Console.WriteLine($"Текущая заявка: Поломка = {_clients.Peek().BrokenCarPart.Name}");
                 Console.WriteLine("Для того чтобы пригласить следующего клиента нажмите любую клавишу");
                 Console.ReadKey();
 
@@ -87,11 +85,11 @@ namespace Задание6_13
             int minPartsStorageCount = 5;
             int maxPartsStorageCount = 20;
 
-            int carPartsStorageCount = UserUtils.GiveRandomNumber(minPartsStorageCount, maxPartsStorageCount);
+            int carPartsStorageCount = UserUtils.GenerateRandomNumber(minPartsStorageCount, maxPartsStorageCount);
 
             for (int i = 0; i < carPartsStorageCount; i++)
             {
-                int randomCarPartIndex = UserUtils.GiveRandomNumber(_carParts.Count);
+                int randomCarPartIndex = UserUtils.GenerateRandomNumber(_carParts.Count);
                 _carPartsStorage.Add(_carParts[randomCarPartIndex].Clone());
             }
         }
@@ -101,7 +99,7 @@ namespace Задание6_13
             int minClientsCount = 5;
             int maxClientCount = 20;
 
-            int clientsCount = UserUtils.GiveRandomNumber(minClientsCount, maxClientCount);
+            int clientsCount = UserUtils.GenerateRandomNumber(minClientsCount, maxClientCount);
 
             for (int i = 0; i < clientsCount; i++)
             {
@@ -111,13 +109,15 @@ namespace Задание6_13
 
         private void SolveProblem()
         {
-            int fineValue = _clients.Peek().Problem.Price / 2;
-            int workPrice = _clients.Peek().Problem.Price / 3;
-            int repairCount = _clients.Peek().Problem.Price + workPrice;
+            int fineIndex = 2;
+            int workPriceIndex = 3;
+            int fineValue = _clients.Peek().BrokenCarPart.Price / fineIndex;
+            int workPrice = _clients.Peek().BrokenCarPart.Price / workPriceIndex;
+            int repairCount = _clients.Peek().BrokenCarPart.Price + workPrice;
 
-            CarPart carPart = TryFindCarPart(_clients.Peek().Problem);
+            CarPart carPart = TryFindCarPart(_clients.Peek().BrokenCarPart);
 
-            if (carPart == _clients.Peek().Problem)
+            if (carPart == _clients.Peek().BrokenCarPart)
             {
                 Console.WriteLine($"Вы отказываете клиенту в ремонте и выплачиваете штраф {fineValue} рублей");
                 _money -= fineValue;
@@ -127,6 +127,7 @@ namespace Задание6_13
                 Console.WriteLine($"Вы ремонтируете автомобиль клиента и получаете {repairCount} рублей");
                 int money = _clients.Peek().GiveMoney(repairCount);
                 _money += money;
+                _clients.Peek().TakeCarPart(carPart);
                 _carPartsStorage.Remove(carPart);
             }
         }
@@ -135,36 +136,15 @@ namespace Задание6_13
         {
             for (int i = 0; i < _carPartsStorage.Count; i++)
             {
-                if (_carPartsStorage[i] is HeadLight headLight)
+                if (_carPartsStorage[i].Name == problem.Name)
                 {
-                    Console.WriteLine("Подходящая фара для ремонта имеется на складе");
-                    return headLight;
-                }
-                else if (_carPartsStorage[i] is Fender fender)
-                {
-                    Console.WriteLine("Подходящее крыло для ремонта имеется на складе");
-                    return fender;
-                }
-                else if (_carPartsStorage[i] is Wheel wheel)
-                {
-                    Console.WriteLine("Подходящее колесо для ремонта имеется на складе");
-                    return wheel;
-                }
-                else if (_carPartsStorage[i] is Engine engine)
-                {
-                    Console.WriteLine("Подходящий двигатель для ремонта имеется на складе");
-                    return engine;
-                }
-                else if (_carPartsStorage[i] is WindShileld windShileld)
-                {
-                    Console.WriteLine("Подходящий двигатель для ремонта имеется на складе");
-                    return windShileld;
+                    Console.WriteLine($"{problem.Name} для ремонта имеется на складе");
+                    return _carPartsStorage[i];
                 }
                 else
                 {
                     Console.WriteLine("Подходящая деталь для ремонта не найдена");
                 }
-
             }
 
             return problem;
@@ -177,7 +157,7 @@ namespace Задание6_13
             int randomNumber;
             int maxRandomValue = 5;
 
-            randomNumber = UserUtils.GiveRandomNumber(maxRandomValue);
+            randomNumber = UserUtils.GenerateRandomNumber(maxRandomValue);
 
             carPart = _carParts[randomNumber];
 
@@ -191,16 +171,11 @@ namespace Задание6_13
 
         public Client(CarPart carPart)
         {
-            Problem = carPart;
+            BrokenCarPart = carPart;
             _money = carPart.Price * 2;
         }
 
-        public CarPart Problem { get; private set; }
-
-        public string GiveCarPartName()
-        {
-            return $"{Problem}";
-        }
+        public CarPart BrokenCarPart { get; private set; }
 
         public int GiveMoney(int repairCount)
         {
@@ -208,9 +183,9 @@ namespace Задание6_13
             return repairCount;
         }
 
-        public void TakeMoney(int money)
+        public void TakeCarPart(CarPart carPart)
         {
-            _money += money;
+            BrokenCarPart = carPart;
         }
     }
 

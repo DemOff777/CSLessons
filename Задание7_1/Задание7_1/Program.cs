@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Задание7_1
 {
@@ -80,7 +76,7 @@ namespace Задание7_1
                 Console.WriteLine("Введите национальность подозреваемого");
                 Nationality criminalNationality = GiveCriminalNationality();
 
-                var criminalsFound = _criminals.Where(criminal => criminal.Weight == criminalWeight && criminal.Height == criminalHeight && criminal.Nationality == criminalNationality);
+                var criminalsFound = _criminals.Where(criminal => criminal.Weight == criminalWeight && criminal.Height == criminalHeight && criminal.Nationality == criminalNationality && criminal.IsInJeil == false);
 
                 foreach (var criminal in criminalsFound)
                 {
@@ -206,12 +202,12 @@ namespace Задание7_1
 
         public void ShowInfo()
         {
-            Console.WriteLine($"Розыскиваемый {_surname} {_name} {_patronymic} рост - {Height} см, вес - {Weight} кг. национальность - {Nationality}");
+            Console.WriteLine($"Розыскиваемый {_surname} {_name} {_patronymic} рост - {Height} см, вес - {Weight} кг. национальность - {Nationality} {IsInJeil}");
         }
 
         private void GetInJailBool()
         {
-            int trueIndex = 1;
+            int trueIndex = 2;
 
             IsInJeil =  Convert.ToBoolean(UserUtils.GiveRandomNumber(trueIndex));
         }
