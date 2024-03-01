@@ -39,12 +39,12 @@ namespace Задание6_12
             Console.WriteLine($"Вы видите {_aviaries.Count} вольеров");
             Console.WriteLine("Укажите номер вольера к которому вы хотите подойти");
 
-            int userInput = GiveUserInput();
+            int userInput = GiveAviaryIndex();
 
             _aviaries[userInput].ShowInfo();
         }
 
-        private int GiveUserInput()
+        private int GiveAviaryIndex()
         {
             int arriveFirstValueIndex = 1;
             int arriveMaxValueIndex = _aviaries.Count;
@@ -71,7 +71,7 @@ namespace Задание6_12
             return userInput - arriveIndexCorrection;
         }
 
-        private int GiveAviariesCount()
+        private int GiveAviariesRandomCount()
         {
             int minAviariesCount = 4;
             int maxAviariesCount = 10;
@@ -81,13 +81,12 @@ namespace Задание6_12
 
         private void CreateAviaries()
         {
-            int aviariesCount = GiveAviariesCount();
+            int aviariesCount = GiveAviariesRandomCount();
 
             for (int i = 0; i < aviariesCount; i++)
             {
                 Aviary aviary = new Aviary();
-                aviary.Fill();
-                aviary.InstallName();
+
                 _aviaries.Add(aviary);
             }
         }
@@ -99,7 +98,13 @@ namespace Задание6_12
 
         private string _name;
 
-        public void Fill()
+        public Aviary()
+        {
+            Fill();
+            InstallName();
+        }
+
+        private void Fill()
         {
             int minAnimalsCount = 1;
             int maxAnimalsCount = 51;
@@ -118,19 +123,18 @@ namespace Задание6_12
             for (int i = 0; i < animalsCount; i++)
             {
                 Animal animal = animals[animalRandomIndex].Clone();
-                animal.SetGender();
                 _animals.Add(animal);
             }
         }
 
-        public void InstallName()
+        private void InstallName()
         {
             _name = $"вольер с {GiveFirstAnimal().Name}ми";
         }
 
         public void ShowInfo()
         {
-            Console.WriteLine($"{_name} содержит {_animals.Count} животных, {GiveMaleCount()} {Gender.Male}\bго пола, {GiveFemaleCount()} {Gender.Female}\b\bого пола и {GiveNotDecidedCount()} {Gender.NotDecide}\b\b\bвшихся");
+            Console.WriteLine($"{_name} содержит {_animals.Count} животных, {GiveGenderCount(Gender.Male)} {Gender.Male}\bго пола, {GiveGenderCount(Gender.Female)} {Gender.Female}\b\bого пола и {GiveGenderCount(Gender.NotDecide)} {Gender.NotDecide}\b\b\bвшихся");
         }
 
         private Animal GiveFirstAnimal()
@@ -138,43 +142,13 @@ namespace Задание6_12
             return _animals[0];
         }
 
-        private int GiveMaleCount()
+        private int GiveGenderCount(Gender gender)
         {
             int count = 0;
 
             for (int i = 0; i < _animals.Count; i++)
             {
-                if (_animals[i].Gender == Gender.Male)
-                {
-                    count++;
-                }
-            }
-
-            return count;
-        }
-
-        private int GiveFemaleCount()
-        {
-            int count = 0;
-
-            for (int i = 0; i < _animals.Count; i++)
-            {
-                if (_animals[i].Gender == Gender.Female)
-                {
-                    count++;
-                }
-            }
-
-            return count;
-        }
-
-        private int GiveNotDecidedCount()
-        {
-            int count = 0;
-
-            for (int i = 0; i < _animals.Count; i++)
-            {
-                if (_animals[i].Gender == Gender.NotDecide)
+                if (_animals[i].Gender == gender)
                 {
                     count++;
                 }
@@ -192,7 +166,7 @@ namespace Задание6_12
 
         public string Name { get; protected set; }
 
-        public void SetGender()
+        protected void SetGender()
         {
             Gender[] genders = new Gender[3]
             {
@@ -218,6 +192,7 @@ namespace Задание6_12
         {
             Name = "Корова";
             VoiceSound = "Му";
+            SetGender();
         }
 
         public override Animal Clone()
@@ -232,11 +207,14 @@ namespace Задание6_12
         {
             Name = "Лошадь";
             VoiceSound = "Ига-га";
+            SetGender();
         }
 
         public override Animal Clone()
         {
-            return new Horse();
+            Horse horse = new Horse();
+            horse.SetGender();
+            return horse;
         }
     }
 
@@ -246,6 +224,7 @@ namespace Задание6_12
         {
             Name = "Коза";
             VoiceSound = "Бе";
+            SetGender();
         }
 
         public override Animal Clone()
@@ -260,6 +239,7 @@ namespace Задание6_12
         {
             Name = "Свинья";
             VoiceSound = "Хрю";
+            SetGender();
         }
 
         public override Animal Clone()
