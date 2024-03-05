@@ -9,7 +9,10 @@ namespace Задание7_2
         static void Main(string[] args)
         {
             Arstocka arstocka = new Arstocka();
+
+            arstocka.ShowCriminals();
             arstocka.Amnesty();
+            arstocka.ShowCriminals();
         }
     }
 
@@ -17,24 +20,39 @@ namespace Задание7_2
     {
         private List<Criminal> _criminals = new List<Criminal>();
 
-        public void Amnesty()
+        public Arstocka()
         {
             GeneradeCriminals();
+        }
 
+        public void Amnesty()
+        {
             var criminalsAmnesty = _criminals.Where(criminal => criminal.Crime == Crime.Terrorism || criminal.Crime == Crime.Extremism);
 
+            Console.WriteLine();
+            Console.WriteLine("Амнестированы по государственной статье некоторые заключенные");
+            Console.WriteLine();
+
+            foreach (var criminal in criminalsAmnesty)
+            {
+                criminal.ShowInfo();
+            }
+
+            _criminals.RemoveAll(criminal => criminal.Crime == Crime.Terrorism || criminal.Crime == Crime.Extremism);
+        }
+
+        public void ShowCriminals()
+        {
+            Console.WriteLine();
             Console.WriteLine($"Всего заключенных:");
             Console.WriteLine();
 
-            ShowCriminals(_criminals);
-
-            Console.WriteLine();
-            Console.WriteLine("Амнестированы по государственной статье следующие заключенные");
-            Console.WriteLine();
-
-            ShowCriminals((List<Criminal>)criminalsAmnesty);
+            foreach (var criminal in _criminals)
+            {
+                criminal.ShowInfo();
+            }
         }
-        
+
         private void GeneradeCriminals()
         {
             int criminalsValue = 100;
@@ -42,14 +60,6 @@ namespace Задание7_2
             for (int i = 0; i < criminalsValue; i++)
             {
                 _criminals.Add(new Criminal());
-            }
-        }
-
-        private void ShowCriminals(List<Criminal> criminals)
-        {
-            foreach (var criminal in criminals)
-            {
-                criminal.ShowInfo();
             }
         }
     }

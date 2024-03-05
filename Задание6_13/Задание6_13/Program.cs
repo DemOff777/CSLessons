@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace Задание6_13
 {
@@ -21,12 +18,13 @@ namespace Задание6_13
     {
         private static Random s_random = new Random();
 
-        private static string _border1 = string.Join("-", Enumerable.Repeat("", 10));
+        private static string s_border1 = string.Join("-", Enumerable.Repeat("", 10));
 
         public static int GenerateRandomNumber(int maxValue)
         {
             return s_random.Next(maxValue);
         }
+
         public static int GenerateRandomNumber(int minValue, int maxValue)
         {
             return s_random.Next(minValue, maxValue + 1);
@@ -34,7 +32,7 @@ namespace Задание6_13
 
         public static void ShowBorder1()
         {
-            Console.WriteLine($"{_border1}");
+            Console.WriteLine($"{s_border1}");
         }
     }
 

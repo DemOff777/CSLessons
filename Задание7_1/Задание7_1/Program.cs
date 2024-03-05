@@ -61,11 +61,14 @@ namespace Задание7_1
             Nationality.Asian
         };
 
+        public PoliceOffice()
+        {
+            GenerateCriminals();
+        }
+
         public void Work()
         {  
             bool isCriminalFound = false;
-
-            GenerateCriminals();
 
             while (isCriminalFound == false)
             {
@@ -150,26 +153,26 @@ namespace Задание7_1
 
             for (int i = 0; i < criminalsWanted; i++)
             {
-                _criminals.Add(new Criminal(SetRandomName(), SetRandomSurname(), SetRandomPatronymic(), SetNationality()));
+                _criminals.Add(new Criminal(GeneradeRandomName(), GeneradeRandomSurname(), GeneradeRandomPatronymic(), GeneradeNationality()));
             }
         }
 
-        private Name SetRandomName()
+        private Name GeneradeRandomName()
         {
             return _names[UserUtils.GiveRandomNumber(_names.Count)];
         }
 
-        private Surname SetRandomSurname()
+        private Surname GeneradeRandomSurname()
         {
             return _surnames[UserUtils.GiveRandomNumber(_surnames.Count)];
         }
 
-        private Patronymic SetRandomPatronymic()
+        private Patronymic GeneradeRandomPatronymic()
         {
             return _patronymics[UserUtils.GiveRandomNumber(_patronymics.Count)];
         }
 
-        private Nationality SetNationality()
+        private Nationality GeneradeNationality()
         {
             return _nationalities[UserUtils.GiveRandomNumber(_nationalities.Count)];
         }
@@ -177,20 +180,20 @@ namespace Задание7_1
 
     class Criminal
     {
+        private Name _name;
+        private Surname _surname;
+        private Patronymic _patronymic;
+
         public Criminal(Name name, Surname surname, Patronymic patronymic, Nationality nationality)
         {
             _name = name;
             _surname = surname;
             _patronymic = patronymic;
             Nationality = nationality;
-            SetRandomHeight();
-            SetRandomWeight();
+            GeneradeRandomHeight();
+            GeneradeRandomWeight();
             GetInJailBool();
         }
-
-        public Name _name;
-        public Surname _surname;
-        public Patronymic _patronymic;
 
         public Nationality Nationality { get; private set; }
 
@@ -212,7 +215,7 @@ namespace Задание7_1
             IsInJeil =  Convert.ToBoolean(UserUtils.GiveRandomNumber(trueIndex));
         }
 
-        private void SetRandomHeight()
+        private void GeneradeRandomHeight()
         {
             int minHeight = 150;
             int maxHeight = 210;
@@ -220,7 +223,7 @@ namespace Задание7_1
             Height = UserUtils.GiveRandomNumber(minHeight, maxHeight);
         }
 
-        private void SetRandomWeight()
+        private void GeneradeRandomWeight()
         {
             int minWeight = 40;
             int maxWeight = 110;
@@ -231,16 +234,16 @@ namespace Задание7_1
 
     static class UserUtils
     {
-        private static Random _random = new Random();
+        private static Random s_random = new Random();
 
         public static int GiveRandomNumber(int minValue, int maxValue)
         {
-            return _random.Next(minValue, maxValue + 1);
+            return s_random.Next(minValue, maxValue + 1);
         }
 
         public static int GiveRandomNumber(int maxValue)
         {
-            return _random.Next(maxValue);
+            return s_random.Next(maxValue);
         }
     }
 
