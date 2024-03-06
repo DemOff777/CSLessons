@@ -16,50 +16,7 @@ namespace Задание7_1
 
     class PoliceOffice
     {
-        private List<Criminal> _criminals = new List<Criminal>();
-
-        private List<Name> _names = new List<Name>()
-        {
-            Name.Aleks,
-            Name.Oleg,
-            Name.Gerasim,
-            Name.ChuCha,
-            Name.Taras,
-            Name.Magneto,
-            Name.Osip,
-            Name.Parenek
-        };
-
-        private List<Surname> _surnames = new List<Surname>()
-        {
-            Surname.Fehtel,
-            Surname.Ribakov,
-            Surname.Sandalskiy,
-            Surname.Propp,
-            Surname.Udya,
-            Surname.Shevchenko,
-            Surname.Aslanov
-        };
-
-        private List<Patronymic> _patronymics = new List<Patronymic>()
-        {
-            Patronymic.Olgovich,
-            Patronymic.Marinovich,
-            Patronymic.RamizOgli,
-            Patronymic.Gelievich,
-            Patronymic.Papikovich,
-            Patronymic.Arslan
-        };
-
-        private List<Nationality> _nationalities = new List<Nationality>()
-        {
-            Nationality.Russian,
-            Nationality.Prostokvashin,
-            Nationality.American,
-            Nationality.African,
-            Nationality.European,
-            Nationality.Asian
-        };
+        private List<Criminal> _criminals = new List<Criminal>();   
 
         public PoliceOffice()
         {
@@ -77,7 +34,7 @@ namespace Задание7_1
                 Console.WriteLine("Введите вес подозреваемого");
                 int criminalWeight = GiveUserInput();
                 Console.WriteLine("Введите национальность подозреваемого");
-                Nationality criminalNationality = GiveCriminalNationality();
+                Nationality criminalNationality = GiveUserCriminalNationality();
 
                 var criminalsFound = _criminals.Where(criminal => criminal.Weight == criminalWeight && criminal.Height == criminalHeight && criminal.Nationality == criminalNationality && criminal.IsInJeil == false);
 
@@ -88,7 +45,7 @@ namespace Задание7_1
 
                 isCriminalFound = true;
 
-                if (criminalsFound.Count(criminal => criminal.Weight == criminalWeight && criminal.Height == criminalHeight && criminal.Nationality == criminalNationality) == 0)
+                if (criminalsFound.Count() == 0)
                 {
                     Console.WriteLine("По вашему запросу ничего не найдено, опробуйте еще раз");
                     isCriminalFound= false;
@@ -114,7 +71,7 @@ namespace Задание7_1
             return userInput;
         }
 
-        private Nationality GiveCriminalNationality()
+        private Nationality GiveUserCriminalNationality()
         {
             List<string> nationalities = new List<string>()
             {
@@ -153,28 +110,8 @@ namespace Задание7_1
 
             for (int i = 0; i < criminalsWanted; i++)
             {
-                _criminals.Add(new Criminal(GeneradeRandomName(), GeneradeRandomSurname(), GeneradeRandomPatronymic(), GeneradeNationality()));
+                _criminals.Add(new Criminal());
             }
-        }
-
-        private Name GeneradeRandomName()
-        {
-            return _names[UserUtils.GiveRandomNumber(_names.Count)];
-        }
-
-        private Surname GeneradeRandomSurname()
-        {
-            return _surnames[UserUtils.GiveRandomNumber(_surnames.Count)];
-        }
-
-        private Patronymic GeneradeRandomPatronymic()
-        {
-            return _patronymics[UserUtils.GiveRandomNumber(_patronymics.Count)];
-        }
-
-        private Nationality GeneradeNationality()
-        {
-            return _nationalities[UserUtils.GiveRandomNumber(_nationalities.Count)];
         }
     }
 
@@ -184,12 +121,55 @@ namespace Задание7_1
         private Surname _surname;
         private Patronymic _patronymic;
 
-        public Criminal(Name name, Surname surname, Patronymic patronymic, Nationality nationality)
+        public Criminal()
         {
-            _name = name;
-            _surname = surname;
-            _patronymic = patronymic;
-            Nationality = nationality;
+            List<Name> names = new List<Name>()
+        {
+            Name.Aleks,
+            Name.Oleg,
+            Name.Gerasim,
+            Name.ChuCha,
+            Name.Taras,
+            Name.Magneto,
+            Name.Osip,
+            Name.Parenek
+        };
+
+            List<Surname> surnames = new List<Surname>()
+        {
+            Surname.Fehtel,
+            Surname.Ribakov,
+            Surname.Sandalskiy,
+            Surname.Propp,
+            Surname.Udya,
+            Surname.Shevchenko,
+            Surname.Aslanov
+        };
+
+            List<Patronymic> patronymics = new List<Patronymic>()
+        {
+            Patronymic.Olgovich,
+            Patronymic.Marinovich,
+            Patronymic.RamizOgli,
+            Patronymic.Gelievich,
+            Patronymic.Papikovich,
+            Patronymic.Arslan
+        };
+
+            List<Nationality> nationalities = new List<Nationality>()
+        {
+            Nationality.Russian,
+            Nationality.Prostokvashin,
+            Nationality.American,
+            Nationality.African,
+            Nationality.European,
+            Nationality.Asian
+            };
+
+            _name = names[UserUtils.GiveRandomNumber(names.Count)];
+            _surname = surnames[UserUtils.GiveRandomNumber(surnames.Count)];
+            _patronymic = patronymics[UserUtils.GiveRandomNumber(patronymics.Count)];
+            Nationality = nationalities[UserUtils.GiveRandomNumber(nationalities.Count)];
             GeneradeRandomHeight();
             GeneradeRandomWeight();
             GetInJailBool();
@@ -205,7 +185,7 @@ namespace Задание7_1
 
         public void ShowInfo()
         {
-            Console.WriteLine($"Розыскиваемый {_surname} {_name} {_patronymic} рост - {Height} см, вес - {Weight} кг. национальность - {Nationality} {IsInJeil}");
+            Console.WriteLine($"Розыскиваемый {_surname} {_name} {_patronymic} рост - {Height} см, вес - {Weight} кг. национальность - {Nationality}");
         }
 
         private void GetInJailBool()

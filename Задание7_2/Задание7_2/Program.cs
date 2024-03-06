@@ -27,10 +27,10 @@ namespace Задание7_2
 
         public void Amnesty()
         {
-            var criminalsAmnesty = _criminals.Where(criminal => criminal.Crime == Crime.Terrorism || criminal.Crime == Crime.Extremism);
+            var criminalsAmnesty = _criminals.Where(criminal => criminal.Crime == Crime.AntiGovernment);
 
             Console.WriteLine();
-            Console.WriteLine("Амнестированы по государственной статье некоторые заключенные");
+            Console.WriteLine("Амнестированы за антипровительственную деятельнось некоторые заключенные");
             Console.WriteLine();
 
             foreach (var criminal in criminalsAmnesty)
@@ -38,7 +38,7 @@ namespace Задание7_2
                 criminal.ShowInfo();
             }
 
-            _criminals.RemoveAll(criminal => criminal.Crime == Crime.Terrorism || criminal.Crime == Crime.Extremism);
+            _criminals = _criminals.Except(criminalsAmnesty).ToList();
         }
 
         public void ShowCriminals()
@@ -66,8 +66,10 @@ namespace Задание7_2
 
     class Criminal
     {
-        private List<Name> _names = new List<Name>()
+        public Criminal()
         {
+            List<Name> names = new List<Name>()
+            {
             Name.Alesha,
             Name.Anton,
             Name.Gacha,
@@ -77,10 +79,10 @@ namespace Задание7_2
             Name.Tremor,
             Name.Petya,
             Name.Patrik
-        };
+            };
 
-        private List<Surname> _surnames = new List<Surname>()
-        {
+            List<Surname> surnames = new List<Surname>()
+            {
             Surname.Frakiev,
             Surname.Labuda,
             Surname.Vasyliev,
@@ -92,10 +94,10 @@ namespace Задание7_2
             Surname.Lomovoy,
             Surname.Hristenko,
             Surname.Tvar
-        };
+            };
 
-        private List<Patronymic> _patronymics = new List<Patronymic>()
-        {
+            List<Patronymic> patronymics = new List<Patronymic>()
+            {
             Patronymic.Grigorievich,
             Patronymic.Vasylevich,
             Patronymic.Tradovich,
@@ -103,25 +105,22 @@ namespace Задание7_2
             Patronymic.Gribovish,
             Patronymic.Kurovich,
             Patronymic.Zaborovich
-        };
+            };
 
-        private List<Crime> _crimes = new List<Crime>()
-        {
+            List<Crime> crimes = new List<Crime>()
+            {
             Crime.Murder,
             Crime.Steal,
             Crime.Fraud,
             Crime.DrugSales,
             Crime.Extortion,
-            Crime.Terrorism,
-            Crime.Extremism
-        };
+            Crime.AntiGovernment
+            };
 
-        public Criminal()
-        {
-            GenerateName();
-            GenerateSurname();
-            GeneratePatronymic();
-            GenerateCrime();
+            Name = names[UserUtils.GiveRandomNumber(names.Count)];
+            Surname = surnames[UserUtils.GiveRandomNumber(surnames.Count)];
+            Patronymic = patronymics[UserUtils.GiveRandomNumber(patronymics.Count)];
+            Crime = crimes[UserUtils.GiveRandomNumber(crimes.Count)];
         }
 
         public Name Name { get; private set; }
@@ -135,26 +134,6 @@ namespace Задание7_2
         public void ShowInfo()
         {
             Console.WriteLine($"Заключенный {Surname} {Name} {Patronymic}, статья - {Crime}");
-        }
-
-        private void GenerateName()
-        {
-            Name = _names[UserUtils.GiveRandomNumber(_names.Count)];
-        }
-
-        private void GenerateSurname()
-        {
-            Surname = _surnames[UserUtils.GiveRandomNumber(_surnames.Count)];
-        }
-
-        private void GeneratePatronymic()
-        {
-            Patronymic = _patronymics[UserUtils.GiveRandomNumber(_patronymics.Count)];
-        }
-
-        private void GenerateCrime()
-        {
-            Crime = _crimes[UserUtils.GiveRandomNumber(_crimes.Count)];
         }
     }
 
@@ -180,8 +159,7 @@ namespace Задание7_2
         Fraud,
         DrugSales,
         Extortion,
-        Terrorism,
-        Extremism
+        AntiGovernment
     }
 
     enum Name
