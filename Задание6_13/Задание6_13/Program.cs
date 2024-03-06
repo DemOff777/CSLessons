@@ -38,25 +38,28 @@ namespace Задание6_13
 
     class CarService
     {
-        private List<CarPart> _carParts = new List<CarPart>()
-        {
-            new HeadLight(),
-            new Fender(),
-            new Wheel(),
-            new Engine(),
-            new WindShileld()
-        };
-
         private List<CarPart> _carPartsStorage = new List<CarPart>();
         private Queue<Client> _clients = new Queue<Client>();
 
         private int _money = 10000;
 
+        public CarService()
+        {
+            List<CarPart> carParts = new List<CarPart>()
+            {
+                new HeadLight(),
+                new Fender(),
+                new Wheel(),
+                new Engine(),
+                new WindShileld()
+            };
+
+            CreateCarPartsStorageCount(carParts);
+            CreateClientsQueue();
+        }
+
         public void Work()
         {
-            CreateCarPartsStorageCount();
-            CreateClientsQueue();
-
             while (_clients.Count > 0)
             {
                 Console.WriteLine($"в кассе {_money} рублей");
@@ -78,7 +81,7 @@ namespace Задание6_13
             Console.WriteLine("чередь клиентов закончилась");
         }
 
-        private void CreateCarPartsStorageCount()
+        private void CreateCarPartsStorageCount(List<CarPart> carParts)
         {
             int minPartsStorageCount = 5;
             int maxPartsStorageCount = 20;
@@ -87,8 +90,8 @@ namespace Задание6_13
 
             for (int i = 0; i < carPartsStorageCount; i++)
             {
-                int randomCarPartIndex = UserUtils.GenerateRandomNumber(_carParts.Count);
-                _carPartsStorage.Add(_carParts[randomCarPartIndex].Clone());
+                int randomCarPartIndex = UserUtils.GenerateRandomNumber(carParts.Count);
+                _carPartsStorage.Add(carParts[randomCarPartIndex].Clone());
             }
         }
 
@@ -101,7 +104,7 @@ namespace Задание6_13
 
             for (int i = 0; i < clientsCount; i++)
             {
-                _clients.Enqueue(new Client(GenerateProblem()));
+                _clients.Enqueue(new Client());
             }
         }
 
@@ -130,36 +133,26 @@ namespace Задание6_13
             }
         }
 
-        private CarPart TryFindCarPart(CarPart problem)
+        private CarPart TryFindCarPart(CarPart brokenCarPart)
         {
+            CarPart carPartFound = brokenCarPart;
+
             for (int i = 0; i < _carPartsStorage.Count; i++)
             {
-                if (_carPartsStorage[i].Name == problem.Name)
+                if (_carPartsStorage[i].Name == brokenCarPart.Name)
                 {
-                    Console.WriteLine($"{problem.Name} для ремонта имеется на складе");
-                    return _carPartsStorage[i];
-                }
-                else
-                {
-                    Console.WriteLine("Подходящая деталь для ремонта не найдена");
+                    carPartFound = _carPartsStorage[i];
+                    Console.WriteLine($"{carPartFound.Name} для ремонта имеется на складе");
+                    return carPartFound;
                 }
             }
 
-            return problem;
-        }
+            if (carPartFound == brokenCarPart)
+            {
+                Console.WriteLine("Подходящей детали не найдено");
+            }
 
-        private CarPart GenerateProblem()
-        {
-            CarPart carPart;
-
-            int randomNumber;
-            int maxRandomValue = 5;
-
-            randomNumber = UserUtils.GenerateRandomNumber(maxRandomValue);
-
-            carPart = _carParts[randomNumber];
-
-            return carPart;
+            return brokenCarPart;
         }
     }
 
@@ -167,10 +160,22 @@ namespace Задание6_13
     {
         private int _money;
 
-        public Client(CarPart carPart)
+        private CarPart _repairCarPart = null;
+
+        public Client()
         {
-            BrokenCarPart = carPart;
-            _money = carPart.Price * 2;
+            List<CarPart> carParts = new List<CarPart>()
+            {
+                new HeadLight(),
+                new Fender(),
+                new Wheel(),
+                new Engine(),
+                new WindShileld()
+            };
+
+            BrokenCarPart = carParts[UserUtils.GenerateRandomNumber(carParts.Count)];
+
+            _money = BrokenCarPart.Price * 2;
         }
 
         public CarPart BrokenCarPart { get; private set; }
@@ -183,7 +188,8 @@ namespace Задание6_13
 
         public void TakeCarPart(CarPart carPart)
         {
-            BrokenCarPart = carPart;
+            BrokenCarPart = null;
+            _repairCarPart = carPart;
         }
     }
 
