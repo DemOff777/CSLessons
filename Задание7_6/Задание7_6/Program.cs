@@ -13,8 +13,8 @@ namespace Задание7_6
             barracks.ShowSoldiers();
             Console.WriteLine();
             Console.WriteLine("Отсортированные солдаты");
-            var sortedSoldiers = barracks.SortSoldiers();
-            barracks.ShowSortedSoldiers(sortedSoldiers);
+            Console.WriteLine();
+            barracks.ShowSortedSoldiers();
         }
     }
 
@@ -42,8 +42,10 @@ namespace Задание7_6
             GeneradeSoldiers();
         }
 
-        public void ShowSortedSoldiers(IEnumerable<> soldiersSorted)
+        public void ShowSortedSoldiers()
         {
+            var soldiersSorted = _soldiers.Select(soldier => new { soldier.Name, soldier.Rank });
+
             foreach (var soldier in soldiersSorted)
             {
                 Console.WriteLine($"{soldier.Name} {soldier.Rank}");
@@ -56,11 +58,6 @@ namespace Задание7_6
             {
                 soldier.ShowStats();
             }
-        }
-
-        public IEnumerable<> SortSoldiers()
-        {
-            return _soldiers.Select(soldier => new { soldier.Name, soldier.Rank });
         }
 
         private void GeneradeSoldiers()
