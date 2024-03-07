@@ -16,7 +16,7 @@ namespace Задание7_4
 
     class BattleGround
     {
-        List<Player> _players = new List<Player>();
+        private List<Player> _players = new List<Player>();
 
         public BattleGround()
         {
@@ -31,22 +31,26 @@ namespace Задание7_4
             List<Player> playersSortedByStrenght = SortPlayersByStrenght();
 
             Console.WriteLine();
-            Console.WriteLine("Игроки отсортированы по уровню:");
+            Console.WriteLine("Топ игроков по уровню:");
             ShowPlayers(playersSortedByLevel);
 
             Console.WriteLine();
-            Console.WriteLine("Игроки отсортированы по силе:");
+            Console.WriteLine("Топ игроков по силе:");
             ShowPlayers(playersSortedByStrenght);
         }
 
         private List<Player> SortPlayersByLevel()
         {
-            return _players.OrderBy(player => player.Level).ToList();
+            int topIndex = 3;
+
+            return _players.OrderByDescending(player => player.Level).Take(topIndex).ToList();
         }
 
         private List<Player> SortPlayersByStrenght()
         {
-            return _players.OrderBy(player => player.Strenght).ToList();
+            int topIndex = 3;
+
+            return _players.OrderByDescending(player => player.Strenght).Take(topIndex).ToList();
         }
 
         private void GeneradePlayers()
@@ -85,12 +89,6 @@ namespace Задание7_4
 
     class Player
     {
-        public string Name { get; private set; }
-
-        public int Level { get; private set; }
-
-        public int Strenght { get; private set; }
-
         public Player()
         {
             string[] names = { "Nagibator", "Pobegdator", "Terminator", "Fedya", "UgeBilo", "BigTick", "LamerOnline", "Shimorisan", "Dracula", "Pistolet" };
@@ -99,6 +97,12 @@ namespace Задание7_4
             Level = GeneradeRandomLevel();
             Strenght = GeneradeRandomStrenght();
         }
+
+        public string Name { get; private set; }
+
+        public int Level { get; private set; }
+
+        public int Strenght { get; private set; }
 
         public void ShowStats()
         {
